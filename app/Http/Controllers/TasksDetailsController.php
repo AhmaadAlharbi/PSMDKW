@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use DB;
 use PDF;
+use Illuminate\Support\Facades\Storage;
 
 class TasksDetailsController extends Controller
 {
@@ -88,9 +89,13 @@ class TasksDetailsController extends Controller
      * @param  \App\Models\Tasks_details  $tasks_details
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Tasks_details $tasks_details)
+    public function destroy(Request $request)
     {
-        //
+        $invoices = tasks_attachments::findOrFail($request->id_file);
+        $invoices->delete();
+        Storage::disk('public_uploads')->delete($request->invoice_number.'/'.$request->file_name);
+        session()->flash('delete', 'تم حذف المرفق بنجاح');
+        return back();
     }
 
     public function fillTheTask($id)
@@ -128,19 +133,35 @@ class TasksDetailsController extends Controller
             'status' => 'completed',
         ]);
 
+        // if ($request->hasFile('pic')) {
+        //     $task_id = $tasks;
+        //     $image = $request->file('pic');
+        //     $file_name = $image->getClientOriginalName();
+        //     $refNum = $request->refNum;
+        //     $attachments = new tasks_attachments();
+        //     $attachments->file_name = $file_name;
+        //     $attachments->refNum = $refNum;
+        //     $attachments->id_task = $id;
+        //     $attachments->save();
+        //     // move pic
+        //     $imageName = $request->pic->getClientOriginalName();
+        //     $request->pic->move(public_path('Attachments/' . $task_id), $imageName);
+        // }
         if ($request->hasFile('pic')) {
-            $task_id = $tasks;
+            $id_task = $id;
+
             $image = $request->file('pic');
             $file_name = $image->getClientOriginalName();
             $refNum = $request->refNum;
             $attachments = new tasks_attachments();
             $attachments->file_name = $file_name;
             $attachments->refNum = $refNum;
-            $attachments->id_task = $id;
+            // $attachments->Created_by = Auth::user()->name;
+            $attachments->id_task = $id_task;
             $attachments->save();
             // move pic
             $imageName = $request->pic->getClientOriginalName();
-            $request->pic->move(public_path('Attachments/' . $task_id), $imageName);
+            $request->pic->move(public_path('Attachments/' . $id_task), $imageName);
         }
         session()->flash('Add', 'تم اضافةالمهمة بنجاح');
         return back();
@@ -196,8 +217,9 @@ class TasksDetailsController extends Controller
     {
         $task = Task::where('id', $id)->first();
         $task_details = Tasks_details::where('id_task', $id)->get();
+        $task_attachment = tasks_attachments::where('id_task',$id)->get();
 
-        return view('tasks.task_details', compact('task', 'task_details'));
+        return view('tasks.task_details', compact('task', 'task_details','task_attachment'));
     }
     public function Print_task($id)
     {
@@ -218,6 +240,17 @@ class TasksDetailsController extends Controller
         return view('tasks.addYourReport', compact('tasks'));
     }
 
+    public function open_file($id,$file_name){
+        $files = Storage::disk('public_uploads')->getDriver()->getAdapter()->applyPathPrefix($id.'/'.$file_name);
+        return response()->file($files);
+    }
+    public function get_file($id,$file_name) {
+        $contents= Storage::disk('public_uploads')->getDriver()->getAdapter()->applyPathPrefix($id.'/'.$file_name);
+        return response()->download( $contents);
+    }
+
+
+//Blogs
     public function blogs()
     {
         $engineers = Engineer::orderBy('name')->get();

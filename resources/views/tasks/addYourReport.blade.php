@@ -181,6 +181,19 @@
                                                     </div>
 
                                                 </div>
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <h5 class="card-title">المرفقات</h5>
+
+                                                        <div class="col-sm-12 col-md-12">
+                                                            <input type="file" name="pic" class="dropify form-control"
+                                                                accept=".pdf,.jpg, .png, image/jpeg, image/png" />
+                                                            <p class="text-danger">* صيغة المرفق pdf, jpeg ,.jpg , png
+                                                            </p>
+
+                                                        </div><br>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <div class="d-flex justify-content-center">
                                                 <button type="submit" class="btn btn-primary">حفظ البيانات</button>
@@ -237,6 +250,7 @@
 
                                 <label for="exampleTextarea">ملاحظات</label>
                                 <textarea class="form-control" id="exampleTextarea" name="add_more" rows="3"></textarea>
+
                             </div>
                         </div>
                         <div class="modal-footer">

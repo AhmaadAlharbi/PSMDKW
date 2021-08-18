@@ -86,6 +86,8 @@ class TaskController extends Controller
             'eng_name'=>$request->eng_name,
             'notes'=>$request->notes,
             'status'=>'pending',
+            'user'=>Auth::user()->name,
+
         ]);
         if ($request->hasFile('pic')) {
             $task_id = Task::latest()->first()->id;
@@ -95,6 +97,7 @@ class TaskController extends Controller
             $attachments = new tasks_attachments();
             $attachments->file_name = $file_name;
             $attachments->refNum = $refNum;
+            $attachments->Created_by = Auth::user()->name;
             $attachments->id_task = $task_id;
             $attachments->save();
             // move pic

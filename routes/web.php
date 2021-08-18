@@ -55,7 +55,10 @@ Route::post('/add_engineer', [EngineerController::class, 'store'])->name('engine
 Route::get('/edit_engineer/{id}', [EngineerController::class, 'edit'])->name('engineer.edit');
 Route::post('/edit_engineer/{id}', [EngineerController::class, 'update'])->name('engineer.update');
 Route::delete('/delete_engineer/{id}', [EngineerController::class, 'destroy'])->name('engineer.destroy')->middleware('auth');
-
+//attachments
+Route::get('View_file/{refNum}/{file_name}',[TasksDetailsController::class,'open_file'])->name('view_file');
+Route::get('download/{refNum}/{file_name}',[TasksDetailsController::class,'get_file']);
+Route::post('delete_file',[TasksDetailsController::class,'destroy'])->name('delete_file');
 //BLOGS
 Route::get('/user/reports', [TasksDetailsController::class, 'blogs'])->name('blogs.blogs')->middleware('auth');
 Route::get('/user/reports/{id}', [TasksDetailsController::class, 'blogDetails'])->name('blogs.details')->middleware('auth');
