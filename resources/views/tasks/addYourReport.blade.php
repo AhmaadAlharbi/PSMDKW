@@ -59,6 +59,9 @@
 
                     <form action="/TaskCompleted/{{$tasks->id}}" enctype="multipart/form-data" method="post"
                         autocomplete="off"> @csrf
+                        @if ($tasks->status == 'completed')
+                        <h2 class="text-danger text-center">The Report is completed </h2>
+                        @else
                         {{-- 1 --}}
                         <div class="row">
                             <div class="col-md-12 col-xl-12">
@@ -205,6 +208,7 @@
                         </div>
                     </form>
                 </div>
+                @endif
             </div>
             <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
                 aria-hidden="true">

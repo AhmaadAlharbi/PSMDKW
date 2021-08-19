@@ -131,10 +131,15 @@ window.onload = function() {
                                             class="btn ripple btn-primary btn-sm" data-toggle="dropdown"
                                             type="button">العمليات<i class="fas fa-caret-down ml-1"></i></button>
                                         <div class="dropdown-menu tx-13">
+
                                             @if($task->status ==="completed")
                                             <a class="dropdown-item" href="Print_task/{{ $task->id }}"><i
                                                     class="text-success fas fa-print"></i>&nbsp;&nbsp;طباعة
                                                  التقرير
+                                            </a>
+                                            <a class=" dropdown-item btn btn-outline-info "
+                                                href="{{url('generate-pdf')}}/{{$task->id}}">
+                                                <i class="text-info fas fa-download"></i>&nbsp;&nbsp; تحميل
                                             </a>
                                             @else
                                             <!-- <a class="dropdown-item" href="{{url('fill_task')}}/{{$task->id}}"> تعبئة
@@ -143,6 +148,7 @@ window.onload = function() {
                                             <a class="dropdown-item" href="{{url('update_task')}}/{{$task->id}}">
                                                 تعديل
                                             </a>
+
                                             @endif
                                             <a class="dropdown-item" href="#" data-invoice_id="{{ $task->id }}"
                                                 data-toggle="modal" data-target="#delete_invoice"><i

@@ -5,6 +5,7 @@ use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TasksDetailsController;
 use App\Http\Controllers\StationsController;
 use App\Http\Controllers\EngineerController;
+use App\Http\Controllers\PDFController;
 
 
 /*
@@ -65,6 +66,8 @@ Route::get('/user/reports/{id}', [TasksDetailsController::class, 'blogDetails'])
 Route::get('/error', [TasksDetailsController::class, 'error'])->name('error');
 Route::get('/user/reports/engineer/{id}', [TasksDetailsController::class, 'blogByEngineer'])->name('blogs.searchByEngineer')->middleware('auth');
 Route::get('/user/reports/station/{id}', [TasksDetailsController::class, 'blogByStation'])->name('blogs.searchByStation')->middleware('auth');
+//PDF
+Route::get('generate-pdf/{id}', [PDFController::class, 'generatePDF']);
 
 // Route::get('/home', function () {
 //     return view('home');

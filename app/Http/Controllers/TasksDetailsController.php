@@ -132,21 +132,6 @@ class TasksDetailsController extends Controller
         $tasks->update([
             'status' => 'completed',
         ]);
-
-        // if ($request->hasFile('pic')) {
-        //     $task_id = $tasks;
-        //     $image = $request->file('pic');
-        //     $file_name = $image->getClientOriginalName();
-        //     $refNum = $request->refNum;
-        //     $attachments = new tasks_attachments();
-        //     $attachments->file_name = $file_name;
-        //     $attachments->refNum = $refNum;
-        //     $attachments->id_task = $id;
-        //     $attachments->save();
-        //     // move pic
-        //     $imageName = $request->pic->getClientOriginalName();
-        //     $request->pic->move(public_path('Attachments/' . $task_id), $imageName);
-        // }
         if ($request->hasFile('pic')) {
             $id_task = $id;
 
@@ -164,7 +149,7 @@ class TasksDetailsController extends Controller
             $request->pic->move(public_path('Attachments/' . $id_task), $imageName);
         }
         session()->flash('Add', 'تم اضافةالمهمة بنجاح');
-        return back();
+        return view('tasks.completedMessage');
     }
     public function TaskPending(Request $request, $id)
     {
@@ -213,6 +198,7 @@ class TasksDetailsController extends Controller
 
         return back();
     }
+
     public function showDetails($id)
     {
         $task = Task::where('id', $id)->first();
