@@ -60,7 +60,14 @@
                     <form action="/TaskCompleted/{{$tasks->id}}" enctype="multipart/form-data" method="post"
                         autocomplete="off"> @csrf
                         @if ($tasks->status == 'completed')
-                        <h2 class="text-danger text-center">The Report is completed </h2>
+                        <div class="text-center">
+                            <h2 class="text-info text-center">The Report is completed </h2>
+                            <p class="lead">
+                                <a class="btn btn-info " href="{{route('login')}}" role="button">Continue
+                                    to
+                                    homepage</a>
+                            </p>
+                        </div>
                         @else
                         {{-- 1 --}}
                         <div class="row">

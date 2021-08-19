@@ -30,8 +30,8 @@ Route::get('/task_uncompleted', [TaskController::class, 'task_uncompleted'])->mi
 Route::get('/fill_task/{id}', [TasksDetailsController::class, 'fillTheTask'])->middleware('is_admin');
 Route::get('/update_task/{id}', [TaskController::class, 'editTask'])->middleware('auth');
 Route::post('/update_tasks/{id}', [TaskController::class, 'update'])->name('task.update');
-Route::post('/TaskCompleted/{id}', [TasksDetailsController::class, 'TaskCompleted'])->name('TaskCompleted')->middleware('is_admin');
-Route::post('/fill_pending_task/{id}', [TasksDetailsController::class, 'TaskPending'])->name('TaskPending')->middleware('is_admin');
+Route::post('/TaskCompleted/{id}', [TasksDetailsController::class, 'TaskCompleted'])->name('TaskCompleted');
+Route::post('/fill_pending_task/{id}', [TasksDetailsController::class, 'TaskPending'])->name('TaskPending');
 Route::get('/taskDetails/{id}', [TasksDetailsController::class, 'showDetails'])->name('ShowTask')->middleware('is_admin');;
 Route::get('/engineersArea/{id}/{shift_id}', [TaskController::class, 'getEngineersArea']);
 Route::get('/engineersShift/{id}/{shiftID}', [TaskController::class, 'getEngineersShift']);
