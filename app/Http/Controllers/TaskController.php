@@ -93,6 +93,9 @@ class TaskController extends Controller
             $task_id = Task::latest()->first()->id;
             $image = $request->file('pic');
             $file_name = $image->getClientOriginalName();
+            // move pic
+            $imageName = $request->pic->getClientOriginalName();
+            $request->pic->move(public_path('Attachments/' . $task_id), $imageName);
             $refNum = $request->refNum;
             $attachments = new tasks_attachments();
             $attachments->file_name = $file_name;
@@ -100,13 +103,79 @@ class TaskController extends Controller
             $attachments->Created_by = Auth::user()->name;
             $attachments->id_task = $task_id;
             $attachments->save();
+            //2nd pic
+            if($request->hasFile('pic2')){
+            $task_id = Task::latest()->first()->id;
+            $image2 = $request->file('pic2');
+            $file_name = $image2->getClientOriginalName();
+            $attachments = new tasks_attachments();
+            $attachments->file_name = $file_name;
+            $attachments->refNum = $refNum;
+            $attachments->Created_by = Auth::user()->name;
+            $attachments->id_task = $task_id;
+            $attachments->save();
             // move pic
-            $imageName = $request->pic->getClientOriginalName();
-            $request->pic->move(public_path('Attachments/' . $task_id), $imageName);
+            $imageName2 = $request->pic2->getClientOriginalName();
+            $request->pic2->move(public_path('Attachments/' . $task_id), $imageName2);
+            }else{
+                $imageName2=null;
+            }
+            //3rd pic
+            if($request->hasFile('pic3')){
+                $task_id = Task::latest()->first()->id;
+                $image3 = $request->file('pic3');
+                $file_name = $image3->getClientOriginalName();
+                $attachments = new tasks_attachments();
+                $attachments->file_name = $file_name;
+                $attachments->refNum = $refNum;
+                $attachments->Created_by = Auth::user()->name;
+                $attachments->id_task = $task_id;
+                $attachments->save();
+                // move pic
+                $imageName3 = $request->pic3->getClientOriginalName();
+                $request->pic3->move(public_path('Attachments/' . $task_id), $imageName3);
+                }else{
+                    $imageName3=null;
+                }
+                //4th file
+                if($request->hasFile('pic4')){
+                    $task_id = Task::latest()->first()->id;
+                    $image4 = $request->file('pic4');
+                    $file_name = $image4->getClientOriginalName();
+                    $attachments = new tasks_attachments();
+                    $attachments->file_name = $file_name;
+                    $attachments->refNum = $refNum;
+                    $attachments->Created_by = Auth::user()->name;
+                    $attachments->id_task = $task_id;
+                    $attachments->save();
+                    // move pic
+                    $imageName4 = $request->pic4->getClientOriginalName();
+                    $request->pic4->move(public_path('Attachments/' . $task_id), $imageName4);
+                    }else{
+                        $imageName4=null;
+                    }
+                //5th file
+                if($request->hasFile('pic5')){
+                    $task_id = Task::latest()->first()->id;
+                    $image5 = $request->file('pic5');
+                    $file_name = $image5->getClientOriginalName();
+                    $attachments = new tasks_attachments();
+                    $attachments->file_name = $file_name;
+                    $attachments->refNum = $refNum;
+                    $attachments->Created_by = Auth::user()->name;
+                    $attachments->id_task = $task_id;
+                    $attachments->save();
+                    // move pic
+                    $imageName5 = $request->pic5->getClientOriginalName();
+                    $request->pic5->move(public_path('Attachments/' . $task_id), $imageName5);
+                    }else{
+                        $imageName4=null;
+                    }
+            
           //to send email
           $engineer_email = $request->eng_name_email;
           Notification::route('mail', $engineer_email)
-          ->notify(new AddTask($task_id,$imageName,$ssname));
+          ->notify(new AddTask($task_id,$imageName,$imageName2,$imageName3,$imageName4,$imageName5,$ssname));
         }else{
             //to send email with no attachment
         $engineer_email = $request->eng_name_email;
@@ -169,6 +238,7 @@ class TaskController extends Controller
         $ssname =$request->ssname;
 
         if ($request->hasFile('pic')) {
+          
             $task_id = Task::findOrFail($id);
             $task_attachment = tasks_attachments::where('id_task',$id);
             $image = $request->file('pic');
@@ -192,7 +262,7 @@ class TaskController extends Controller
         Notification::route('mail', $engineer_email)
         ->notify(new editTaskNoAttachment($id,$ssname));
         }
-        session()->flash('edit', 'تم   التعديل  بنجاح');
+        session()->flash('edit', 'تم   التعديل  بنجاح');
 
         return back();
 

@@ -1,27 +1,61 @@
-@include('blogs.BlogsHeader')
+@extends('layoutsUser.master')
+@section('title')
+المهمات
+@stop
+@section('css')
+<!-- Internal Data table css -->
+<link href="{{ URL::asset('assets/plugins/datatable/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet" />
+<link href="{{ URL::asset('assets/plugins/datatable/css/buttons.bootstrap4.min.css') }}" rel="stylesheet">
+<link href="{{ URL::asset('assets/plugins/datatable/css/responsive.bootstrap4.min.css') }}" rel="stylesheet" />
+<link href="{{ URL::asset('assets/plugins/datatable/css/jquery.dataTables.min.css') }}" rel="stylesheet">
+<link href="{{ URL::asset('assets/plugins/datatable/css/responsive.dataTables.min.css') }}" rel="stylesheet">
+<link href="{{ URL::asset('assets/plugins/select2/css/select2.min.css') }}" rel="stylesheet">
+<!--Internal   Notify -->
+<link href="{{ URL::asset('assets/plugins/notify/css/notifIt.css') }}" rel="stylesheet" />
+@endsection
+@section('page-header')
+<!-- breadcrumb -->
+<div class="breadcrumb-header justify-content-between">
+    <div class="my-auto">
+        <div class="d-flex">
+            <h4 class="content-title mb-0 my-auto">المهمات</h4><span class="text-muted mt-1 tx-13 mr-2 mb-0">/ كل
+                المهمات
 
-<!-- Page header with logo and tagline-->
-<header class="py-5 bg-light border-bottom mb-4">
-    <div class="container">
-        <div class="text-center my-5">
-            <h1 class="fw-bolder">Primary substation maintenance department</h1>
-            <p class="lead mb-0">Protection Section</p>
-            <!-- Button trigger modal -->
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                search by Engineer
-            </button>
-            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
-                data-bs-target="#exampleModal2">
-                search by Station
-            </button>
+            </span>
         </div>
     </div>
-</header>
-<!-- Page content-->
+
+</div>
+<!-- breadcrumb -->
+@endsection
+@section('content')
+
+@if (session()->has('delete_invoice'))
+<script>
+window.onload = function() {
+    notif({
+        msg: "تم حذف المهمة بنجاح",
+        type: "success"
+    })
+}
+</script>
+@endif
+
+
+@if (session()->has('Status_Update'))
+<script>
+window.onload = function() {
+    notif({
+        msg: "تم تحديث حالة الدفع بنجاح",
+        type: "success"
+    })
+}
+</script>
+@endif
+
 <div class="container">
     <div class="row">
-        <h2>Reports</h2>
-
+        <h2>التقارير</h2>
         <!-- Blog entries-->
         <div class="col-lg-12">
             <!-- Nested row for non-featured blog posts-->
@@ -95,6 +129,8 @@
             </div>
         </div>
     </div>
+    @endsection
+
     <!-- Modal2 -->
     <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -145,6 +181,26 @@
         stationLink.setAttribute('href', url);
     }
     </script>
-    </body>
-
-    </html>
+    @section('js')
+    <!-- Internal Data tables -->
+    <script src="{{ URL::asset('assets/plugins/datatable/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ URL::asset('assets/plugins/datatable/js/dataTables.dataTables.min.js') }}"></script>
+    <script src="{{ URL::asset('assets/plugins/datatable/js/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ URL::asset('assets/plugins/datatable/js/responsive.dataTables.min.js') }}"></script>
+    <script src="{{ URL::asset('assets/plugins/datatable/js/jquery.dataTables.js') }}"></script>
+    <script src="{{ URL::asset('assets/plugins/datatable/js/dataTables.bootstrap4.js') }}"></script>
+    <script src="{{ URL::asset('assets/plugins/datatable/js/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ URL::asset('assets/plugins/datatable/js/buttons.bootstrap4.min.js') }}"></script>
+    <script src="{{ URL::asset('assets/plugins/datatable/js/jszip.min.js') }}"></script>
+    <script src="{{ URL::asset('assets/plugins/datatable/js/pdfmake.min.js') }}"></script>
+    <script src="{{ URL::asset('assets/plugins/datatable/js/vfs_fonts.js') }}"></script>
+    <script src="{{ URL::asset('assets/plugins/datatable/js/buttons.html5.min.js') }}"></script>
+    <script src="{{ URL::asset('assets/plugins/datatable/js/buttons.print.min.js') }}"></script>
+    <script src="{{ URL::asset('assets/plugins/datatable/js/buttons.colVis.min.js') }}"></script>
+    <script src="{{ URL::asset('assets/plugins/datatable/js/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ URL::asset('assets/plugins/datatable/js/responsive.bootstrap4.min.js') }}"></script>
+    <!--Internal  Datatable js -->
+    <script src="{{ URL::asset('assets/js/table-data.js') }}"></script>
+    <!--Internal  Notify js -->
+    <script src="{{ URL::asset('assets/plugins/notify/js/notifIt.js') }}"></script>
+    <script src="{{ URL::asset('assets/plugins/notify/js/notifit-custom.js') }}"></script>

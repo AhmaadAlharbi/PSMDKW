@@ -150,11 +150,13 @@ window.onload = function() {
                                             </a>
 
                                             @endif
+                                            @if((auth()->user()->is_admin == 1))
                                             <a class="dropdown-item" href="#" data-invoice_id="{{ $task->id }}"
                                                 data-toggle="modal" data-target="#delete_invoice"><i
                                                     class="text-danger fas fa-trash-alt"></i>&nbsp;&nbsp;حذف
                                                 المهمة
                                             </a>
+                                            @endif
                                         </div>
                                     </div>
                                 </td>

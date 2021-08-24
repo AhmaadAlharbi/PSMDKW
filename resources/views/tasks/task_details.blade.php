@@ -114,7 +114,7 @@
                                                 </tr>
                                                 <tr>
                                                     <th class="border-bottom-0">Voltage Level </th>
-                                                    <td colspan="4">{{$task->Voltage_Level}}</td>
+                                                    <td colspan="4">{{$task->Voltage_level}}</td>
                                                 </tr>
                                                 <tr>
                                                     <th class="border-bottom-0">Work Type</th>
@@ -131,8 +131,6 @@
                                                 <tr>
                                                     <th class="border-bottom-0">Equip./Unit Affected </th>
                                                     <td colspan="4">{{$task->equip}}</td>
-
-
                                                 </tr>
                                                 <tr>
                                                     <th class="border-bottom-0">Nature of Fault</th>

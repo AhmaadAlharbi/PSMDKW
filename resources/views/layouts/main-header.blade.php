@@ -246,7 +246,7 @@
                         </svg></a>
                 </div>
                 <div class="dropdown main-profile-menu nav nav-item nav-link">
-                    <a class="profile-user d-flex" href=""><img alt="" src="image/user.svg"></a>
+                    <a class="profile-user d-flex" href=""><img alt="" src="{{URL::asset('image/user.svg')}}"></a>
                     <div class="dropdown-menu">
                         <div class="main-header-profile bg-primary p-3">
                             <div class="d-flex wd-100p">

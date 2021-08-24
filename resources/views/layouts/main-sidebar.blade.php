@@ -2,13 +2,13 @@
 <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
 <aside class="app-sidebar sidebar-scroll">
     <div class="main-sidebar-header active">
-        <img class="m-2 p-2" src="image/logo.png" alt="logo">
+        <img class="m-2 p-2" src="{{URL::asset('image/logo.png')}}" alt="logo">
     </div>
     <div class="main-sidemenu">
         <div class="app-sidebar__user clearfix">
             <div class="dropdown user-pro-body">
                 <div class="">
-                    <img alt="user-img" class="avatar avatar-xl brround" src="image/user.svg"><span
+                    <img alt="user-img" class="avatar avatar-xl brround" src="{{URL::asset('image/user.svg')}}"><span
                         class="avatar-status profile-status bg-green"></span>
                 </div>
                 <div class="user-info">
