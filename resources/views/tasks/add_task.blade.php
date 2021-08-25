@@ -162,11 +162,9 @@
                                 <option value="45MVAR">45MVAR</option>
                                 <option value="30MVAR">30MVAR</option>
                             </select>
-
                             <select id="dist" class="d-none form-control">
                                 <!--placeholder-->
                                 <option value=""></option>
-
                                 <option value="400KV">400KV</option>
                                 <option value="300KV">300KV</option>
                             </select>
@@ -177,7 +175,6 @@
                         <div class="col-lg-6">
                             <label for="equip" class="control-label m-1">Bay Unit</label>
                             <input id="equip" type="text" name="equip" class="form-control SlectBox">
-
                         </div>
 
                         <div class="col-lg-6">
@@ -284,27 +281,38 @@
                     <h5 class="card-title">المرفقات</h5>
 
                     <div class="col-sm-12 col-md-12">
-                        <input type="file" name="pic" class="dropify" accept=".pdf,.jpg, .png, image/jpeg, image/png"
+                        <input type="file" name="pic[]" class="dropify" accept=".pdf,.jpg, .png, image/jpeg, image/png"
                             data-height="70" />
                     </div><br>
+
                     <div class="col-sm-12 col-md-12">
-                        <input type="file" name="pic2" class="dropify" accept=".pdf,.jpg, .png, image/jpeg, image/png"
+                        <input type="file" name="pic[]" class="dropify" accept=".pdf,.jpg, .png, image/jpeg, image/png"
                             data-height="70" />
+
                     </div><br>
-                    <div class="col-sm-12 col-md-12">
-                        <input type="file" name="pic3" class="dropify" accept=".pdf,.jpg, .png, image/jpeg, image/png"
-                            data-height="70" />
-                    </div><br>
-                    <div class="col-sm-12 col-md-12">
-                        <input type="file" name="pic4" class="dropify" accept=".pdf,.jpg, .png, image/jpeg, image/png"
-                            data-height="70" />
-                    </div><br>
-                    <div class="col-sm-12 col-md-12">
-                        <input type="file" name="pic5" class="dropify" accept=".pdf,.jpg, .png, image/jpeg, image/png"
-                            data-height="70" />
-                    </div><br>
+                     <div class="text-center mb-3">
+                        <button id="showAttachment" class="btn btn-outline-info">اضغط لإضافة المزيد من
+                            المرفقات</button>
+                        <button id="hideAttachment" class="btn d-none btn-outline-info">اضغط  لإخفاء المزيد من
+                            المرفقات</button>
+
+                    </div>
+                    <div id="attachmentFile" class="d-none">
+                        <div class="col-sm-12 col-md-12">
+                            <input type="file" name="pic[]" class="dropify"
+                                accept=".pdf,.jpg, .png, image/jpeg, image/png" data-height="70" />
+                        </div><br>
+                        <div class="col-sm-12 col-md-12">
+                            <input type="file" name="pic[]" class="dropify"
+                                accept=".pdf,.jpg, .png, image/jpeg, image/png" data-height="70" />
+                        </div><br>
+                        <div class="col-sm-12 col-md-12">
+                            <input type="file" name="pic[]" class="dropify"
+                                accept=".pdf,.jpg, .png, image/jpeg, image/png" data-height="70" />
+                        </div><br>
+                    </div>
                     <div class="d-flex justify-content-center">
-                        <button type="submit" class="btn btn-primary">حفظ البيانات</button>
+                        <button type="submit" class="btn btn-primary">ارسال البيانات</button>
                     </div>
 
 
@@ -670,6 +678,23 @@ dist.addEventListener('change', (event) => {
             equip.value = "(xx)D";
             break;
     }
+})
+
+//to toggle files atthachmant
+const showAttachment = document.getElementById('showAttachment');
+const hideAttachment = document.getElementById('hideAttachment');
+const attachmentFile = document.getElementById('attachmentFile');
+showAttachment.addEventListener('click', e => {
+    e.preventDefault();
+    hideAttachment.classList.toggle('d-none');
+    showAttachment.classList.toggle('d-none');
+    attachmentFile.classList.toggle('d-none');
+})
+hideAttachment.addEventListener('click', e => {
+    e.preventDefault();
+    hideAttachment.classList.toggle('d-none');
+    showAttachment.classList.toggle('d-none');
+    attachmentFile.classList.toggle('d-none');
 })
 </script>
 @endsection
