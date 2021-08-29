@@ -67,7 +67,8 @@ window.onload = function() {
                     <!-- Blog post-->
                     <div class="card mb-4">
                         <div class="card-body">
-                            <div class="small text-muted">Date: {{$blog->report_date}}</div>
+                            <div class="small text-muted">time: {{$blog->created_at}}</div>
+                            <!-- <div class="small text-muted">Date: {{$blog->report_date}}</div> -->
                             <h6 class="card-title  ">Station :{{$blog->ssname}}</h6>
                             <h6 class="card-title">Engineer : {{$blog->eng_name}}</h6>
                             <p class="card-text text-danger">Nature of fault : {{$blog->problem}}</p>

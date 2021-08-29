@@ -53,7 +53,8 @@
         <div class="card overflow-hidden sales-card bg-danger-gradient">
             <div class="pl-3 pt-3 pr-3 pb-2 pt-0">
                 <div class="">
-                    <h6 class="mb-3 tx-16 text-white"><a class="text-white" href="{{ url('/' . $page='task_uncompleted') }}">المهمات الغير
+                    <h6 class="mb-3 tx-16 text-white"><a class="text-white"
+                            href="{{ url('/' . $page='task_uncompleted') }}">المهمات الغير
                             منجزة</a></h6>
                 </div>
                 <div class="pb-0 mt-0">
@@ -127,17 +128,17 @@
                 <p class="tx-12 mb-0 text-muted"></p>
             </div>
             @foreach($tasks as $task)
-
             <div class="card-body p-0 customers mt-1">
                 <div class="list-group list-lg-group list-group-flush">
                     <div class="list-group-item list-group-item-action" href="#">
                         <div class="media mt-0">
-                            <img class="avatar-lg rounded-circle ml-3 my-auto" src="image/electricIcon.svg" alt="Image description">
+                            <img class="avatar-lg rounded-circle ml-3 my-auto" src="image/electricIcon.svg"
+                                alt="Image description">
                             <div class="media-body">
                                 <div class="d-flex align-items-center">
                                     <div class="mt-0">
-
-                                        <h5 class="mb-1 tx-15"><a href="/taskDetails/{{$task->id}}">{{$task->eng_name}}</a></a>
+                                        <h5 class="mb-1 tx-15"><a
+                                                href="/taskDetails/{{$task->id}}">{{$task->eng_name}}</a></a>
                                         </h5>
                                         <p class="mb-0 tx-13 text-muted">ssname: {{$task->ssname}}
                                             @if($task->status == 'pending')
@@ -150,15 +151,13 @@
                                                 {{$task->status}}</span>
                                             @endif
                                         </p>
+                                        <!-- <a href="" class=" m-2 btn btn-outline-light btn-sm">Reminder</a> -->
                                     </div>
 
                                 </div>
                             </div>
                         </div>
                     </div>
-
-
-
                 </div>
             </div>
             @endforeach
@@ -174,7 +173,8 @@
             <div class="product-timeline card-body pt-2 mt-1">
                 <ul class="timeline-1 mb-0">
                     <li class="mt-0 mb-0"> <i class="icon-note icons bg-primary-gradient text-white product-icon"></i>
-                        <span class="font-weight-semibold mb-4 tx-14 "><a href="/Print_task/{{$task_detail->id_task}}">{{$task_detail->eng_name}}</a></span>
+                        <span class="font-weight-semibold mb-4 tx-14 "><a
+                                href="/Print_task/{{$task_detail->id_task}}">{{$task_detail->eng_name}}</a></span>
                         <p class="mb-0 text-muted tx-12">{{$task_detail->ssname}}</p>
                         <a href="#" class="float-right tx-11 text-success">{{$task_detail->status}}</a>
                     </li>
