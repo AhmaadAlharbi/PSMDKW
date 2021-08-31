@@ -246,7 +246,16 @@
                         </svg></a>
                 </div>
                 <div class="dropdown main-profile-menu nav nav-item nav-link">
+                    @if(Auth::user()->userImage)
+
+
+                    <a class="profile-user d-flex" href=""><img alt=""
+                            src="{{URL::asset('image/userImage/'.Auth::user()->userImage)}}"></a>
+
+                    @else
                     <a class="profile-user d-flex" href=""><img alt="" src="{{URL::asset('image/user.svg')}}"></a>
+
+                    @endif
                     <div class="dropdown-menu">
                         <div class="main-header-profile bg-primary p-3">
                             <div class="d-flex wd-100p">

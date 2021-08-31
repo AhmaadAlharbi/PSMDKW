@@ -68,10 +68,9 @@
                         <span class="float-right my-auto mr-auto">
                             <i class="fas fa-arrow-circle-down text-white"></i>
                             <span class="text-white tx-16 op-7">
-                                @if(\App\Models\Task::count()!==0){
+                                @if(\App\Models\Task::count()!==0)
                                 {{round((\App\Models\Task::where('status','pending')->count()/\App\Models\Task::count())*100)}}%
 
-                                }
                                 @endif
 
                             </span>
@@ -101,7 +100,7 @@
                         <span class="float-right my-auto mr-auto">
                             <i class="fas fa-arrow-circle-up text-white"></i>
                             <span class="text-white tx-18 op-7">
-                                @if(\App\Models\Task::count()!==0){
+                                @if(\App\Models\Task::count()!==0)
                                 {{round((\App\Models\Task::where('status','completed')->count()/\App\Models\Task::count())*100)}}%
                                 @endif
                             </span>

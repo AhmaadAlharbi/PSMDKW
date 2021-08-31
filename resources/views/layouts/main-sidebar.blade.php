@@ -8,9 +8,17 @@
         <div class="app-sidebar__user clearfix">
             <div class="dropdown user-pro-body">
                 <div class="">
+                    @if(Auth::user()->userImage )
+                    <img alt="user-img" class="avatar avatar-xl brround"
+                        src="{{URL::asset('image/userImage/'.Auth::user()->userImage)}}"><span
+                        class="avatar-status profile-status bg-green"></span>
+
+                    @else
                     <img alt="user-img" class="avatar avatar-xl brround" src="{{URL::asset('image/user.svg')}}"><span
                         class="avatar-status profile-status bg-green"></span>
+                    @endif
                 </div>
+
                 <div class="user-info">
                     <h4 class="font-weight-semibold mt-3 mb-0">{{Auth::user()->name}}</h4>
                     <span class="mb-0 text-muted">{{Auth::user()->email}}</span>
