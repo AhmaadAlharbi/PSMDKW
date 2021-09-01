@@ -31,6 +31,8 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::get('/sendtask', [TaskController::class, 'index'])->middleware('is_admin');
 Route::get('/task_completed',[TaskController::class, 'task_completed'])->middleware('is_admin');
 Route::get('/All_tasks', [TaskController::class, 'All_tasks'])->middleware('auth');
+Route::get('/archive', [TaskController::class, 'archive'])->middleware('auth')->name('archive');
+Route::get('/archive/search_between_Dates',[TaskController::class,'stationsByDates'])->name('staionsByDates');
 Route::get('/task_uncompleted', [TaskController::class, 'task_uncompleted'])->middleware('is_admin');
 Route::get('/fill_task/{id}', [TasksDetailsController::class, 'fillTheTask'])->middleware('is_admin');
 Route::get('/update_task/{id}', [TaskController::class, 'editTask'])->middleware('auth');
@@ -46,7 +48,7 @@ Route::get('/engineersEmail/{id}', [TaskController::class, 'getEngineersEmail'])
 Route::get('/engineersEmail2/{id}', [TaskController::class, 'getEngineersEmail']);
 
 Route::post('/sendtask', [TaskController::class, 'store'])->name('task.store')->middleware('is_admin');
-Route::get('/Print_task/{id}', [TasksDetailsController::class, 'Print_task'])->middleware('is_admin');
+Route::get('/Print_task/{id}', [TasksDetailsController::class, 'Print_task'])->name('print')->middleware('is_admin');
 Route::get('/Print_task/pdf/{id}', [TasksDetailsController::class, 'createPdf'])->middleware('auth');
 Route::get('/add_your_report/{id}', [TasksDetailsController::class, 'addYourReport']);
 Route::delete('/tasks.destroy', [TaskController::class, 'destroy'])->name('tasks.destroy');

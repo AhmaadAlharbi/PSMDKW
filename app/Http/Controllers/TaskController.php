@@ -17,6 +17,7 @@ use  App\Notifications\AddTask;
 use  App\Notifications\editTaskNoAttachment;
 use  App\Notifications\AddTaskNoAttachment;
 use DB;
+use Carbon\Carbon;
 
 class TaskController extends Controller
 {
@@ -243,25 +244,44 @@ class TaskController extends Controller
     }
     public function task_uncompleted(){
         $tasks = Task::where('status',('pending'))
-          ->orderBy('id','desc')
-                ->get();
+        ->whereMonth('created_at', date('m'))
+        ->orderBy('id','desc')
+         ->get();
         return view('tasks.task_uncompleted',compact('tasks'));
     }
 
     public function task_completed(){
         $tasks = Task::where('status',('completed'))
-                ->orderBy('id','desc')
-                ->get();
+                 ->whereMonth('created_at', date('m'))
+                 ->orderBy('id','desc')
+                 ->get();
         return view('tasks.task_completed',compact('tasks'));
     }
 
     public function All_tasks(){
         $tasks = DB::table('tasks')
+        ->whereMonth('created_at', date('m'))
         ->orderBy('id','desc')
         ->get();
-        return view('tasks.showAllTasks',compact('tasks'));
+        return view('tasks.showAllTasks',compact('tasks'));   
+    }
 
-        
+    public function archive(){
+        $tasks = Task::where('status',('completed'))
+        ->orderBy('id','desc')
+        ->get();
+        return view ('tasks.archive',compact('tasks'));
+    }
+    public function stationsByDates(Request $request){
+        $date1 = $request->task_Date;
+        $date2= $request->task_Date2;
+
+        $tasks = DB::table('tasks')
+           ->whereBetween('task_Date', [$date1, $date2])
+           ->where('status',('completed'))
+           ->get();
+        return view ('tasks.archive',compact('tasks'));
+
     }
 
     public function editTask($id){

@@ -58,6 +58,25 @@ window.onload = function() {
     <!--div-->
     <div class="col-xl-12">
         <div class="card mg-b-20">
+            <div class="card-header pb-0 text-center">
+                <div class="d-flex justify-content-between">
+
+                </div>
+
+
+            </div>
+            <div class="col-lg-6 ">
+                <form action="{{route('staionsByDates')}}">
+
+                    @csrf
+                    <input class="form-control mb-2 fc-datepicker" name="task_Date" placeholder="YYYY-MM-DD" type="text"
+                        value="{{ date('Y-m-d') }}">
+
+                    <input class="form-control mb-2 fc-datepicker" name="task_Date2" placeholder="YYYY-MM-DD"
+                        type="text" value="">
+                    <input type="submit" class="btn btn-outline-danger btn-md btn-block" value="البحث في فترة معينة ">
+                </form>
+            </div>
 
             <div class="card-body">
                 <div class="table-responsive">
@@ -85,7 +104,7 @@ window.onload = function() {
                             @endphp
                             <tr>
                                 <td>{{$i}}</td>
-                                <td><a href="{{url('taskDetails')}}/{{$task->id}}">{{$task->refNum}}</a></td>
+                                <td><a href="{{route('print',['id'=>$task->id])}}">{{$task->refNum}}</a></td>
                                 <td>{{$task->ssname}}</td>
 
 
@@ -127,16 +146,15 @@ window.onload = function() {
                                             class="btn ripple btn-primary btn-sm" data-toggle="dropdown"
                                             type="button">العمليات<i class="fas fa-caret-down ml-1"></i></button>
                                         <div class="dropdown-menu tx-13">
-
                                             @if($task->status ==="completed")
                                             <a class="dropdown-item" href="Print_task/{{ $task->id }}"><i
                                                     class="text-success fas fa-print"></i>&nbsp;&nbsp;طباعة
                                                  التقرير
                                             </a>
-                                            <a class=" dropdown-item btn btn-outline-info "
+                                            <!-- <a class=" dropdown-item btn btn-outline-info "
                                                 href="{{url('generate-pdf')}}/{{$task->id}}">
                                                 <i class="text-info fas fa-download"></i>&nbsp;&nbsp; تحميل
-                                            </a>
+                                            </a> -->
                                             @else
                                             <!-- <a class="dropdown-item" href="{{url('fill_task')}}/{{$task->id}}"> تعبئة
                                                 المهمة
@@ -144,15 +162,12 @@ window.onload = function() {
                                             <a class="dropdown-item" href="{{url('update_task')}}/{{$task->id}}">
                                                 تعديل
                                             </a>
-
                                             @endif
-                                            @if((auth()->user()->is_admin == 1))
                                             <a class="dropdown-item" href="#" data-invoice_id="{{ $task->id }}"
                                                 data-toggle="modal" data-target="#delete_invoice"><i
                                                     class="text-danger fas fa-trash-alt"></i>&nbsp;&nbsp;حذف
                                                 المهمة
                                             </a>
-                                            @endif
                                         </div>
                                     </div>
                                 </td>
@@ -212,7 +227,31 @@ window.onload = function() {
 @endsection
 @section('js')
 <!-- Internal Data tables -->
-<script src="{{ URL::asset('assets/plugins/datatable/js/jquery.dataTables.min.js') }}"></script>
+<script src="{{ URL::asset('assets/plugins/select2/js/select2.min.js') }}"></script>
+<!--Internal Fileuploads js-->
+<script src="{{ URL::asset('assets/plugins/fileuploads/js/fileupload.js') }}"></script>
+<script src="{{ URL::asset('assets/plugins/fileuploads/js/file-upload.js') }}"></script>
+<!--Internal Fancy uploader js-->
+<script src="{{ URL::asset('assets/plugins/fancyuploder/jquery.ui.widget.js') }}"></script>
+<script src="{{ URL::asset('assets/plugins/fancyuploder/jquery.fileupload.js') }}"></script>
+<script src="{{ URL::asset('assets/plugins/fancyuploder/jquery.iframe-transport.js') }}"></script>
+<script src="{{ URL::asset('assets/plugins/fancyuploder/jquery.fancy-fileupload.js') }}"></script>
+<script src="{{ URL::asset('assets/plugins/fancyuploder/fancy-uploader.js') }}"></script>
+<!--Internal  Form-elements js-->
+<script src="{{ URL::asset('assets/js/advanced-form-elements.js') }}"></script>
+<script src="{{ URL::asset('assets/js/select2.js') }}"></script>
+<!--Internal Sumoselect js-->
+<script src="{{ URL::asset('assets/plugins/sumoselect/jquery.sumoselect.js') }}"></script>
+<!--Internal  Datepicker js -->
+<script src="{{ URL::asset('assets/plugins/jquery-ui/ui/widgets/datepicker.js') }}"></script>
+<!--Internal  jquery.maskedinput js -->
+<script src="{{ URL::asset('assets/plugins/jquery.maskedinput/jquery.maskedinput.js') }}"></script>
+<!--Internal  spectrum-colorpicker js -->
+<script src="{{ URL::asset('assets/plugins/spectrum-colorpicker/spectrum.js') }}"></script>
+<!-- Internal form-elements js -->
+<script src="{{ URL::asset('assets/js/form-elements.js') }}"></script>
+
+script src="{{ URL::asset('assets/plugins/datatable/js/jquery.dataTables.min.js') }}"></script>
 <script src="{{ URL::asset('assets/plugins/datatable/js/dataTables.dataTables.min.js') }}"></script>
 <script src="{{ URL::asset('assets/plugins/datatable/js/dataTables.responsive.min.js') }}"></script>
 <script src="{{ URL::asset('assets/plugins/datatable/js/responsive.dataTables.min.js') }}"></script>
@@ -233,13 +272,16 @@ window.onload = function() {
 <!--Internal  Notify js -->
 <script src="{{ URL::asset('assets/plugins/notify/js/notifIt.js') }}"></script>
 <script src="{{ URL::asset('assets/plugins/notify/js/notifit-custom.js') }}"></script>
-
 <script>
+var date = $('.fc-datepicker').datepicker({
+    dateFormat: 'yy-mm-dd'
+}).val();
+</script>
 $('#delete_invoice').on('show.bs.modal', function(event) {
-    var button = $(event.relatedTarget)
-    var invoice_id = button.data('invoice_id')
-    var modal = $(this)
-    modal.find('.modal-body #invoice_id').val(invoice_id);
+var button = $(event.relatedTarget)
+var invoice_id = button.data('invoice_id')
+var modal = $(this)
+modal.find('.modal-body #invoice_id').val(invoice_id);
 })
 </script>
 

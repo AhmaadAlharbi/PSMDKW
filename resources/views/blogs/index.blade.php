@@ -71,8 +71,12 @@ window.onload = function() {
                             <!-- <div class="small text-muted">Date: {{$blog->report_date}}</div> -->
                             <h6 class="card-title  ">Station :{{$blog->ssname}}</h6>
                             <h6 class="card-title">Engineer : {{$blog->eng_name}}</h6>
-                            <p class="card-text text-danger">Nature of fault : {{$blog->problem}}</p>
-                            <p class="card-text text-success">Action take: {{$blog->action_take}} {{$blog->reason}}
+                            <p class="card-text  text-dark  font-italic"><span class="text-danger">Nature of
+                                    fault</span> :
+                                {{$blog->problem}}</p>
+                            <p class="card-text text-secondary font-weight-bold "><span class="text-success">Action
+                                    take</span>:
+                                {{$blog->action_take}} {{$blog->reason}}
                             </p>
                             <a class="btn btn-primary" href="{{route('blogs.details',['id'=>$blog->id_task])}}">Read
                                 more →</a>

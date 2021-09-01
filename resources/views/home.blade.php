@@ -24,7 +24,7 @@
 <!-- row -->
 <a class="btn btn btn-warning btn-lg" href="{{route('blogs.blogs')}}">صفحة التقارير</a>
 <div class="row row-sm">
-    <div class="col-xl-4 col-lg-6 col-md-6 col-xm-12">
+    <div class="col-xl-3 col-lg-6 col-md-6 col-xm-12">
         <div class="card overflow-hidden sales-card bg-primary-gradient">
             <div class="pl-3 pt-3 pr-3 pb-2 pt-0">
                 <div class="">
@@ -49,7 +49,7 @@
             <span id="compositeline" class="pt-1">5,9,5,6,4,12,18,14,10,15,12,5,8,5,12,5,12,10,16,12</span>
         </div>
     </div>
-    <div class="col-xl-4 col-lg-6 col-md-6 col-xm-12">
+    <div class="col-xl-3 col-lg-6 col-md-6 col-xm-12">
         <div class="card overflow-hidden sales-card bg-danger-gradient">
             <div class="pl-3 pt-3 pr-3 pb-2 pt-0">
                 <div class="">
@@ -81,9 +81,10 @@
             <span id="compositeline2" class="pt-1">3,2,4,6,12,14,8,7,14,16,12,7,8,4,3,2,2,5,6,7</span>
         </div>
     </div>
-    <div class="col-xl-4 col-lg-6 col-md-6 col-xm-12">
+    <div class="col-xl-3 col-lg-6 col-md-6 col-xm-12">
         <div class="card overflow-hidden sales-card bg-success-gradient">
             <div class="pl-3 pt-3 pr-3 pb-2 pt-0">
+
                 <div class="">
                     <h6 class="mb-3 tx-16 "><a class="text-white" href="{{ url('/' . $page='task_completed') }}">المهمات
                             المنجزة</a> </h6>
@@ -92,10 +93,11 @@
                     <div class="d-flex">
                         <div class="">
                             <h4 class="tx-20 font-weight-bold mb-1 text-white">
-                                {{\App\Models\Task::where('status','completed')->count()}}
+                                {{\App\Models\Task::where('status','completed')->whereMonth('created_at', date('m'))->count()}}
                             </h4>
                             </h4>
                             <p class="mb-0 tx-14 text-white op-7">مهمات منجزة</p>
+
                         </div>
                         <span class="float-right my-auto mr-auto">
                             <i class="fas fa-arrow-circle-up text-white"></i>
@@ -109,6 +111,35 @@
                 </div>
             </div>
             <span id="compositeline3" class="pt-1">5,10,5,20,22,12,15,18,20,15,8,12,22,5,10,12,22,15,16,10</span>
+        </div>
+    </div>
+    <div class="col-xl-3 col-lg-6 col-md-6 col-xm-12">
+        <div class="card overflow-hidden sales-card bg-warning-gradient">
+            <div class="pl-3 pt-3 pr-3 pb-2 pt-0">
+                <div class="">
+                    <h6 class="mb-3 tx-16 text-white">
+                        <a class="text-white" href="{{route('archive')}}">ارشيف التقارير</a>
+                    </h6>
+                    </h6>
+                </div>
+                <div class="pb-0 mt-0">
+                    <div class="d-flex">
+                        <div class="">
+                            <h4 class="tx-20 font-weight-bold mb-1 text-white">
+                                {{\App\Models\Task::where('status','completed')->count()}}
+                            </h4>
+                            <p class="mb-0 tx-12 text-white op-7">
+                                تقرير
+                            </p>
+                        </div>
+                        <!-- <span class="float-right my-auto mr-auto">
+                            <i class="fas fa-arrow-circle-down text-white"></i>
+                            <span class="text-white op-7"> -152.3</span>
+                        </span> -->
+                    </div>
+                </div>
+            </div>
+            <span id="compositeline4" class="pt-1">5,9,5,6,4,12,18,14,10,15,12,5,8,5,12,5,12,10,16,12</span>
         </div>
     </div>
 
@@ -165,7 +196,7 @@
     <div class="col-xl-6 col-md-12 col-lg-6">
         <div class="card">
             <div class="card-header pb-1">
-                <h3 class="card-title mb-2"> آخر التقارير</h3>
+                <h3 class="card-title mb-2"> تقارير شهر {{$monthName}}</h3>
 
             </div>
             @foreach($task_details as $task_detail)
