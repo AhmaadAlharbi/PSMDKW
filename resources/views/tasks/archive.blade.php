@@ -20,7 +20,6 @@
         <div class="d-flex">
             <h4 class="content-title mb-0 my-auto">المهمات</h4><span class="text-muted mt-1 tx-13 mr-2 mb-0">/ كل
                 المهمات
-
             </span>
         </div>
     </div>
@@ -29,7 +28,6 @@
 <!-- breadcrumb -->
 @endsection
 @section('content')
-
 @if (session()->has('delete_invoice'))
 <script>
 window.onload = function() {
@@ -63,11 +61,9 @@ window.onload = function() {
 
                 </div>
 
-
             </div>
             <div class="col-lg-6 ">
                 <form action="{{route('staionsByDates')}}">
-
                     @csrf
                     <input class="form-control mb-2 fc-datepicker" name="task_Date" placeholder="YYYY-MM-DD" type="text"
                         value="{{ date('Y-m-d') }}">
@@ -90,8 +86,8 @@ window.onload = function() {
                                 <th class="border-bottom-0">تاريخ ارسال المهمة</th>
                                 <th class="border-bottom-0">المهندس</th>
                                 <th class="border-bottom-0">الحالة </th>
-                                <th class="border-bottom-0">بواسطة</th>
-                                <th class="border-bottom-0">العمليات</th>
+                                <!-- <th class="border-bottom-0">بواسطة</th> -->
+                                <!-- <th class="border-bottom-0">العمليات</th> -->
                             </tr>
                         </thead>
                         <tbody>
@@ -138,39 +134,8 @@ window.onload = function() {
 
                                 </td>
                                 @endif
-                                <td>{{$task->user}}</td>
+                                <!-- <td>{{$task->user}}</td> -->
 
-                                <td>
-                                    <div class="dropdown">
-                                        <button aria-expanded="false" aria-haspopup="true"
-                                            class="btn ripple btn-primary btn-sm" data-toggle="dropdown"
-                                            type="button">العمليات<i class="fas fa-caret-down ml-1"></i></button>
-                                        <div class="dropdown-menu tx-13">
-                                            @if($task->status ==="completed")
-                                            <a class="dropdown-item" href="Print_task/{{ $task->id }}"><i
-                                                    class="text-success fas fa-print"></i>&nbsp;&nbsp;طباعة
-                                                 التقرير
-                                            </a>
-                                            <!-- <a class=" dropdown-item btn btn-outline-info "
-                                                href="{{url('generate-pdf')}}/{{$task->id}}">
-                                                <i class="text-info fas fa-download"></i>&nbsp;&nbsp; تحميل
-                                            </a> -->
-                                            @else
-                                            <!-- <a class="dropdown-item" href="{{url('fill_task')}}/{{$task->id}}"> تعبئة
-                                                المهمة
-                                            </a> -->
-                                            <a class="dropdown-item" href="{{url('update_task')}}/{{$task->id}}">
-                                                تعديل
-                                            </a>
-                                            @endif
-                                            <a class="dropdown-item" href="#" data-invoice_id="{{ $task->id }}"
-                                                data-toggle="modal" data-target="#delete_invoice"><i
-                                                    class="text-danger fas fa-trash-alt"></i>&nbsp;&nbsp;حذف
-                                                المهمة
-                                            </a>
-                                        </div>
-                                    </div>
-                                </td>
 
 
 
@@ -251,7 +216,7 @@ window.onload = function() {
 <!-- Internal form-elements js -->
 <script src="{{ URL::asset('assets/js/form-elements.js') }}"></script>
 
-script src="{{ URL::asset('assets/plugins/datatable/js/jquery.dataTables.min.js') }}"></script>
+<script src="{{ URL::asset('assets/plugins/datatable/js/jquery.dataTables.min.js') }}"></script>
 <script src="{{ URL::asset('assets/plugins/datatable/js/dataTables.dataTables.min.js') }}"></script>
 <script src="{{ URL::asset('assets/plugins/datatable/js/dataTables.responsive.min.js') }}"></script>
 <script src="{{ URL::asset('assets/plugins/datatable/js/responsive.dataTables.min.js') }}"></script>
@@ -277,11 +242,12 @@ var date = $('.fc-datepicker').datepicker({
     dateFormat: 'yy-mm-dd'
 }).val();
 </script>
+<script>
 $('#delete_invoice').on('show.bs.modal', function(event) {
-var button = $(event.relatedTarget)
-var invoice_id = button.data('invoice_id')
-var modal = $(this)
-modal.find('.modal-body #invoice_id').val(invoice_id);
+    var button = $(event.relatedTarget)
+    var invoice_id = button.data('invoice_id')
+    var modal = $(this)
+    modal.find('.modal-body #invoice_id').val(invoice_id);
 })
 </script>
 

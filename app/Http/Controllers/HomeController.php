@@ -29,13 +29,11 @@ class HomeController extends Controller
     {
          $tasks = Task::orderBy('id','desc')
          ->get()
-         ->where('status','pending')
-         ->take(5);
+         ->where('status','pending');
          $task_details = Tasks_details::orderBy('id','desc')
          ->whereMonth('created_at', date('m'))
          ->where('status','completed')
-         ->get()
-         ->take(5);
+         ->get();
         $date = Carbon::now();
         $monthName = $date->format('F');
 

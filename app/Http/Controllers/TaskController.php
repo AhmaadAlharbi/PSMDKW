@@ -65,6 +65,8 @@ class TaskController extends Controller
             'full_name'=>$request->staion_full_name,
             'work_type'=>$request->work_type,
             'Voltage_level'=>$request->Voltage_Level,
+            'make' =>$request->make,
+            'pm' =>$request->pm,
             'task_Date' =>$request->task_Date,
             'equip'=>$request->equip,
             'problem'=>$request->problem,

@@ -189,6 +189,17 @@
 
                     <div class="row m-3">
                         <div class="col-lg-6">
+                            <label for="" class="control-label">Make</label>
+                            <input type="text" class="form-control" name="make">
+                        </div>
+                        <div class="col-lg-6">
+                            <label for="" class="control-label">Last P.M</label>
+                            <input type="text" class="form-control" name="pm">
+                        </div>
+                    </div>
+
+                    <div class="row m-3">
+                        <div class="col-lg-6">
                             <label for="main-alarm" class="control-label m-3">Main Alarm</label>
                             <select name="main_alarm" id="main_alarm" class="form-control">
                                 <!--placeholder-->
@@ -231,13 +242,20 @@
                             <label id="voltage" for="Voltage-Level" class=" control-label m-3">Voltage Level</label>
                             <select name="Voltage_Level" id="voltageLevel" class="form-control">
                                 <!--placeholder-->
-                                <option value=""></option>
+                                <optgroup>
+                                    <option value="400KV">400KV</option>
+                                    <option value="300KV">300KV</option>
+                                    <option value="132KV">132KV</option>
+                                    <option value="33KV">33KV</option>
+                                    <option value="11KV">11KV</option>
+                                </optgroup>
+                                <optgroup label="General Check">
+                                    <option value="132/11KV">132/11KV</option>
+                                    <option value="33/11KV">33/11KV</option>
+                                    <option value="400/132/11KV">400/132/11KV</option>
+                                    <option value="300/132/11KV">300/132/11KV</option>
+                                </optgroup>
 
-                                <option value="400KV">400KV</option>
-                                <option value="300KV">300KV</option>
-                                <option value="132KV">132KV</option>
-                                <option value="33KV">33KV</option>
-                                <option value="11KV">11KV</option>
                             </select>
                             <select id="transformerVoltage" class="d-none form-control">
                                 <!--placeholder-->

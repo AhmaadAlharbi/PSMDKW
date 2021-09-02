@@ -111,6 +111,15 @@
                                                             <td colspan="4">{{$tasks->full_name}}</td>
                                                         </tr>
                                                         <tr>
+                                                            <th class="border-bottom-0">Make </th>
+                                                            <td colspan="4">{{$tasks->make}}</td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <th class="border-bottom-0">Last P.M </th>
+                                                            <td colspan="4">{{$tasks->pm}}</td>
+                                                        </tr>
+                                                        <tr>
                                                             <th class="border-bottom-0">Control</th>
                                                             @if($tasks->color == 'warning')
                                                             <td colspan="4" class="table-warning">{{$tasks->control}}
