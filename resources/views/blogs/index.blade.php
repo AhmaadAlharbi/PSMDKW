@@ -32,72 +32,60 @@
 
 @if (session()->has('delete_invoice'))
 <script>
-window.onload = function() {
-    notif({
-        msg: "تم حذف المهمة بنجاح",
-        type: "success"
-    })
-}
+    window.onload = function() {
+        notif({
+            msg: "تم حذف المهمة بنجاح",
+            type: "success"
+        })
+    }
 </script>
 @endif
 
 
 @if (session()->has('Status_Update'))
 <script>
-window.onload = function() {
-    notif({
-        msg: "تم تحديث حالة الدفع بنجاح",
-        type: "success"
-    })
-}
+    window.onload = function() {
+        notif({
+            msg: "تم تحديث حالة الدفع بنجاح",
+            type: "success"
+        })
+    }
 </script>
 @endif
 
 <div class="container">
-    <div class="row">
-        <h2>التقارير</h2>
-        <!-- Blog entries-->
-        <div class="col-lg-12">
-            <!-- Nested row for non-featured blog posts-->
-            <div class="row">
+    <div class="row row-sm">
 
-                @foreach($blogs as $blog)
+        <div class="col-xl-12 col-md-12 col-lg-6">
+            <div class="card">
+                <div class="card-header pb-1">
+                    <h3 class="card-title mb-2"> تقارير شهر {{$monthName}}</h3>
 
-                <div class="col-lg-4">
-                    <!-- Blog post-->
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <div class="small text-muted">time: {{$blog->created_at}}</div>
-                            <!-- <div class="small text-muted">Date: {{$blog->report_date}}</div> -->
-                            <h6 class="card-title  ">Station :{{$blog->ssname}}</h6>
-                            <h6 class="card-title">Engineer : {{$blog->eng_name}}</h6>
-                            <p class="card-text  text-dark  font-italic"><span class="text-danger">Nature of
-                                    fault</span> :
-                                {{$blog->problem}}</p>
-                            <p class="card-text text-secondary font-weight-bold "><span class="text-success">Action
-                                    take</span>:
-                                {{$blog->action_take}} {{$blog->reason}}
-                            </p>
-                            <a class="btn btn-primary" href="{{route('blogs.details',['id'=>$blog->id_task])}}">Read
-                                more →</a>
-                        </div>
-                    </div>
                 </div>
-                @endforeach
+                @foreach($task_details as $task_detail)
+                <div class="product-timeline card-body pt-2 mt-1 text-center">
+                    <ul class="timeline-1 mb-0">
+                        <li class="mt-0 mb-0"> <i class="icon-note icons bg-primary-gradient text-white product-icon"></i>
+                            <!-- <p class=" badge badge-success ">{{$task_detail->status}}</p> -->
+                            <p class="text-right text-muted"> {{$task_detail->created_at}}</p>
+                            <p class="  p-3 mb-2 bg-dark text-white text-cente">Engineer : {{$task_detail->eng_name}}</p>
+                            <p class="  bg-white text-dark text-center  "><ins>Station : {{$task_detail->ssname}}</ins></p>
+                            <p class=" bg-white text-secondary font-weight-bold text-center">Nature of fault : {{$task_detail->problem}}</p>
+                            <p class="p-3 mb-2 bg-light text-dark text-center">Action Take : {{$task_detail->action_take}}</p>
+                            <a class="btn btn-secondary mt-2 text-center" href="/Print_task/{{$task_detail->id_task}}">Read more</a>
 
-
-
-                <!-- Pagination-->
-                <nav aria-label="Pagination">
-                    <hr class="my-0" />
-                    <ul class="pagination justify-content-center my-4">
-                        {{ $blogs->links() }}
+                        </li>
                     </ul>
-                </nav>
+
+                </div>
+                <hr class="my-4   bg-secondary  ">
+                @endforeach
+                <ul class="pagination justify-content-center my-4">
+                    {{$task_details->links()}}
+                </ul>
             </div>
-
-
         </div>
+
     </div>
     @include('blogs.BlogsFooter')
     <!-- Bootstrap core JS-->
@@ -106,56 +94,28 @@ window.onload = function() {
     <script src="{{asset('js/scripts.js')}}"></script>
 
 
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form action="">
-                        <label for="">Select an Engineer's name:-</label>
-                        <input list="engineers" name="engineer" id="engineer" onchange="getEngineerName()">
-                        <input type="hidden" id="hiddenName">
-                        <datalist id="engineers">
-                            @foreach($engineers as $engineer)
-                            <option value="{{$engineer->name}}">
-
-                                @endforeach
-                        </datalist>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <a id="name-link" class="btn btn-primary" href=''>search</a>
-                </div>
-            </div>
-        </div>
-    </div>
     @endsection
     <script>
-    const engineer = document.getElementById('engineer');
-    const station = document.getElementById('station');
-    const engineerHidden = document.getElementById('hiddenName');
-    const stationHidden = document.getElementById('hiddenStation');
-    const link = document.getElementById('name-link');
-    const stationLink = document.getElementById('station-link');
-    let engineerValue = engineer;
+        const engineer = document.getElementById('engineer');
+        const station = document.getElementById('station');
+        const engineerHidden = document.getElementById('hiddenName');
+        const stationHidden = document.getElementById('hiddenStation');
+        const link = document.getElementById('name-link');
+        const stationLink = document.getElementById('station-link');
+        let engineerValue = engineer;
 
-    const getEngineerName = () => {
-        engineerHidden.value = engineer.value
-        let url = '{{route("blogs.searchByEngineer",":id")}}'
-        url = url.replace(':id', engineerHidden.value);
-        link.setAttribute('href', url);
-    }
-    const getStationName = () => {
-        stationHidden.value = station.value
-        let url = '{{route("blogs.searchByStation",":id")}}'
-        url = url.replace(':id', stationHidden.value);
-        stationLink.setAttribute('href', url);
-    }
+        const getEngineerName = () => {
+            engineerHidden.value = engineer.value
+            let url = '{{route("blogs.searchByEngineer",":id")}}'
+            url = url.replace(':id', engineerHidden.value);
+            link.setAttribute('href', url);
+        }
+        const getStationName = () => {
+            stationHidden.value = station.value
+            let url = '{{route("blogs.searchByStation",":id")}}'
+            url = url.replace(':id', stationHidden.value);
+            stationLink.setAttribute('href', url);
+        }
     </script>
     @section('js')
     <!-- Internal Data tables -->

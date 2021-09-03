@@ -29,14 +29,14 @@
             <div class="pl-3 pt-3 pr-3 pb-2 pt-0">
                 <div class="">
                     <h6 class="mb-3 tx-16 "><a class="text-white" href="{{ url('/' . $page='All_tasks') }}">عرض كافة
-                            المهمات</a>
+                            مهمات شهر {{$monthName}}</a>
                     </h6>
                 </div>
                 <div class="pb-0 mt-0">
                     <div class="d-flex">
                         <div class="">
                             <h4 class="tx-20 font-weight-bold mb-1 text-white">
-                                {{\App\Models\Task::count()}}
+                                {{\App\Models\Task::whereMonth('created_at', date('m'))->count()}}
 
 
                             </h4>
@@ -53,8 +53,7 @@
         <div class="card overflow-hidden sales-card bg-danger-gradient">
             <div class="pl-3 pt-3 pr-3 pb-2 pt-0">
                 <div class="">
-                    <h6 class="mb-3 tx-16 text-white"><a class="text-white"
-                            href="{{ url('/' . $page='task_uncompleted') }}">المهمات الغير
+                    <h6 class="mb-3 tx-16 text-white"><a class="text-white" href="{{ url('/' . $page='task_uncompleted') }}">المهمات الغير
                             منجزة</a></h6>
                 </div>
                 <div class="pb-0 mt-0">
@@ -151,7 +150,7 @@
 
 <!-- row opened -->
 <div class="row row-sm">
-    <div class="col-xl-6 col-md-12 col-lg-12">
+    <div class="col-xl-4 col-md-12 col-lg-6">
         <div class="card">
             <div class="card-header pb-1">
                 <h3 class="card-title mb-2">آخر المهمات</h3>
@@ -162,28 +161,19 @@
                 <div class="list-group list-lg-group list-group-flush">
                     <div class="list-group-item list-group-item-action" href="#">
                         <div class="media mt-0">
-                            <img class="avatar-lg rounded-circle ml-3 my-auto" src="image/electricIcon.svg"
-                                alt="Image description">
+                            <img class="avatar-lg rounded-circle ml-3 my-auto" src="image/electricIcon.svg" alt="Image description">
                             <div class="media-body">
                                 <div class="d-flex align-items-center">
                                     <div class="mt-0">
-                                        <h5 class="mb-1 tx-15"><a
-                                                href="/taskDetails/{{$task->id}}">{{$task->eng_name}}</a></a>
+                                        <p class="text-right text-muted"> {{$task->created_at}}</p>
+                                        <span class="badge badge-danger ml-2">
+                                            {{$task->status}}</span>
+                                        <h5 class="m-1 tx-15">{{$task->eng_name}}
                                         </h5>
-                                        <p class="mb-0 tx-13 text-muted">ssname: {{$task->ssname}}
-                                            @if($task->status == 'pending')
-
-                                            <span class="text-danger ml-2">
-                                                {{$task->status}}</span>
-
-                                            @else
-                                            <span class="text-success ml-2">
-                                                {{$task->status}}</span>
-                                            @endif
-                                        </p>
-                                        <!-- <a href="" class=" m-2 btn btn-outline-light btn-sm">Reminder</a> -->
+                                        <p class="mb-0 tx-13 text-muted">ssname: {{$task->ssname}} </p>
+                                        <a href="/taskDetails/{{$task->id}}" class=" my-2 btn btn-outline-secondary ">Read More</a>
+                                        <a class="text-left btn btn-dark " href="{{route('task.reminder',['id'=>$task->id,'eng_email'=>$task->eng_email,'ssname'=>$task->ssname])}}" class=" m-2 btn btn-primary btn-sm">Reminder</a>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
@@ -193,24 +183,33 @@
             @endforeach
         </div>
     </div>
-    <div class="col-xl-6 col-md-12 col-lg-6">
+    <div class="col-xl-8 col-md-12 col-lg-6">
         <div class="card">
             <div class="card-header pb-1">
-                <h3 class="card-title mb-2"> تقارير شهر {{$monthName}}</h3>
+                <h1 class="card-title mb-2"> تقارير شهر {{$monthName}}</h1>
 
             </div>
             @foreach($task_details as $task_detail)
-            <div class="product-timeline card-body pt-2 mt-1">
+            <div class="product-timeline card-body pt-2 mt-1 text-center">
                 <ul class="timeline-1 mb-0">
                     <li class="mt-0 mb-0"> <i class="icon-note icons bg-primary-gradient text-white product-icon"></i>
-                        <span class="font-weight-semibold mb-4 tx-14 "><a
-                                href="/Print_task/{{$task_detail->id_task}}">{{$task_detail->eng_name}}</a></span>
-                        <p class="mb-0 text-muted tx-12">{{$task_detail->ssname}}</p>
-                        <a href="#" class="float-right tx-11 text-success">{{$task_detail->status}}</a>
+                        <!-- <p class=" badge badge-success ">{{$task_detail->status}}</p> -->
+                        <p class="text-right text-muted"> {{$task_detail->created_at}}</p>
+                        <p class="  p-3 mb-2 bg-dark text-white text-cente">Engineer : {{$task_detail->eng_name}}</p>
+                        <p class="  bg-white text-dark text-center  "><ins>Station : {{$task_detail->ssname}}</ins></p>
+                        <p class=" bg-white text-secondary font-weight-bold text-center">Nature of fault : {{$task_detail->problem}}</p>
+                        <p class="p-3 mb-2 bg-light text-dark text-center">Action Take : {{$task_detail->action_take}}</p>
+                        <a class="btn btn-secondary mt-2 text-center" href="/Print_task/{{$task_detail->id_task}}">Read more</a>
+
                     </li>
                 </ul>
+
             </div>
+            <hr class="my-4   bg-secondary  ">
             @endforeach
+            <ul class="pagination justify-content-center my-4">
+                {{$task_details->links()}}
+            </ul>
         </div>
     </div>
 

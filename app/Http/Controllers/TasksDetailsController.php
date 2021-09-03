@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use DB;
 use PDF;
+use Carbon\Carbon;
+
 use Illuminate\Support\Facades\Storage;
 
 class TasksDetailsController extends Controller
@@ -93,7 +95,7 @@ class TasksDetailsController extends Controller
     {
         $invoices = tasks_attachments::findOrFail($request->id_file);
         $invoices->delete();
-        Storage::disk('public_uploads')->delete($request->invoice_number.'/'.$request->file_name);
+        Storage::disk('public_uploads')->delete($request->invoice_number . '/' . $request->file_name);
         session()->flash('delete', 'تم حذف المرفق بنجاح');
         return back();
     }
@@ -203,9 +205,9 @@ class TasksDetailsController extends Controller
     {
         $task = Task::where('id', $id)->first();
         $task_details = Tasks_details::where('id_task', $id)->get();
-        $task_attachment = tasks_attachments::where('id_task',$id)->get();
+        $task_attachment = tasks_attachments::where('id_task', $id)->get();
 
-        return view('tasks.task_details', compact('task', 'task_details','task_attachment'));
+        return view('tasks.task_details', compact('task', 'task_details', 'task_attachment'));
     }
     public function Print_task($id)
     {
@@ -226,60 +228,65 @@ class TasksDetailsController extends Controller
         return view('tasks.addYourReport', compact('tasks'));
     }
 
-    public function open_file($id,$file_name){
-        $files = Storage::disk('public_uploads')->getDriver()->getAdapter()->applyPathPrefix($id.'/'.$file_name);
+    public function open_file($id, $file_name)
+    {
+        $files = Storage::disk('public_uploads')->getDriver()->getAdapter()->applyPathPrefix($id . '/' . $file_name);
         return response()->file($files);
     }
-    public function get_file($id,$file_name) {
-        $contents= Storage::disk('public_uploads')->getDriver()->getAdapter()->applyPathPrefix($id.'/'.$file_name);
-        return response()->download( $contents);
+    public function get_file($id, $file_name)
+    {
+        $contents = Storage::disk('public_uploads')->getDriver()->getAdapter()->applyPathPrefix($id . '/' . $file_name);
+        return response()->download($contents);
     }
 
 
-//Blogs
+    //Blogs
     public function blogs()
     {
-        $engineers = Engineer::orderBy('name')->get();
-        $engineers = $engineers ->unique('name');
-        $stations = Stations::orderBy('SSNAME')->get();
-        $blogs = Tasks_details::where('status', 'completed')
-        ->orderBy('id','desc')
-        ->paginate(6);
-        return view('blogs.index', compact('blogs', 'engineers', 'stations'));
+        $tasks = Task::orderBy('id', 'desc')
+            ->get()
+            ->where('status', 'pending');
+        $task_details = Tasks_details::orderBy('id', 'desc')
+            ->where('status', 'completed')
+            ->paginate(6);
+        $date = Carbon::now();
+        $monthName = $date->format('F');
+
+        return view('blogs.index', compact('tasks', 'task_details', 'monthName'));
     }
 
     public function blogDetails($id)
     {
         $engineers = Engineer::orderBy('name')->get();
-        $engineers = $engineers ->unique('name');
+        $engineers = $engineers->unique('name');
         $stations = Stations::orderBy('SSNAME')->get();
         $blog_details = Tasks_details::where('id_task', $id)
-        ->where('status', 'completed')
-        ->first();
-        $blog =Task::find($id);
+            ->where('status', 'completed')
+            ->first();
+        $blog = Task::find($id);
 
-        return view('blogs.report_details', compact('blog', 'blog_details','engineers','stations'));
+        return view('blogs.report_details', compact('blog', 'blog_details', 'engineers', 'stations'));
     }
     public function blogByEngineer($id)
     {
         $engineers = Engineer::orderBy('name')->get();
-        $engineers = $engineers ->unique('name');
+        $engineers = $engineers->unique('name');
         $stations = Stations::orderBy('SSNAME')->get();
         $engineerTasks = Tasks_details::where('eng_name', $id)
-        ->where('status', 'completed')
-        ->orderBy('id','desc')
-        ->paginate(6);
+            ->where('status', 'completed')
+            ->orderBy('id', 'desc')
+            ->paginate(6);
         return view('blogs.searchByEngineer', compact('engineerTasks', 'engineers', 'stations'));
     }
     public function blogByStation($id)
     {
         $engineers = Engineer::orderBy('name')->get();
-        $engineers = $engineers ->unique('name');
+        $engineers = $engineers->unique('name');
         $stations = Stations::orderBy('SSNAME')->get();
         $stationTasks = Tasks_details::where('ssname', $id)
-        ->where('status', 'completed')
-        ->orderBy('id','desc')
-        ->paginate(6);
+            ->where('status', 'completed')
+            ->orderBy('id', 'desc')
+            ->paginate(6);
         return view('blogs.searchByStation', compact('stationTasks', 'stations', 'engineers'));
     }
     public function error()

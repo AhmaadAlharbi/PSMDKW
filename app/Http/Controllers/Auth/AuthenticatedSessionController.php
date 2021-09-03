@@ -45,10 +45,10 @@ class AuthenticatedSessionController extends Controller
         } else {
             // return redirect()->route('login')
             //     ->with('error', 'Email-Address And Password Are Wrong.');
-                $request->authenticate();
-                $request->session()->regenerate();
+            $request->authenticate();
+            $request->session()->regenerate();
         }
-       
+
 
         return redirect()->intended(RouteServiceProvider::HOME);
     }

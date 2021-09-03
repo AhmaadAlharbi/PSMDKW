@@ -21,13 +21,13 @@ class IsAdmin
         if (auth()->user()->is_admin == 1) {
             return $next($request);
         }
-
-        return redirect()->to('error');
+        return redirect(('/error'));
         // Auth::guard('web')->logout();
 
         // $request->session()->invalidate();
 
         // $request->session()->regenerateToken();
+        // return redirect()->to('error');
 
         // return redirect('/');
     }

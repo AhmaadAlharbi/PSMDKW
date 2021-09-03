@@ -29,10 +29,10 @@ Route::get('/', function () {
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware('is_admin');
 
 Route::get('/sendtask', [TaskController::class, 'index'])->middleware('is_admin');
-Route::get('/task_completed',[TaskController::class, 'task_completed'])->middleware('is_admin');
+Route::get('/task_completed', [TaskController::class, 'task_completed'])->middleware('is_admin');
 Route::get('/All_tasks', [TaskController::class, 'All_tasks'])->middleware('auth');
 Route::get('/archive', [TaskController::class, 'archive'])->middleware('auth')->name('archive');
-Route::get('/archive/search_between_Dates',[TaskController::class,'stationsByDates'])->name('staionsByDates');
+Route::get('/archive/search_between_Dates', [TaskController::class, 'stationsByDates'])->name('staionsByDates');
 Route::get('/task_uncompleted', [TaskController::class, 'task_uncompleted'])->middleware('is_admin');
 Route::get('/fill_task/{id}', [TasksDetailsController::class, 'fillTheTask'])->middleware('is_admin');
 Route::get('/update_task/{id}', [TaskController::class, 'editTask'])->middleware('auth');
@@ -48,6 +48,7 @@ Route::get('/engineersEmail/{id}', [TaskController::class, 'getEngineersEmail'])
 Route::get('/engineersEmail2/{id}', [TaskController::class, 'getEngineersEmail']);
 
 Route::post('/sendtask', [TaskController::class, 'store'])->name('task.store')->middleware('is_admin');
+Route::get('/reminder/{id}/{eng_email}/{ssname}', [TaskController::class, 'reminder'])->name('task.reminder')->middleware('is_admin');
 Route::get('/Print_task/{id}', [TasksDetailsController::class, 'Print_task'])->name('print')->middleware('is_admin');
 Route::get('/Print_task/pdf/{id}', [TasksDetailsController::class, 'createPdf'])->middleware('auth');
 Route::get('/add_your_report/{id}', [TasksDetailsController::class, 'addYourReport']);
@@ -64,9 +65,9 @@ Route::get('/edit_engineer/{id}', [EngineerController::class, 'edit'])->name('en
 Route::post('/edit_engineer/{id}', [EngineerController::class, 'update'])->name('engineer.update');
 Route::delete('/delete_engineer/{id}', [EngineerController::class, 'destroy'])->name('engineer.destroy')->middleware('auth');
 //attachments
-Route::get('View_file/{refNum}/{file_name}',[TasksDetailsController::class,'open_file'])->name('view_file');
-Route::get('download/{refNum}/{file_name}',[TasksDetailsController::class,'get_file']);
-Route::post('delete_file',[TasksDetailsController::class,'destroy'])->name('delete_file');
+Route::get('View_file/{refNum}/{file_name}', [TasksDetailsController::class, 'open_file'])->name('view_file');
+Route::get('download/{refNum}/{file_name}', [TasksDetailsController::class, 'get_file']);
+Route::post('delete_file', [TasksDetailsController::class, 'destroy'])->name('delete_file');
 //BLOGS
 Route::get('/user/reports', [TasksDetailsController::class, 'blogs'])->name('blogs.blogs')->middleware('auth');
 Route::get('/user/reports/{id}', [TasksDetailsController::class, 'blogDetails'])->name('blogs.details')->middleware('auth');
@@ -90,8 +91,8 @@ Route::post('/forgot-password', function (Request $request) {
     );
 
     return $status === Password::RESET_LINK_SENT
-                ? back()->with(['status' => __($status)])
-                : back()->withErrors(['email' => __($status)]);
+        ? back()->with(['status' => __($status)])
+        : back()->withErrors(['email' => __($status)]);
 })->middleware('guest')->name('password.email');
 Route::get('/reset-password/{token}', function ($token) {
     return view('auth.reset-password', ['token' => $token]);
@@ -118,8 +119,8 @@ Route::post('/reset-password', function (Request $request) {
     );
 
     return $status === Password::PASSWORD_RESET
-                ? redirect()->route('login')->with('status', __($status))
-                : back()->withErrors(['email' => [__($status)]]);
+        ? redirect()->route('login')->with('status', __($status))
+        : back()->withErrors(['email' => [__($status)]]);
 })->middleware('guest')->name('password.update');
 // Route::get('/home', function () {
 //     return view('home');

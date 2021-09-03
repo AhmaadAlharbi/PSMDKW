@@ -27,18 +27,16 @@ class HomeController extends Controller
      */
     public function index()
     {
-         $tasks = Task::orderBy('id','desc')
-         ->get()
-         ->where('status','pending');
-         $task_details = Tasks_details::orderBy('id','desc')
-         ->whereMonth('created_at', date('m'))
-         ->where('status','completed')
-         ->get();
+        $tasks = Task::orderBy('id', 'desc')
+            ->get()
+            ->where('status', 'pending');
+        $task_details = Tasks_details::orderBy('id', 'desc')
+            ->whereMonth('created_at', date('m'))
+            ->where('status', 'completed')
+            ->paginate(4);
         $date = Carbon::now();
         $monthName = $date->format('F');
 
-        return view('home',compact('tasks','task_details','monthName'));
+        return view('home', compact('tasks', 'task_details', 'monthName'));
     }
-
-  
 }
