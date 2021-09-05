@@ -52,6 +52,8 @@
                     <li><a class="slide-item" href="{{ url('/' . $page='All_tasks') }}">  كافة المهمات </a></li>
                     <li><a class="slide-item" href="{{ url('/' . $page='task_completed') }}"> التقارير المنجزة</a></li>
                     <li><a class="slide-item" href="{{ url('/' . $page='task_uncompleted') }}">التقارير الغير منجزة</a>
+                    <li><a class="slide-item bg-warning text-dark" href="{{route('tasks.nightshift')}}">تعبئة
+                            تقارير الخفارة</a>
                     </li>
                 </ul>
             </li>

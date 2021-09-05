@@ -46,7 +46,8 @@ Route::get('/stationFullName/{id}', [TaskController::class, 'getStationFullName'
 // Route::get('/engineersEmail/{area_id}/{shift_id}/{engineer_id}',[TaskController::class,'getEngineersEmail']);
 Route::get('/engineersEmail/{id}', [TaskController::class, 'getEngineersEmail']);
 Route::get('/engineersEmail2/{id}', [TaskController::class, 'getEngineersEmail']);
-
+Route::get('/sendtask/night-shift',[TaskController::class,'nightShift'])->name('tasks.nightshift');
+Route::post('/sendtask/night-shift',[TaskController::class,'storeNightShift'])->name('tasks.nightshiftCompleted');
 Route::post('/sendtask', [TaskController::class, 'store'])->name('task.store')->middleware('is_admin');
 Route::get('/reminder/{id}/{eng_email}/{ssname}', [TaskController::class, 'reminder'])->name('task.reminder')->middleware('is_admin');
 Route::get('/Print_task/{id}', [TasksDetailsController::class, 'Print_task'])->name('print')->middleware('is_admin');

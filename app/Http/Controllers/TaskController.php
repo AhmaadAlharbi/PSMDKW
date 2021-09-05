@@ -123,6 +123,58 @@ class TaskController extends Controller
         session()->flash('Add', 'تم اضافةالمهمة بنجاح');
         return back();
     }
+
+    public function storeNightShift(Request $request){
+        Task::create([
+            'refNum' => $request->refNum,
+            'main_alarm' => $request->main_alarm,
+            'ssname' => $request->ssname,
+            'control' => $request->control_name,
+            'full_name' => $request->staion_full_name,
+            'work_type' => $request->work_type,
+            'Voltage_level' => $request->Voltage_Level,
+            'make' => $request->make,
+            'pm' => $request->pm,
+            'task_Date' => $request->task_Date,
+            'equip' => $request->equip,
+            'problem' => $request->problem,
+            'eng_name' => $request->eng_name,
+            'eng_email' => $request->eng_name_email,
+            'status' => 'completed',
+            'user' => (Auth::user()->name),
+            'color' => $request->color,
+        ]);
+        $ssname = $request->ssname;
+        $task_id = Task::latest()->first()->id;
+        Tasks_details::create([
+            'id_task' => $task_id,
+            'refNum' => $request->refNum,
+            'ssname' => $request->ssname,
+            'task_Date' => $request->task_Date,
+            'equip' => $request->equip,
+            'problem' => $request->problem,
+            'eng_name' => $request->eng_name,
+            'report_date' => $request->task_Date,
+            'status' => 'completed',
+            'action_take'=>$request->action_take,
+            'user' => Auth::user()->name,
+
+        ]);
+
+        session()->flash('Add', 'تم اضافةالمهمة بنجاح');
+        return back();
+    }
+    public function nightShift(){
+        $engineers = Engineer::orderBy('name')->get();
+        $engineers = $engineers->unique('name');
+        $areas =  Areas::all();
+        $shifts = Shift::all();
+        $tasks = Task::all();
+        $stations = Stations::all();
+        // $task_last_id = Task::latest()->first()->id;
+        // $task_last_id++;
+        return view('tasks.nightshift', compact('engineers', 'areas', 'shifts', 'stations'));
+    }
     public function reminder($id, $eng_email, $ssname)
     {
         Notification::route('mail', $eng_email)

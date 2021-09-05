@@ -53,7 +53,8 @@
         <div class="card overflow-hidden sales-card bg-danger-gradient">
             <div class="pl-3 pt-3 pr-3 pb-2 pt-0">
                 <div class="">
-                    <h6 class="mb-3 tx-16 text-white"><a class="text-white" href="{{ url('/' . $page='task_uncompleted') }}">المهمات الغير
+                    <h6 class="mb-3 tx-16 text-white"><a class="text-white"
+                            href="{{ url('/' . $page='task_uncompleted') }}">المهمات الغير
                             منجزة</a></h6>
                 </div>
                 <div class="pb-0 mt-0">
@@ -161,7 +162,8 @@
                 <div class="list-group list-lg-group list-group-flush">
                     <div class="list-group-item list-group-item-action" href="#">
                         <div class="media mt-0">
-                            <img class="avatar-lg rounded-circle ml-3 my-auto" src="image/electricIcon.svg" alt="Image description">
+                            <img class="avatar-lg rounded-circle ml-3 my-auto" src="image/electricIcon.svg"
+                                alt="Image description">
                             <div class="media-body">
                                 <div class="d-flex align-items-center">
                                     <div class="mt-0">
@@ -171,8 +173,11 @@
                                         <h5 class="m-1 tx-15">{{$task->eng_name}}
                                         </h5>
                                         <p class="mb-0 tx-13 text-muted">ssname: {{$task->ssname}} </p>
-                                        <a href="/taskDetails/{{$task->id}}" class=" my-2 btn btn-outline-secondary ">Read More</a>
-                                        <a class="text-left btn btn-dark " href="{{route('task.reminder',['id'=>$task->id,'eng_email'=>$task->eng_email,'ssname'=>$task->ssname])}}" class=" m-2 btn btn-primary btn-sm">Reminder</a>
+                                        <a href="/taskDetails/{{$task->id}}"
+                                            class=" my-2 btn btn-outline-secondary ">Read More</a>
+                                        <a class="text-left btn btn-dark "
+                                            href="{{route('task.reminder',['id'=>$task->id,'eng_email'=>$task->eng_email,'ssname'=>$task->ssname])}}"
+                                            class=" m-2 btn btn-primary btn-sm">Reminder</a>
                                     </div>
                                 </div>
                             </div>
@@ -197,9 +202,12 @@
                         <p class="text-right text-muted"> {{$task_detail->created_at}}</p>
                         <p class="  p-3 mb-2 bg-dark text-white text-cente">Engineer : {{$task_detail->eng_name}}</p>
                         <p class="  bg-white text-dark text-center  "><ins>Station : {{$task_detail->ssname}}</ins></p>
-                        <p class=" bg-white text-secondary font-weight-bold text-center">Nature of fault : {{$task_detail->problem}}</p>
-                        <p class="p-3 mb-2 bg-light text-dark text-center">Action Take : {{$task_detail->action_take}}</p>
-                        <a class="btn btn-secondary mt-2 text-center" href="/Print_task/{{$task_detail->id_task}}">Read more</a>
+                        <p class=" bg-white text-secondary font-weight-bold text-center">Nature of fault :
+                            {{$task_detail->problem}}</p>
+                        <p class="p-3 mb-2 bg-light text-dark text-center">Action Take : {{$task_detail->action_take}}
+                        </p>
+                        <a class="btn btn-secondary mt-2 text-center" href="/Print_task/{{$task_detail->id_task}}">Read
+                            more</a>
 
                     </li>
                 </ul>
