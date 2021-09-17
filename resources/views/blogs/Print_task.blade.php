@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layoutsUser.master')
 @section('css')
 <style>
 .mew-logo {
@@ -117,7 +117,7 @@ td {
                         <div class="d-block p-3  print-title text-dark">
                             <p class="text-center">Primary substation maintenance department</p>
 
-                            <h2 class="text-center "> Trouble shooting Report</h2>
+                            <h2 class="text-center"> Trouble shooting Report</h2>
                             <h5 class="text-center m-1"><ins>Ref.No: {{$task_details->refNum}}</ins></h5>
 
                         </div>

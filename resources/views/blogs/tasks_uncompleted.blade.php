@@ -71,11 +71,12 @@ window.onload = function() {
                                 <th class="border-bottom-0">#</th>
                                 <th class="border-bottom-0">رقم المهمة</th>
                                 <th class="border-bottom-0">اسم المحطة </th>
+                                <th class="border-bottom-0"> التحكم </th>
+
                                 <th class="border-bottom-0">تاريخ ارسال المهمة</th>
                                 <th class="border-bottom-0">المرفقات </th>
-                                <th class="border-bottom-0">التقرير </th>
+                                <th class="border-bottom-0">Action Take </th>
 
-                                <th class="border-bottom-0">تعديل </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -91,13 +92,28 @@ window.onload = function() {
                                 <td><a href="{{route('userShowTask',['id'=>$task->id])}}">{{$task->refNum}}</a>
                                 </td>
                                 <td>{{$task->station->SSNAME}}</td>
+                                @if($task->station->control == 'JAHRA CONTROL CENTER')
+                                <td class="table-warning">{{$task->station->control}}
+                                </td>
+                                @elseif($task->station->control == 'JABRIYA CONTROL CENTER')
+                                <td class="table-info">{{$task->station->control}}
+                                </td>
+                                @elseif($task->station->control == 'TOWN CONTROL CENTER')
+                                <td class="table-danger">{{$task->station->control}}
+                                </td>
+                                @elseif($task->station->control == 'SHUAIBA CONTROL CENTER')
+                                <td class="table-success">{{$task->station->control}}
+                                </td>
+                                @else
+                                <td class="table-light">{{$task->station->control}}
+                                    @endif
                                 <td>{{$task->task_Date}}</td>
                                 <td><a href="{{route('userShowTask',['id'=>$task->id])}}"
                                         class=" btn btn-info">Details</a></td>
-                                <td><a href="{{route('user.print',['id'=>$task->id])}}"
-                                        class="btn btn-success">Report</a></td>
-                                <td><a href="{{route('userEditReport',['id'=>$task->id])}}"
-                                        class="btn btn-warning">Edit</a></td>
+                                <td><a href="{{route('tasks.addYourReport',['id'=>$task->id])}}"
+                                        class="btn btn-danger">Action
+                                        Take</a></td>
+
 
 
 

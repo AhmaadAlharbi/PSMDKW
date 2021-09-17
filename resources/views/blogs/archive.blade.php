@@ -20,7 +20,6 @@
         <div class="d-flex">
             <h4 class="content-title mb-0 my-auto">المهمات</h4><span class="text-muted mt-1 tx-13 mr-2 mb-0">/ كل
                 المهمات
-
             </span>
         </div>
     </div>
@@ -29,7 +28,6 @@
 <!-- breadcrumb -->
 @endsection
 @section('content')
-
 @if (session()->has('delete_invoice'))
 <script>
 window.onload = function() {
@@ -58,11 +56,24 @@ window.onload = function() {
     <!--div-->
     <div class="col-xl-12">
         <div class="card mg-b-20">
-            <div class="card-header pb-0">
+            <div class="card-header pb-0 text-center">
                 <div class="d-flex justify-content-between">
 
                 </div>
+
             </div>
+            <div class="col-lg-6 ">
+                <form action="{{route('staionsByDates')}}">
+                    @csrf
+                    <input class="form-control mb-2 fc-datepicker" name="task_Date" placeholder="YYYY-MM-DD" type="text"
+                        value="{{ date('Y-m-d') }}">
+
+                    <input class="form-control mb-2 fc-datepicker" name="task_Date2" placeholder="YYYY-MM-DD"
+                        type="text" value="">
+                    <input type="submit" class="btn btn-outline-danger btn-md btn-block" value="البحث في فترة معينة ">
+                </form>
+            </div>
+
             <div class="card-body">
                 <div class="table-responsive">
                     <table id="example1" class="table key-buttons text-md-nowrap" data-page-length='50'>
@@ -71,11 +82,12 @@ window.onload = function() {
                                 <th class="border-bottom-0">#</th>
                                 <th class="border-bottom-0">رقم المهمة</th>
                                 <th class="border-bottom-0">اسم المحطة </th>
+                                <th class="border-bottom-0"> التحكم </th>
                                 <th class="border-bottom-0">تاريخ ارسال المهمة</th>
-                                <th class="border-bottom-0">المرفقات </th>
-                                <th class="border-bottom-0">التقرير </th>
-
-                                <th class="border-bottom-0">تعديل </th>
+                                <th class="border-bottom-0">المهندس</th>
+                                <th class="border-bottom-0">الحالة </th>
+                                <!-- <th class="border-bottom-0">بواسطة</th> -->
+                                <!-- <th class="border-bottom-0">العمليات</th> -->
                             </tr>
                         </thead>
                         <tbody>
@@ -88,16 +100,41 @@ window.onload = function() {
                             @endphp
                             <tr>
                                 <td>{{$i}}</td>
-                                <td><a href="{{route('userShowTask',['id'=>$task->id])}}">{{$task->refNum}}</a>
-                                </td>
+                                <td><a href="{{route('user.print',['id'=>$task->id])}}">{{$task->refNum}}</a></td>
+
                                 <td>{{$task->station->SSNAME}}</td>
+
+                                @if($task->station->control == "JAHRA CONTROL CENTER")
+                                <td class="table-warning">{{$task->station->control}}
+                                </td>
+                                @elseif($task->station->control == "JABRIYA CONTROL CENTER")
+                                <td class="table-info">{{$task->station->control}}
+                                </td>
+                                @elseif($task->station->control == "TOWN CONTROL CENTER")
+                                <td class="table-danger">{{$task->station->control}}
+                                </td>
+                                @elseif($task->station->control == "SHUAIBA CONTROL CENTER")
+                                <td class="table-success">{{$task->station->control}}
+                                </td>
+                                @else
+                                <td class="table-light">{{$task->station->control}}
+
+                                    @endif
+
                                 <td>{{$task->task_Date}}</td>
-                                <td><a href="{{route('userShowTask',['id'=>$task->id])}}"
-                                        class=" btn btn-info">Details</a></td>
-                                <td><a href="{{route('user.print',['id'=>$task->id])}}"
-                                        class="btn btn-success">Report</a></td>
-                                <td><a href="{{route('userEditReport',['id'=>$task->id])}}"
-                                        class="btn btn-warning">Edit</a></td>
+                                <td>{{$task->engineers->name}}</td>
+
+                                 @if($task->status == 'completed')
+                                <td>
+                                    <span class="text-success">{{ $task->status }}</span>
+                                </td>
+                                @else
+                                <td>
+                                    <span class="text-danger">{{ $task->status }}</span>
+
+                                </td>
+                                @endif
+                                <!-- <td>{{$task->user}}</td> -->
 
 
 
@@ -155,6 +192,30 @@ window.onload = function() {
 @endsection
 @section('js')
 <!-- Internal Data tables -->
+<script src="{{ URL::asset('assets/plugins/select2/js/select2.min.js') }}"></script>
+<!--Internal Fileuploads js-->
+<script src="{{ URL::asset('assets/plugins/fileuploads/js/fileupload.js') }}"></script>
+<script src="{{ URL::asset('assets/plugins/fileuploads/js/file-upload.js') }}"></script>
+<!--Internal Fancy uploader js-->
+<script src="{{ URL::asset('assets/plugins/fancyuploder/jquery.ui.widget.js') }}"></script>
+<script src="{{ URL::asset('assets/plugins/fancyuploder/jquery.fileupload.js') }}"></script>
+<script src="{{ URL::asset('assets/plugins/fancyuploder/jquery.iframe-transport.js') }}"></script>
+<script src="{{ URL::asset('assets/plugins/fancyuploder/jquery.fancy-fileupload.js') }}"></script>
+<script src="{{ URL::asset('assets/plugins/fancyuploder/fancy-uploader.js') }}"></script>
+<!--Internal  Form-elements js-->
+<script src="{{ URL::asset('assets/js/advanced-form-elements.js') }}"></script>
+<script src="{{ URL::asset('assets/js/select2.js') }}"></script>
+<!--Internal Sumoselect js-->
+<script src="{{ URL::asset('assets/plugins/sumoselect/jquery.sumoselect.js') }}"></script>
+<!--Internal  Datepicker js -->
+<script src="{{ URL::asset('assets/plugins/jquery-ui/ui/widgets/datepicker.js') }}"></script>
+<!--Internal  jquery.maskedinput js -->
+<script src="{{ URL::asset('assets/plugins/jquery.maskedinput/jquery.maskedinput.js') }}"></script>
+<!--Internal  spectrum-colorpicker js -->
+<script src="{{ URL::asset('assets/plugins/spectrum-colorpicker/spectrum.js') }}"></script>
+<!-- Internal form-elements js -->
+<script src="{{ URL::asset('assets/js/form-elements.js') }}"></script>
+
 <script src="{{ URL::asset('assets/plugins/datatable/js/jquery.dataTables.min.js') }}"></script>
 <script src="{{ URL::asset('assets/plugins/datatable/js/dataTables.dataTables.min.js') }}"></script>
 <script src="{{ URL::asset('assets/plugins/datatable/js/dataTables.responsive.min.js') }}"></script>
@@ -176,7 +237,11 @@ window.onload = function() {
 <!--Internal  Notify js -->
 <script src="{{ URL::asset('assets/plugins/notify/js/notifIt.js') }}"></script>
 <script src="{{ URL::asset('assets/plugins/notify/js/notifit-custom.js') }}"></script>
-
+<script>
+var date = $('.fc-datepicker').datepicker({
+    dateFormat: 'yy-mm-dd'
+}).val();
+</script>
 <script>
 $('#delete_invoice').on('show.bs.modal', function(event) {
     var button = $(event.relatedTarget)

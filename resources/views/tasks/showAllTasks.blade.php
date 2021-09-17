@@ -86,28 +86,29 @@ window.onload = function() {
                             <tr>
                                 <td>{{$i}}</td>
                                 <td><a href="{{url('taskDetails')}}/{{$task->id}}">{{$task->refNum}}</a></td>
-                                <td>{{$task->ssname}}</td>
+                                <td>{{$task->station->SSNAME}}</td>
 
 
-                                @if($task->color == 'warning')
-                                <td class="table-warning">{{$task->control}}
+                                @if($task->station->control == "JAHRA CONTROL CENTER")
+                                <td class="table-warning">{{$task->station->control}}
                                 </td>
-                                @elseif($task->color == 'info')
-                                <td class="table-info">{{$task->control}}
+                                @elseif($task->station->control == "JABRIYA CONTROL CENTER")
+                                <td class="table-info">{{$task->station->control}}
                                 </td>
-                                @elseif($task->color == 'danger')
-                                <td class="table-danger">{{$task->control}}
+                                @elseif($task->station->control == "TOWN CONTROL CENTER")
+                                <td class="table-danger">{{$task->station->control}}
                                 </td>
-                                @elseif($task->color == 'success')
-                                <td class="table-success">{{$task->control}}
+                                @elseif($task->station->control == "SHUAIBA CONTROL
+                                CENTER")
+                                <td class="table-success">{{$task->station->control}}
                                 </td>
                                 @else
-                                <td class="table-light">{{$task->control}}
+                                <td class="table-light">{{$task->station->control}}
 
                                     @endif
 
                                 <td>{{$task->task_Date}}</td>
-                                <td>{{$task->eng_name}}</td>
+                                <td>{{$task->engineers->name}}</td>
 
                                  @if($task->status == 'completed')
                                 <td>

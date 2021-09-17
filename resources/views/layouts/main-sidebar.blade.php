@@ -22,6 +22,10 @@
                 <div class="user-info">
                     <h4 class="font-weight-semibold mt-3 mb-0">{{Auth::user()->name}}</h4>
                     <span class="mb-0 text-muted">{{Auth::user()->email}}</span>
+                    <a class="btn btn-outline-success p-3 d-block"
+                        href="{{route('blogs.blogs')}}">{{Auth::user()->name}}
+                        page</a>
+
                 </div>
             </div>
         </div>

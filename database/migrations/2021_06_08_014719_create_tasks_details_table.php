@@ -19,13 +19,15 @@ class CreateTasksDetailsTable extends Migration
             $table->unsignedBigInteger('id_task');
             $table->string('refNum', 255);
             $table->foreign('id_task')->references('id')->on('tasks')->onDelete('cascade');
-            $table->string('ssname',255);
             $table->string('Work_type', 255)->nullable();;
             $table->date('task_Date')->nullable();
             $table->string('equip',255)->nullable();
+            $table->unsignedBigInteger('eng_id')->unsigned();
+            $table->unsignedBigInteger('station_id')->unsigned();
             $table->string('problem',255)->nullable();
+            $table->foreign('eng_id')->references('id')->on('engineers');
+            $table->foreign('station_id')->references('id')->on('stations');
             $table->date('report_date')->nullable();
-            $table->string('eng_name',255)->nullable();
             $table->string('notes',255)->nullable();
             $table->string('status',255);
             $table->string('action_take',255);

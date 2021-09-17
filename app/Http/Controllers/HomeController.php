@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Task;
 use App\Models\Tasks_details;
 use App\Models\User;
+use App\Models\Engineer;
 use Carbon\Carbon;
 
 class HomeController extends Controller
@@ -27,6 +28,7 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $engineers = Engineer::all();
         $tasks = Task::orderBy('id', 'desc')
             ->get()
             ->where('status', 'pending');
@@ -37,6 +39,6 @@ class HomeController extends Controller
         $date = Carbon::now();
         $monthName = $date->format('F');
 
-        return view('home', compact('tasks', 'task_details', 'monthName'));
+        return view('home', compact('engineers','tasks', 'task_details', 'monthName'));
     }
 }

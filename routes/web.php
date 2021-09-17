@@ -50,9 +50,9 @@ Route::get('/sendtask/night-shift',[TaskController::class,'nightShift'])->name('
 Route::post('/sendtask/night-shift',[TaskController::class,'storeNightShift'])->name('tasks.nightshiftCompleted');
 Route::post('/sendtask', [TaskController::class, 'store'])->name('task.store')->middleware('is_admin');
 Route::get('/reminder/{id}/{eng_email}/{ssname}', [TaskController::class, 'reminder'])->name('task.reminder')->middleware('is_admin');
-Route::get('/Print_task/{id}', [TasksDetailsController::class, 'Print_task'])->name('print')->middleware('is_admin');
+Route::get('/Print_task/{id}', [TasksDetailsController::class, 'Print_task'])->name('print')->middleware('auth');
 Route::get('/Print_task/pdf/{id}', [TasksDetailsController::class, 'createPdf'])->middleware('auth');
-Route::get('/add_your_report/{id}', [TasksDetailsController::class, 'addYourReport']);
+Route::get('/add_your_report/{id}', [TasksDetailsController::class, 'addYourReport'])->name('tasks.addYourReport');
 Route::delete('/tasks.destroy', [TaskController::class, 'destroy'])->name('tasks.destroy');
 Route::get('/stations-list', [StationsController::class, 'index'])->name('station.list');
 Route::post('/add_station', [StationsController::class, 'store'])->name('station.add');
@@ -76,6 +76,18 @@ Route::get('/error', [TasksDetailsController::class, 'error'])->name('error');
 Route::get('/user/reports/engineer/{id}', [TasksDetailsController::class, 'blogByEngineer'])->name('blogs.searchByEngineer')->middleware('auth');
 Route::get('/user/reports/station/{id}', [TasksDetailsController::class, 'blogByStation'])->name('blogs.searchByStation')->middleware('auth');
 Route::get('users/All_tasks', [usersReportController::class, 'task_completed'])->name('user.allTasks')->middleware('auth');
+Route::get('/user/All_tasks/{id}', [TasksDetailsController::class, 'userAll_tasks'])->name('blogs.mytasks')->middleware('auth');
+Route::get('/user/uncompleted_tasks/{id}', [TasksDetailsController::class, 'userUncompleted_tasks'])->name('blogs.uncompletedTasks')->middleware('auth');
+Route::get('/user/completed_tasks/{id}', [TasksDetailsController::class, 'usercompleted_tasks'])->name('blogs.completedTasks')->middleware('auth');
+Route::get('user/taskDetails/{id}', [TasksDetailsController::class, 'usershowDetails'])->name('userShowTask')->middleware('auth');;
+Route::get('user/Print_task/{id}', [TasksDetailsController::class, 'userPrint_task'])->name('user.print')->middleware('auth');
+Route::get('/archive', [TaskController::class, 'archive'])->middleware('auth')->name('archive');
+Route::get('/user/edit_report/{id}', [TasksDetailsController::class, 'userEditReport'])->name('userEditReport')->middleware('auth');
+Route::get('user/reports/{id}',[TasksDetailsController::class,'update'])->name('blogs.userEditReport');
+Route::post('user/reports/{id}',[TasksDetailsController::class,'update'])->name('blogs.userEditReport');
+Route::get('user/archive', [TasksDetailsController::class, 'userArchive'])->middleware('auth')->name('user.archive');
+Route::get('user/archive/search_between_Dates', [TasksDetailsController::class, 'userStationsByDates'])->name('user.staionsByDates');
+
 
 //PDF
 Route::get('generate-pdf/{id}', [PDFController::class, 'generatePDF']);

@@ -17,7 +17,10 @@
         <hr>
 
         <p class="lead">
-            <a class="btn btn-primary btn-sm" href="{{route('login')}}" role="button">Continue to homepage</a>
+
+        <div class="p-4 mb-2 bg-info text-white">To view your report and change it Please click the button below</div>
+
+        <a class="btn btn-outline-info btn p-3" href="{{route('blogs.blogs')}}" role="button">Continue to homepage</a>
         </p>
     </div>
 </body>

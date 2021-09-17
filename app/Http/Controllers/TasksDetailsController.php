@@ -80,9 +80,15 @@ class TasksDetailsController extends Controller
      * @param  \App\Models\Tasks_details  $tasks_details
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Tasks_details $tasks_details)
+    public function update(Request $request, $id)
     {
-        //
+        $tasks = Tasks_details::where('id_task',$id);
+        $tasks->update([
+            'action_take' => $request->action_take,
+   
+        ]);
+        return back();
+        
     }
 
     /**
@@ -119,12 +125,12 @@ class TasksDetailsController extends Controller
         Tasks_details::create([
             'id_task' => $task_id,
             'refNum' => $request->refNum,
-            'ssname' => $request->ssname,
-            'task_Date' => $request->task_Date,
+            'station_id' => $request->ssname,
+            'task_Date' =>Carbon::now(),
             'equip' => $request->equip,
             'problem' => $request->problem,
             'report_date' => $request->report_Date,
-            'eng_name' => $request->eng_name,
+            'eng_id' => $request->eng_id,
             'notes' => $request->notes,
             'action_take' => $request->action_take,
             'status' => 'completed',
@@ -134,22 +140,23 @@ class TasksDetailsController extends Controller
         $tasks->update([
             'status' => 'completed',
         ]);
-        if ($request->hasFile('pic')) {
-            $id_task = $id;
 
-            $image = $request->file('pic');
-            $file_name = $image->getClientOriginalName();
-            $refNum = $request->refNum;
-            $attachments = new tasks_attachments();
-            $attachments->file_name = $file_name;
-            $attachments->refNum = $refNum;
-            // $attachments->Created_by = Auth::user()->name;
-            $attachments->id_task = $id_task;
-            $attachments->save();
-            // move pic
-            $imageName = $request->pic->getClientOriginalName();
-            $request->pic->move(public_path('Attachments/' . $id_task), $imageName);
-        }
+        if ($request->hasfile('pic')) {
+            $task_id = Task::latest()->first()->id;
+            foreach ($request->file('pic') as $file) {
+                $name = $file->getClientOriginalName();
+                $file->move(public_path('Attachments/' . $task_id), $name);
+                $data[] = $name;
+                $refNum = $request->refNum;
+                $attachments = new tasks_attachments();
+                $attachments->file_name = $name;
+                $attachments->refNum = $refNum;
+                $attachments->Created_by = Auth::user()->name;
+                $attachments->id_task = $task_id;
+                $attachments->save();
+            }
+    
+        } 
         session()->flash('Add', 'تم اضافةالمهمة بنجاح');
         return view('tasks.completedMessage');
     }
@@ -167,7 +174,7 @@ class TasksDetailsController extends Controller
             Tasks_details::create([
                 'id_task' => $task_id,
                 'refNum' => $request->refNum,
-                'ssname' => $request->ssname,
+                'station_id' => $request->ssname,
                 'task_Date' => $request->task_Date,
                 'equip' => $request->equip,
                 'problem' => $request->problem,
@@ -183,7 +190,7 @@ class TasksDetailsController extends Controller
             Tasks_details::create([
                 'id_task' => $task_id,
                 'refNum' => $request->refNum,
-                'ssname' => $request->ssname,
+                'station_id' => $request->ssname,
                 'task_Date' => $request->task_Date,
                 'equip' => $request->equip,
                 'problem' => $request->problem,
@@ -223,9 +230,9 @@ class TasksDetailsController extends Controller
 
 
     public function addYourReport($id)
-    {
+    {   $engineers = Engineer::all();
         $tasks = Task::where('id', $id)->first();
-        return view('tasks.addYourReport', compact('tasks'));
+        return view('tasks.addYourReport', compact('tasks','engineers'));
     }
 
     public function open_file($id, $file_name)
@@ -242,17 +249,21 @@ class TasksDetailsController extends Controller
 
     //Blogs
     public function blogs()
-    {
+    {$engineers = Engineer::orderBy('name')->get();
+        $engineers = $engineers->unique('name');
+        $stations = Stations::orderBy('SSNAME')->get();
         $tasks = Task::orderBy('id', 'desc')
             ->get()
+            ->where('eng_id',Engineer::where('email',Auth::user()->email)->value('id'))
             ->where('status', 'pending');
         $task_details = Tasks_details::orderBy('id', 'desc')
             ->where('status', 'completed')
             ->paginate(6);
+            $tasks_changed =Tasks_details::all(); 
         $date = Carbon::now();
         $monthName = $date->format('F');
 
-        return view('blogs.index', compact('tasks', 'task_details', 'monthName'));
+        return view('blogs.index', compact('tasks', 'task_details', 'monthName','tasks_changed','engineers','stations'));
     }
 
     public function blogDetails($id)
@@ -272,22 +283,111 @@ class TasksDetailsController extends Controller
         $engineers = Engineer::orderBy('name')->get();
         $engineers = $engineers->unique('name');
         $stations = Stations::orderBy('SSNAME')->get();
-        $engineerTasks = Tasks_details::where('eng_name', $id)
+  
+        $tasks = Task::orderBy('id', 'desc')
+        ->get()
+        ->where('eng_id',Engineer::where('email',Auth::user()->email)->value('id'))
+        ->where('status', 'pending');
+        $task_details = Tasks_details::orderBy('id', 'desc')
+            ->where('eng_id',Engineer::where('name',$id)->value('id'))
             ->where('status', 'completed')
-            ->orderBy('id', 'desc')
-            ->paginate(6);
-        return view('blogs.searchByEngineer', compact('engineerTasks', 'engineers', 'stations'));
+            ->paginate(6);    
+            $date = Carbon::now();
+            $monthName = $date->format('F');
+        return view('blogs.searchByEngineer', compact('tasks', 'task_details','engineers','stations',));
+
     }
     public function blogByStation($id)
     {
         $engineers = Engineer::orderBy('name')->get();
         $engineers = $engineers->unique('name');
         $stations = Stations::orderBy('SSNAME')->get();
-        $stationTasks = Tasks_details::where('ssname', $id)
-            ->where('status', 'completed')
+        $tasks = Task::orderBy('id', 'desc')
+        ->get()
+        ->where('eng_id',Engineer::where('email',Auth::user()->email)->value('id'))
+        ->where('status', 'pending');
+        $task_details = Tasks_details::orderBy('id', 'desc')
+        ->where('station_id',Stations::where('SSNAME',$id)->value('id'))
+        ->where('status', 'completed')
+        ->paginate(6);
+            $date = Carbon::now();
+            $monthName = $date->format('F');
+        return view('blogs.searchByStation', compact('tasks', 'task_details','engineers','stations',));
+    }
+    public function userAll_tasks($eng_id){
+        $engineer = Engineer::where('email',$eng_id)->value('id');
+        $tasks = Task::where('eng_id',$engineer)
             ->orderBy('id', 'desc')
-            ->paginate(6);
-        return view('blogs.searchByStation', compact('stationTasks', 'stations', 'engineers'));
+            ->get();
+        return view('blogs.mytasks', compact('tasks'));
+    }
+    public function userUncompleted_tasks($eng_id){
+        $engineers = Engineer::orderBy('name')->get();
+        $engineers = $engineers->unique('name');
+        $stations = Stations::orderBy('SSNAME')->get();
+        $engineer = Engineer::where('email',$eng_id)->value('id');
+        $tasks = Task::where('eng_id',$engineer)
+            ->where('status','pending')
+            ->orderBy('id', 'desc')
+            ->get();
+        return view('blogs.tasks_uncompleted', compact('tasks','engineers','stations'));
+    }
+    public function usercompleted_tasks($eng_id){
+        $engineers = Engineer::orderBy('name')->get();
+        $engineers = $engineers->unique('name');
+        $stations = Stations::orderBy('SSNAME')->get();
+        $engineer = Engineer::where('email',$eng_id)->value('id');
+        $tasks = Task::where('eng_id',$engineer)
+            ->where('status','completed')
+            ->orderBy('id', 'desc')
+            ->get();
+            $task_details = Tasks_details::where('eng_id',$engineer)
+            ->where('status','completed')
+            ->orderBy('id', 'desc')
+            ->get();
+        return view('blogs.task_completed', compact('tasks','task_details','engineers','stations'));
+    }
+    public function userEditReport($id){
+        $tasks = Task::where('id',$id)->where('status','completed')->first();
+         $tasks_details = Tasks_details::where('id_task',$id)->where('status','completed')->first();
+        return view('blogs.editReport',compact('tasks','tasks_details'));
+    }
+    public function usershowDetails($id)
+    {
+        $task = Task::where('id', $id)->first();
+        $task_details = Tasks_details::where('id_task', $id)->get();
+        $task_attachment = tasks_attachments::where('id_task', $id)->get();
+
+        return view('blogs.task_details', compact('task', 'task_details', 'task_attachment'));
+    }
+    public function userPrint_task($id)
+    {
+        $task_details = Tasks_details::where('id_task', $id)->where('status', 'completed')->first();
+        $task = Task::where('id', $id)->first();
+
+        // $task =DB::table('tasks_details')
+        //         ->where('id',$id)
+        //         ->get();
+        return view('blogs.Print_task', compact('task', 'task_details'));
+    }
+
+    public function userArchive()
+    {
+        $tasks = Task::where('status', ('completed'))
+            ->orderBy('id', 'desc')
+            ->get();
+        return view('blogs.archive', compact('tasks'));
+    }
+    public function userStationsByDates(Request $request)
+    {
+        $date1 = $request->task_Date;
+        $date2 = $request->task_Date2;
+
+        $tasks = DB::table('tasks')
+            ->whereBetween('task_Date', [$date1, $date2])
+            ->where('status', ('completed'))
+            ->get();
+        return view('blogs.archive', compact('tasks'));
     }
     public function error()
     {

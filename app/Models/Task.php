@@ -1,10 +1,9 @@
 <?php
 
 namespace App\Models;
-use Illuminate\Notifications\Notifiable;
-
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 
 class Task extends Model
 {
@@ -14,6 +13,10 @@ class Task extends Model
     protected $guarded = [];
     public function station()
     {
-        return $this->belongsTo(stations::class);
+        return $this->belongsTo(Stations::class,'station_id');
+    }
+    public function engineers()
+    {
+        return $this->belongsTo(engineer::class,'eng_id');
     }
 }

@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layoutsUser.master')
 @section('css')
 <!--- Internal Select2 css-->
 <link href="{{ URL::asset('assets/plugins/select2/css/select2.min.css') }}" rel="stylesheet">
@@ -191,7 +191,7 @@
                                                         <td>{{$x->report_date}}</td>
                                                         <td>{{$x->equip}}</td>
                                                         <td>{{$x->problem}}</td>
-                                                        <td>{{$x->engineers->name}}</td>
+                                                        <td>{{$task->engineers->name}}</td>
                                                          @if($x->status == 'completed')
                                                         <td>
                                                             <span

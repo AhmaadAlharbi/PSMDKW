@@ -59,12 +59,21 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
+
+        $validated = $request->validate([
+            'ssname' => 'required|numeric',
+
+        ],
+        [
+            'ssname.required' =>'يرجى اختيار اسم المحطة',
+            'ssname.numeric'=>'يرجى اختيار المحطة من القائمة فقط'
+
+        ]);
+
         Task::create([
             'refNum' => $request->refNum,
             'main_alarm' => $request->main_alarm,
-            'ssname' => $request->ssname,
-            'control' => $request->control_name,
-            'full_name' => $request->staion_full_name,
+            'station_id' => $request->ssname,
             'work_type' => $request->work_type,
             'Voltage_level' => $request->Voltage_Level,
             'make' => $request->make,
@@ -72,28 +81,25 @@ class TaskController extends Controller
             'task_Date' => $request->task_Date,
             'equip' => $request->equip,
             'problem' => $request->problem,
-            'eng_name' => $request->eng_name,
-            'eng_email' => $request->eng_name_email,
+            'eng_id' => $request->eng_name,
             'notes' => $request->notes,
             'status' => 'pending',
             'user' => (Auth::user()->name),
-            'color' => $request->color,
-
         ]);
         $ssname = $request->ssname;
+        $station_code=$request->station_code;
         $task_id = Task::latest()->first()->id;
         Tasks_details::create([
             'id_task' => $task_id,
             'refNum' => $request->refNum,
-            'ssname' => $request->ssname,
+            'station_id' => $request->ssname,
             'task_Date' => $request->task_Date,
             'equip' => $request->equip,
             'problem' => $request->problem,
-            'eng_name' => $request->eng_name,
+            'eng_id' => $request->eng_name,
             'notes' => $request->notes,
             'status' => 'pending',
             'user' => Auth::user()->name,
-
         ]);
         if ($request->hasfile('pic')) {
             $task_id = Task::latest()->first()->id;
@@ -112,12 +118,12 @@ class TaskController extends Controller
             //to send email
             $engineer_email = $request->eng_name_email;
             Notification::route('mail', $engineer_email)
-                ->notify(new AddTask($task_id, $data, $ssname));
+                ->notify(new AddTask($task_id, $data, $station_code));
         } else {
             //to send email with no attachment
             $engineer_email = $request->eng_name_email;
             Notification::route('mail', $engineer_email)
-                ->notify(new AddTaskNoAttachment($task_id, $ssname));
+                ->notify(new AddTaskNoAttachment($task_id, $station_code));
         }
 
         session()->flash('Add', 'تم اضافةالمهمة بنجاح');
@@ -128,7 +134,7 @@ class TaskController extends Controller
         Task::create([
             'refNum' => $request->refNum,
             'main_alarm' => $request->main_alarm,
-            'ssname' => $request->ssname,
+            'staion_id' => $request->ssname,
             'control' => $request->control_name,
             'full_name' => $request->staion_full_name,
             'work_type' => $request->work_type,
@@ -212,50 +218,60 @@ class TaskController extends Controller
      */
     public function update($id, Request $request)
     {
-        $tasks = Task::findOrFail($id);
-        $tasks->update([
+        Task::create([
             'refNum' => $request->refNum,
             'main_alarm' => $request->main_alarm,
-            'ssname' => $request->ssname,
-            'full_name' => $request->staion_full_name,
-            'work_type' => $request->work_type_text,
+            'station_id' => $request->ssname,
+            'work_type' => $request->work_type,
             'Voltage_level' => $request->Voltage_Level,
+            'make' => $request->make,
+            'pm' => $request->pm,
             'task_Date' => $request->task_Date,
             'equip' => $request->equip,
             'problem' => $request->problem,
-            'eng_name' => $request->eng_name,
-            'eng_email' => $request->eng_name_email,
+            'eng_id' => $request->eng_name,
             'notes' => $request->notes,
             'status' => 'pending',
             'user' => (Auth::user()->name),
-            'color' => $request->color,
         ]);
         $ssname = $request->ssname;
-
-        if ($request->hasFile('pic')) {
-
-            $task_id = Task::findOrFail($id);
-            $task_attachment = tasks_attachments::where('id_task', $id);
-            $image = $request->file('pic');
-            $file_name = $image->getClientOriginalName();
-            $refNum = $request->refNum;
-            $task_attachment->update([
-                'file_name' => $file_name,
-                'refNum' => $request->refNum,
-                'id_task' => $request->id
-            ]);
-            // move pic
-            $imageName = $request->pic->getClientOriginalName();
-            $request->pic->move(public_path('Attachments/' . $id), $imageName,);
+        $station_code=$request->station_code;
+        $task_id = Task::latest()->first()->id;
+        Tasks_details::create([
+            'id_task' => $task_id,
+            'refNum' => $request->refNum,
+            'station_id' => $request->ssname,
+            'task_Date' => $request->task_Date,
+            'equip' => $request->equip,
+            'problem' => $request->problem,
+            'eng_id' => $request->eng_name,
+            'notes' => $request->notes,
+            'status' => 'pending',
+            'user' => Auth::user()->name,
+        ]);
+        if ($request->hasfile('pic')) {
+            $task_id = Task::latest()->first()->id;
+            foreach ($request->file('pic') as $file) {
+                $name = $file->getClientOriginalName();
+                $file->move(public_path('Attachments/' . $task_id), $name);
+                $data[] = $name;
+                $refNum = $request->refNum;
+                $attachments = new tasks_attachments();
+                $attachments->file_name = $name;
+                $attachments->refNum = $refNum;
+                $attachments->Created_by = Auth::user()->name;
+                $attachments->id_task = $task_id;
+                $attachments->save();
+            }
             //to send email
             $engineer_email = $request->eng_name_email;
             Notification::route('mail', $engineer_email)
-                ->notify(new editTask($id, $imageName, $ssname));
+                ->notify(new AddTask($task_id, $data, $station_code));
         } else {
             //to send email with no attachment
             $engineer_email = $request->eng_name_email;
             Notification::route('mail', $engineer_email)
-                ->notify(new editTaskNoAttachment($id, $ssname));
+                ->notify(new AddTaskNoAttachment($task_id, $station_code));
         }
         session()->flash('edit', 'تم   التعديل  بنجاح');
 
@@ -294,7 +310,7 @@ class TaskController extends Controller
     }
     public function getEngineersEmail($id)
     {
-        return (string) Engineer::where("name", $id)->get();
+        return (string) Engineer::where("id", $id)->get();
 
         // $engineers = DB::table("engineers")
         // ->where("name", $id)
@@ -320,10 +336,10 @@ class TaskController extends Controller
 
     public function All_tasks()
     {
-        $tasks = DB::table('tasks')
-            ->whereMonth('created_at', date('m'))
+        $tasks = Task::whereMonth('created_at', date('m'))
             ->orderBy('id', 'desc')
             ->get();
+   
         return view('tasks.showAllTasks', compact('tasks'));
     }
 

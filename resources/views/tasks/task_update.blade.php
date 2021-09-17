@@ -64,8 +64,8 @@
                         </div>
                         <div class="col-lg-4">
                             <label for="ssname">يرجى اختيار اسم المحطة</label>
-                            <input list="ssnames" class="form-control" name="ssname" id="ssname"
-                                onchange="getStationFullName()" value="{{$tasks->ssname}}">
+                            <input list="ssnames" class="form-control" name="station_code" id="ssname"
+                                onchange="getStationFullName()" value="{{$tasks->station->SSNAME}}">
 
 
                             <datalist id="ssnames">
@@ -73,6 +73,7 @@
                                 <option value="{{$station->SSNAME}}">
                                     @endforeach
                             </datalist>
+                            <input type="hidden" id="ssname2" name="ssname">
                             <input id="staion_full_name" name="staion_full_name"
                                 class="text-center d-none p-3 form-control" readonly>
                             <input id="control_name" name="control_name" class="text-center d-none  p-3 form-control"
@@ -252,7 +253,7 @@
                             <label for="inputName" class="control-label">اسم المهندس</label>
                             <select id="eng_name" name="eng_name" class="form-control engineerSelect"
                                 onchange="getEmail()" onload="getEmail()">
-                                <option value="{{$tasks->eng_name}}">{{$tasks->eng_name}}</option>
+                                <option value="{{$tasks->engineers->id}}">{{$tasks->engineers->name}}</option>
                             </select>
                         </div>
                         <div class="col email">
@@ -279,12 +280,39 @@
                     <h5 class="card-title">المرفقات</h5>
 
                     <div class="col-sm-12 col-md-12">
-                        <input type="file" name="pic" class="dropify" accept=".pdf,.jpg, .png, image/jpeg, image/png"
+                        <input type="file" name="pic[]" class="dropify" accept=".pdf,.jpg, .png, image/jpeg, image/png"
                             data-height="70" />
                     </div><br>
 
+                    <div class="col-sm-12 col-md-12">
+                        <input type="file" name="pic[]" class="dropify" accept=".pdf,.jpg, .png, image/jpeg, image/png"
+                            data-height="70" />
+
+                    </div><br>
+                     <div class="text-center mb-3">
+                        <button id="showAttachment" class="btn btn-outline-info">اضغط لإضافة المزيد من
+                            المرفقات</button>
+                        <button id="hideAttachment" class="btn d-none btn-outline-info">اضغط  لإخفاء المزيد من
+                            المرفقات</button>
+
+                    </div>
+                    <div id="attachmentFile" class="d-none">
+                        <div class="col-sm-12 col-md-12">
+                            <input type="file" name="pic[]" class="dropify"
+                                accept=".pdf,.jpg, .png, image/jpeg, image/png" data-height="70" />
+                        </div><br>
+                        <div class="col-sm-12 col-md-12">
+                            <input type="file" name="pic[]" class="dropify"
+                                accept=".pdf,.jpg, .png, image/jpeg, image/png" data-height="70" />
+                        </div><br>
+                        <div class="col-sm-12 col-md-12">
+                            <input type="file" name="pic[]" class="dropify"
+                                accept=".pdf,.jpg, .png, image/jpeg, image/png" data-height="70" />
+                        </div><br>
+                    </div>
                     <div class="d-flex justify-content-center">
-                        <button type="submit" class="btn btn-primary">حفظ البيانات</button>
+                        <button type="submit" class="btn btn-primary" data-toggle="modal"
+                            data-target="#exampleModal">ارسال البيانات</button>
                     </div>
 
 
@@ -351,10 +379,11 @@ const getEngineer = async () => {
         throw new Error('can not fetch the data');
     }
     const data = await response.json();
+    console.log(data);
     for (let i = 0; i < data.length; i++) {
         let areaSelectValue = document.createElement('option');
         let engineerSelectValue = document.createElement('option');
-        areaSelectValue.value = data[i].name;
+        areaSelectValue.value = data[i].id;
         areaSelectValue.innerHTML = data[i].name;
         engineerSelectValue.value = data[i].email;
         engineerSelectValue.innerHTML = data[i].email;
@@ -381,7 +410,7 @@ const shiftEngineer = async () => {
     for (let i = 0; i < data.length; i++) {
         let shiftSelectValue = document.createElement('option');
         let engineerSelectValue = document.createElement('option');
-        shiftSelectValue.value = data[i].name;
+        shiftSelectValue.value = data[i].id;
         shiftSelectValue.innerHTML = data[i].name;
         engineerSelectValue.value = data[i].email;
         engineerSelectValue.innerHTML = data[i].email;
@@ -447,7 +476,6 @@ const getEmail2 = async () => {
 
     }
     eng_name_email.appendChild(emailEngineerSelectValue);
-
     return data;
 }
 //get station full name
@@ -455,6 +483,7 @@ const ssname = document.getElementById('ssname');
 const staion_full_name = document.getElementById('staion_full_name');
 const color = document.getElementById('color');
 const control_name = document.getElementById('control_name');
+const ssname2 = document.getElementById('ssname2');
 const getStationFullName = async () => {
     let staionId = ssname.value
     const response = await fetch("{{ URL::to('stationFullName') }}/" + staionId);
@@ -464,6 +493,7 @@ const getStationFullName = async () => {
     const data = await response.json();
     staion_full_name.classList.remove('d-none')
     staion_full_name.value = data.fullName;
+    ssname2.value = data.id;
     control_name.classList.remove('d-none')
 
     control_name.value = data.control;
@@ -595,6 +625,8 @@ const getStationFullName2 = async () => {
     const data = await response.json();
     staion_full_name.classList.remove('d-none')
     staion_full_name.value = data.fullName;
+    ssname2.value = data.id;
+
     control_name.classList.remove('d-none')
 
     control_name.value = data.control;
@@ -833,5 +865,24 @@ if (MainAlarmSelect.value == 'other') {
     dist.removeAttribute('name');
     voltage.innerHTML = 'Voltage';
 }
+</script>
+<script>
+//to toggle files atthachmant
+const showAttachment = document.getElementById('showAttachment');
+const hideAttachment = document.getElementById('hideAttachment');
+const attachmentFile = document.getElementById('attachmentFile');
+showAttachment.addEventListener('click', e => {
+    e.preventDefault();
+    hideAttachment.classList.toggle('d-none');
+    showAttachment.classList.toggle('d-none');
+    attachmentFile.classList.toggle('d-none');
+})
+hideAttachment.addEventListener('click', e => {
+    e.preventDefault();
+    hideAttachment.classList.toggle('d-none');
+    showAttachment.classList.toggle('d-none');
+    attachmentFile.classList.toggle('d-none');
+})
+</script>
 </script>
 @endsection

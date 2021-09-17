@@ -30,105 +30,6 @@
         width: 250px;
     }
 
-    /** LOADING */
-
-    .loader {
-        color: #ffb300;
-        font-size: 90px;
-        text-indent: -9999em;
-        overflow: hidden;
-        width: 1em;
-        height: 1em;
-        border-radius: 50%;
-        margin: 72px auto;
-        position: relative;
-        -webkit-transform: translateZ(0);
-        -ms-transform: translateZ(0);
-        transform: translateZ(0);
-        -webkit-animation: load6 1.7s infinite ease, round 1.7s infinite ease;
-        animation: load6 1.7s infinite ease, round 1.7s infinite ease;
-    }
-
-    @-webkit-keyframes load6 {
-        0% {
-            box-shadow: 0 -0.83em 0 -0.4em, 0 -0.83em 0 -0.42em, 0 -0.83em 0 -0.44em, 0 -0.83em 0 -0.46em, 0 -0.83em 0 -0.477em;
-        }
-
-        5%,
-        95% {
-            box-shadow: 0 -0.83em 0 -0.4em, 0 -0.83em 0 -0.42em, 0 -0.83em 0 -0.44em, 0 -0.83em 0 -0.46em, 0 -0.83em 0 -0.477em;
-        }
-
-        10%,
-        59% {
-            box-shadow: 0 -0.83em 0 -0.4em, -0.087em -0.825em 0 -0.42em, -0.173em -0.812em 0 -0.44em, -0.256em -0.789em 0 -0.46em, -0.297em -0.775em 0 -0.477em;
-        }
-
-        20% {
-            box-shadow: 0 -0.83em 0 -0.4em, -0.338em -0.758em 0 -0.42em, -0.555em -0.617em 0 -0.44em, -0.671em -0.488em 0 -0.46em, -0.749em -0.34em 0 -0.477em;
-        }
-
-        38% {
-            box-shadow: 0 -0.83em 0 -0.4em, -0.377em -0.74em 0 -0.42em, -0.645em -0.522em 0 -0.44em, -0.775em -0.297em 0 -0.46em, -0.82em -0.09em 0 -0.477em;
-        }
-
-        100% {
-            box-shadow: 0 -0.83em 0 -0.4em, 0 -0.83em 0 -0.42em, 0 -0.83em 0 -0.44em, 0 -0.83em 0 -0.46em, 0 -0.83em 0 -0.477em;
-        }
-    }
-
-    @keyframes load6 {
-        0% {
-            box-shadow: 0 -0.83em 0 -0.4em, 0 -0.83em 0 -0.42em, 0 -0.83em 0 -0.44em, 0 -0.83em 0 -0.46em, 0 -0.83em 0 -0.477em;
-        }
-
-        5%,
-        95% {
-            box-shadow: 0 -0.83em 0 -0.4em, 0 -0.83em 0 -0.42em, 0 -0.83em 0 -0.44em, 0 -0.83em 0 -0.46em, 0 -0.83em 0 -0.477em;
-        }
-
-        10%,
-        59% {
-            box-shadow: 0 -0.83em 0 -0.4em, -0.087em -0.825em 0 -0.42em, -0.173em -0.812em 0 -0.44em, -0.256em -0.789em 0 -0.46em, -0.297em -0.775em 0 -0.477em;
-        }
-
-        20% {
-            box-shadow: 0 -0.83em 0 -0.4em, -0.338em -0.758em 0 -0.42em, -0.555em -0.617em 0 -0.44em, -0.671em -0.488em 0 -0.46em, -0.749em -0.34em 0 -0.477em;
-        }
-
-        38% {
-            box-shadow: 0 -0.83em 0 -0.4em, -0.377em -0.74em 0 -0.42em, -0.645em -0.522em 0 -0.44em, -0.775em -0.297em 0 -0.46em, -0.82em -0.09em 0 -0.477em;
-        }
-
-        100% {
-            box-shadow: 0 -0.83em 0 -0.4em, 0 -0.83em 0 -0.42em, 0 -0.83em 0 -0.44em, 0 -0.83em 0 -0.46em, 0 -0.83em 0 -0.477em;
-        }
-    }
-
-    @-webkit-keyframes round {
-        0% {
-            -webkit-transform: rotate(0deg);
-            transform: rotate(0deg);
-        }
-
-        100% {
-            -webkit-transform: rotate(360deg);
-            transform: rotate(360deg);
-        }
-    }
-
-    @keyframes round {
-        0% {
-            -webkit-transform: rotate(0deg);
-            transform: rotate(0deg);
-        }
-
-        100% {
-            -webkit-transform: rotate(360deg);
-            transform: rotate(360deg);
-        }
-    }
-
     body {
         font-family: 'Cairo', sans-serif;
     }
@@ -156,18 +57,9 @@
             <div class="card">
                 <div class="card-body">
 
-                    <form action="/TaskCompleted/{{$tasks->id}}" enctype="multipart/form-data" method="post"
-                        autocomplete="off"> @csrf
-                        @if ($tasks->status == 'completed')
-                        <div class="text-center">
-                            <h2 class="text-info text-center">The Report is completed </h2>
-                            <p class="lead">
-                                <a class="btn btn-info " href="{{route('login')}}" role="button">Continue
-                                    to
-                                    homepage</a>
-                            </p>
-                        </div>
-                        @else
+                    <form action="{{route('blogs.userEditReport',['id'=>$tasks->id])}}" enctype="multipart/form-data"
+                        method="post" autocomplete="off"> @csrf
+
                         {{-- 1 --}}
                         <div class="row">
                             <div class="col-md-12 col-xl-12">
@@ -211,7 +103,12 @@
                                                         </tr>
                                                         <tr>
                                                             <th class="border-bottom-0">Make </th>
+                                                            @if($tasks->station->COMPANY_MAKE)
+                                                            <td colspan="4">{{$tasks->station->COMPANY_MAKE}}</td>
+                                                            @else
                                                             <td colspan="4">{{$tasks->make}}</td>
+                                                            @endif
+
                                                         </tr>
 
                                                         <tr>
@@ -305,81 +202,27 @@
                                                     <div class="col">
                                                         <label for="exampleTextarea">Action Take</label>
                                                         <textarea class="form-control" id="exampleTextarea"
-                                                            name="action_take" rows="3"></textarea>
+                                                            name="action_take"
+                                                            rows="3">{{$tasks_details->action_take}}</textarea>
                                                     </div>
 
                                                 </div>
                                                 <div class="row">
                                                     <div class="col">
                                                         <h5 class="card-title">المرفقات</h5>
-                                                        <div class="col-sm-12 col-md-12">
-                                                            <input type="file" name="pic[]" class="dropify"
-                                                                accept=".pdf,.jpg, .png, image/jpeg, image/png"
-                                                                data-height="70" />
-                                                        </div><br>
 
                                                         <div class="col-sm-12 col-md-12">
-                                                            <input type="file" name="pic[]" class="dropify"
-                                                                accept=".pdf,.jpg, .png, image/jpeg, image/png"
-                                                                data-height="70" />
+                                                            <input type="file" name="pic" class="dropify form-control"
+                                                                accept=".pdf,.jpg, .png, image/jpeg, image/png" />
+                                                            <p class="text-danger">* صيغة المرفق pdf, jpeg ,.jpg , png
+                                                            </p>
 
                                                         </div><br>
-                                                         <div class="text-center mb-3">
-                                                            <button id="showAttachment"
-                                                                class="btn btn-outline-info">اضغط لإضافة المزيد من
-                                                                المرفقات</button>
-                                                            <button id="hideAttachment"
-                                                                class="btn d-none btn-outline-info">اضغط  لإخفاء المزيد
-                                                                من
-                                                                المرفقات</button>
-
-                                                        </div>
-                                                        <div id="attachmentFile" class="d-none">
-                                                            <div class="col-sm-12 col-md-12">
-                                                                <input type="file" name="pic[]" class="dropify"
-                                                                    accept=".pdf,.jpg, .png, image/jpeg, image/png"
-                                                                    data-height="70" />
-                                                            </div><br>
-                                                            <div class="col-sm-12 col-md-12">
-                                                                <input type="file" name="pic[]" class="dropify"
-                                                                    accept=".pdf,.jpg, .png, image/jpeg, image/png"
-                                                                    data-height="70" />
-                                                            </div><br>
-                                                            <div class="col-sm-12 col-md-12">
-                                                                <input type="file" name="pic[]" class="dropify"
-                                                                    accept=".pdf,.jpg, .png, image/jpeg, image/png"
-                                                                    data-height="70" />
-                                                            </div><br>
-                                                        </div>
-                                                        <br>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="d-flex justify-content-center">
-                                                <button type="submit" class="btn btn-primary" data-toggle="modal"
-                                                    data-target="#exampleModal3">ارسال البيانات</button>
-                                                <!-- Loading Modal -->
-                                                <div class="modal fade" id="exampleModal3" tabindex="-1" role="dialog"
-                                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                    <div class="modal-dialog" role="document">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header text-center">
-                                                                <h5 class="modal-title" id="exampleModalLabel">جاري
-                                                                    إرسال البيانات</h5>
-                                                                <button type="button" class="close" data-dismiss="modal"
-                                                                    aria-label="Close">
-                                                                    <span aria-hidden="true">&times;</span>
-                                                                </button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <h5 class="text-center mt-2 text-warning">
-                                                                    Loading...Please wait</h5>
-                                                                <div class="loader">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                <button type="submit" class="btn btn-primary">حفظ البيانات</button>
                                             </div>
                                         </div>
                                     </div>
@@ -388,10 +231,7 @@
                         </div>
                     </form>
                 </div>
-                @endif
             </div>
-
-
             <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
                 aria-hidden="true">
                 <div class="modal-dialog" role="document">
@@ -435,7 +275,8 @@
                                 <!--END Taking all these hidden value to the form-->
 
                                 <label for="exampleTextarea">ملاحظات</label>
-                                <textarea class="form-control" id="exampleTextarea" name="add_more" rows="3"></textarea>
+                                <textarea class="form-control" id="exampleTextarea" name="add_more"
+                                    rows="3">{{$tasks_details->action_take}}</textarea>
 
                             </div>
                         </div>
@@ -463,23 +304,5 @@
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
     </script>
 </body>
-<script>
-//to toggle files atthachmant
-const showAttachment = document.getElementById('showAttachment');
-const hideAttachment = document.getElementById('hideAttachment');
-const attachmentFile = document.getElementById('attachmentFile');
-showAttachment.addEventListener('click', e => {
-    e.preventDefault();
-    hideAttachment.classList.toggle('d-none');
-    showAttachment.classList.toggle('d-none');
-    attachmentFile.classList.toggle('d-none');
-})
-hideAttachment.addEventListener('click', e => {
-    e.preventDefault();
-    hideAttachment.classList.toggle('d-none');
-    showAttachment.classList.toggle('d-none');
-    attachmentFile.classList.toggle('d-none');
-})
-</script>
 
 </html>

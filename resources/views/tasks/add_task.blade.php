@@ -15,10 +15,6 @@
 اضافة مهمة
 @stop
 <style>
-.email {
-    visibility: hidden;
-}
-
 .visible {
     visibility: visible;
 }
@@ -148,7 +144,15 @@
     </button>
 </div>
 @endif
-
+@if ($errors->any())
+<div class="alert alert-solid-danger mg-b-0">
+    <ul>
+        @foreach ($errors->all() as $error)
+        <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+</div>
+@endif
 <!-- row -->
 <div class="row">
     <div class="col-lg-12 col-md-12">
@@ -165,7 +169,7 @@
                         </div>
                         <div class="col-lg-4">
                             <label for="ssname">يرجى اختيار اسم المحطة</label>
-                            <input list="ssnames" class="form-control" name="ssname" id="ssname"
+                            <input list="ssnames" class="form-control" name="station_code" id="ssname"
                                 onchange="getStationFullName()">
 
                             <datalist id="ssnames">
@@ -173,6 +177,7 @@
                                 <option value="{{$station->SSNAME}}">
                                     @endforeach
                             </datalist>
+                            <input type="hidden" id="ssname2" name="ssname">
                             <input id="staion_full_name" name="staion_full_name"
                                 class="text-center d-none p-3 form-control" readonly>
                             <input id="control_name" name="control_name" class="text-center d-none  p-3 form-control"
@@ -203,16 +208,24 @@
                             <label for="main-alarm" class="control-label m-3">Main Alarm</label>
                             <select name="main_alarm" id="main_alarm" class="form-control">
                                 <!--placeholder-->
-                                <option value="">Select an alarm</option>
                                 <option value="Auto reclosure">Auto reclosure</option>
-                                <option value="Auto reclosure">Flag Relay Replacement </option>
+                                <option value="Flag Relay Replacement">Flag Relay Replacement </option>
                                 <option value="Protection Clearance feeder">Protection Clearance feeder</option>
                                 <option value="Transformer Clearance">Transformer Clearance</option>
+                                <option value="mw reading wrong transformer">mw reading wrong transformer</option>
+                                <option value="mv reading wrong transformer">mv reading wrong transformer</option>
+                                <option value="kv reading wrong transformer">kv reading wrong transformer</option>
                                 <option value="Dist Prot Main Alaram">Dist Prot Main Alaram</option>
                                 <option value="Dist.Prot.Main B Alarm">Dist.Prot.Main B Alarm</option>
                                 <option value="Pilot Cable Fault Alarm">Pilot Cable Fault Alarm</option>
                                 <option value="Pilot cable Superv.Supply Fail Alarm">Pilot cable Superv.Supply Fail
                                     Alarm</option>
+                                <option value="mw reading showing wrong">mw reading showing wrong</option>
+                                <option value="mv reading showing wrong">mv reading showing wrong</option>
+                                <option value="kv reading showing wrong">kv reading showing wrong</option>
+                                <option value="ampere reading showing wrong">ampere reading showing wrong</option>
+                                <option value="BB reading showing wrong">BB reading showing wrong</option>
+                                <option value="BB KV reading showing wrong">BB KV reading showing wrong</option>
                                 <option value="Transformer out of step Alarm">Transformer out of step Alarm</option>
                                 <option value="DC Supply 1 & 2 Fail Alarm">DC Supply 1 & 2 Fail Alarm</option>
                                 <option value="Communication Fail Alarm">Communication Fail Alarm</option>
@@ -528,7 +541,7 @@ const getEngineer = async () => {
     for (let i = 0; i < data.length; i++) {
         let areaSelectValue = document.createElement('option');
         let engineerSelectValue = document.createElement('option');
-        areaSelectValue.value = data[i].name;
+        areaSelectValue.value = data[i].id;
         areaSelectValue.innerHTML = data[i].name;
         engineerSelectValue.value = data[i].email;
         engineerSelectValue.innerHTML = data[i].email;
@@ -555,7 +568,7 @@ const shiftEngineer = async () => {
     for (let i = 0; i < data.length; i++) {
         let shiftSelectValue = document.createElement('option');
         let engineerSelectValue = document.createElement('option');
-        shiftSelectValue.value = data[i].name;
+        shiftSelectValue.value = data[i].id;
         shiftSelectValue.innerHTML = data[i].name;
         engineerSelectValue.value = data[i].email;
         engineerSelectValue.innerHTML = data[i].email;
@@ -585,7 +598,10 @@ const ssname = document.getElementById('ssname');
 const staion_full_name = document.getElementById('staion_full_name');
 const color = document.getElementById('color');
 const control_name = document.getElementById('control_name');
+const ssname2 = document.getElementById('ssname2');
+
 const getStationFullName = async () => {
+    ssname2.value = ssname.value
     let staionId = ssname.value
     const response = await fetch("{{ URL::to('stationFullName') }}/" + staionId);
     if (response.status !== 200) {
@@ -595,7 +611,7 @@ const getStationFullName = async () => {
     staion_full_name.classList.remove('d-none')
     staion_full_name.value = data.fullName;
     control_name.classList.remove('d-none')
-
+    ssname2.value = data.id;
     control_name.value = data.control;
     if (data.control === 'SHUAIBA CONTROL CENTER') {
         control_name.classList.remove('bg-success', 'bg-info', 'bg-warning', 'bg-danger', 'bg-white',
@@ -730,6 +746,36 @@ const shuntVoltage = document.getElementById('shuntVoltage');
 const dist = document.getElementById('dist');
 const equip = document.getElementById('equip');
 other_alarm.value = MainAlarmSelect.value;
+
+//to sort main alarm
+
+function sortList() {
+    var lb = document.querySelector('#main_alarm');
+    arrTexts = new Array();
+    arrValues = new Array();
+    arrOldTexts = new Array();
+
+    for (i = 0; i < lb.length; i++) {
+        arrTexts[i] = lb.options[i].text;
+        arrValues[i] = lb.options[i].value;
+        arrOldTexts[i] = lb.options[i].text;
+    }
+
+    arrTexts.sort();
+
+    for (i = 0; i < lb.length; i++) {
+        lb.options[i].text = arrTexts[i];
+        for (j = 0; j < lb.length; j++) {
+            if (arrTexts[i] == arrOldTexts[j]) {
+                lb.options[i].value = arrValues[j];
+                j = lb.length;
+            }
+        }
+    }
+}
+
+sortList();
+
 MainAlarmSelect.addEventListener('change', (event) => {
     equip.value = "";
     if (MainAlarmSelect.value == 'other') {
@@ -742,14 +788,18 @@ MainAlarmSelect.addEventListener('change', (event) => {
         dist.removeAttribute('name');
         other_alarm.classList.toggle('invisible');
         other_alarm.value = ""
-    } else if (MainAlarmSelect.value == 'Transformer Clearance') {
+
+    } else if (MainAlarmSelect.value == 'Transformer Clearance' || MainAlarmSelect.value ==
+        "mw reading wrong transformer" ||
+        MainAlarmSelect.value == "mv reading wrong transformer" || MainAlarmSelect.value ==
+        "kv reading wrong transformer") {
         transformorVoltage.classList.remove('d-none')
         transformorVoltage.setAttribute("name", "Voltage_Level");
         voltageLevel.classList.add('d-none');
         dist.classList.add('d-none')
         shuntVoltage.classList.add('d-none');
         shuntVoltage.removeAttribute('name');
-        ditst.removeAttribute('name');
+        dist.removeAttribute('name');
         voltage.innerHTML = 'Capacity'
     } else if (MainAlarmSelect.value == 'Shunt Reactor Clearance') {
         shuntVoltage.classList.remove('d-none');

@@ -22,7 +22,7 @@
 @endsection
 @section('content')
 <!-- row -->
-<a class="btn btn btn-warning btn-lg" href="{{route('blogs.blogs')}}">صفحة التقارير</a>
+
 <div class="row row-sm">
     <div class="col-xl-3 col-lg-6 col-md-6 col-xm-12">
         <div class="card overflow-hidden sales-card bg-primary-gradient">
@@ -170,14 +170,16 @@
                                         <p class="text-right text-muted"> {{$task->created_at}}</p>
                                         <span class="badge badge-danger ml-2">
                                             {{$task->status}}</span>
-                                        <h5 class="m-1 tx-15">{{$task->eng_name}}
-                                        </h5>
-                                        <p class="mb-0 tx-13 text-muted">ssname: {{$task->ssname}} </p>
+                                        <h5 class="m-1 tx-15">{{$task->engineers->name}}</h5>
+                                        <p class="mb-0 tx-13 text-dark">ssname: {{$task->station->SSNAME}} </p>
                                         <a href="/taskDetails/{{$task->id}}"
                                             class=" my-2 btn btn-outline-secondary ">Read More</a>
-                                        <a class="text-left btn btn-dark "
-                                            href="{{route('task.reminder',['id'=>$task->id,'eng_email'=>$task->eng_email,'ssname'=>$task->ssname])}}"
-                                            class=" m-2 btn btn-primary btn-sm">Reminder</a>
+                                        {{-- <a class="text-left btn btn-dark "
+                                            href="{{route('task.reminder',['id'=>$task->id,'eng_email'=>$task->engineers->email,'ssname'=>$task->station->SSNAME])}}"
+                                        class=" m-2 btn btn-primary btn-sm">Reminder</a>--}}
+                                        {{--  <a class="text-left btn btn-danger "
+                                            href="{{route('tasks.addYourReport',['id'=>$task->id])}}"
+                                        class=" m-2 btn btn-primary btn-sm">Action Take</a>--}}
                                     </div>
                                 </div>
                             </div>
@@ -195,18 +197,20 @@
 
             </div>
             @foreach($task_details as $task_detail)
-            <div class="product-timeline card-body pt-2 mt-1 text-center">
-                <ul class="timeline-1 mb-0">
-                    <li class="mt-0 mb-0"> <i class="icon-note icons bg-primary-gradient text-white product-icon"></i>
+            <div class="product-timeline card-body pt-2 mt-1 text-center ">
+                <ul class="timeline-1 mb-0 ">
+                    <li class="mt-0 mb-0 "> <i class="icon-note icons bg-primary-gradient text-white product-icon"></i>
                         <!-- <p class=" badge badge-success ">{{$task_detail->status}}</p> -->
                         <p class="text-right text-muted"> {{$task_detail->created_at}}</p>
-                        <p class="  p-3 mb-2 bg-dark text-white text-cente">Engineer : {{$task_detail->eng_name}}</p>
-                        <p class="  bg-white text-dark text-center  "><ins>Station : {{$task_detail->ssname}}</ins></p>
+                        <p class="p-3 mb-2 bg-dark text-white text-center">Engineer : {{$task_detail->engineers->name}}
+                        </p>
+                        <p class="  bg-white text-dark text-center  "><ins>Station :
+                                {{$task_detail->station->SSNAME}}</ins></p>
                         <p class=" bg-white text-secondary font-weight-bold text-center">Nature of fault :
                             {{$task_detail->problem}}</p>
                         <p class="p-3 mb-2 bg-light text-dark text-center">Action Take : {{$task_detail->action_take}}
                         </p>
-                        <a class="btn btn-secondary mt-2 text-center" href="/Print_task/{{$task_detail->id_task}}">Read
+                        <a class="btn btn-dark mt-2 text-center" href="/Print_task/{{$task_detail->id_task}}">Read
                             more</a>
 
                     </li>

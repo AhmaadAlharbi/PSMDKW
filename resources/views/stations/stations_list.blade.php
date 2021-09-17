@@ -67,7 +67,7 @@ window.onload = function() {
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
                         اضافة محطة
                     </button>
-                    <table id="example1" class="table key-buttons text-md-nowrap" data-page-length='10'>
+                    <table id="example" class="table key-buttons text-md-nowrap" data-page-length='10'>
                         <thead>
                             <tr>
                                 <th class="border-bottom-0">#</th>

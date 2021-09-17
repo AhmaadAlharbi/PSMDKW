@@ -58,11 +58,7 @@ window.onload = function() {
     <!--div-->
     <div class="col-xl-12">
         <div class="card mg-b-20">
-            <div class="card-header pb-0">
-                <div class="d-flex justify-content-between">
 
-                </div>
-            </div>
             <div class="card-body">
                 <div class="table-responsive">
                     <table id="example1" class="table key-buttons text-md-nowrap" data-page-length='50'>
@@ -90,28 +86,28 @@ window.onload = function() {
                             <tr>
                                 <td>{{$i}}</td>
                                 <td><a href="{{url('taskDetails')}}/{{$task->id}}">{{$task->refNum}}</a></td>
-                                <td>{{$task->ssname}}</td>
+                                <td>{{$task->station->SSNAME}}</td>
 
 
-                                @if($task->color == 'warning')
-                                <td class="table-warning">{{$task->control}}
+                                @if($task->station->control == "JAHRA CONTROL CENTER")
+                                <td class="table-warning">{{$task->station->control}}
                                 </td>
-                                @elseif($task->color == 'info')
-                                <td class="table-info">{{$task->control}}
+                                @elseif($task->station->control == "JABRIYA CONTROL CENTER")
+                                <td class="table-info">{{$task->station->control}}
                                 </td>
-                                @elseif($task->color == 'danger')
-                                <td class="table-danger">{{$task->control}}
+                                @elseif($task->station->control == "TOWN CONTROL CENTER")
+                                <td class="table-danger">{{$task->station->control}}
                                 </td>
-                                @elseif($task->color == 'success')
-                                <td class="table-success">{{$task->control}}
+                                @elseif($task->station->control == "SHUAIBA CONTROL CENTER")
+                                <td class="table-success">{{$task->station->control}}
                                 </td>
                                 @else
-                                <td class="table-light">{{$task->control}}
+                                <td class="table-light">{{$task->station->control}}
 
                                     @endif
 
                                 <td>{{$task->task_Date}}</td>
-                                <td>{{$task->eng_name}}</td>
+                                <td>{{$task->engineers->name}}</td>
 
                                  @if($task->status == 'completed')
                                 <td>
@@ -131,10 +127,15 @@ window.onload = function() {
                                             class="btn ripple btn-primary btn-sm" data-toggle="dropdown"
                                             type="button">العمليات<i class="fas fa-caret-down ml-1"></i></button>
                                         <div class="dropdown-menu tx-13">
+
                                             @if($task->status ==="completed")
                                             <a class="dropdown-item" href="Print_task/{{ $task->id }}"><i
                                                     class="text-success fas fa-print"></i>&nbsp;&nbsp;طباعة
                                                  التقرير
+                                            </a>
+                                            <a class=" dropdown-item btn btn-outline-info "
+                                                href="{{url('generate-pdf')}}/{{$task->id}}">
+                                                <i class="text-info fas fa-download"></i>&nbsp;&nbsp; تحميل
                                             </a>
                                             @else
                                             <!-- <a class="dropdown-item" href="{{url('fill_task')}}/{{$task->id}}"> تعبئة
@@ -143,20 +144,18 @@ window.onload = function() {
                                             <a class="dropdown-item" href="{{url('update_task')}}/{{$task->id}}">
                                                 تعديل
                                             </a>
+
                                             @endif
+                                            @if((auth()->user()->is_admin == 1))
                                             <a class="dropdown-item" href="#" data-invoice_id="{{ $task->id }}"
                                                 data-toggle="modal" data-target="#delete_invoice"><i
                                                     class="text-danger fas fa-trash-alt"></i>&nbsp;&nbsp;حذف
                                                 المهمة
                                             </a>
+                                            @endif
                                         </div>
                                     </div>
                                 </td>
-
-
-
-
-
                             </tr>
                             @endforeach
 
