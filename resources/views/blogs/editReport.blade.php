@@ -44,9 +44,9 @@
 
     <!-- row -->
     <div class="row">
-        @if (session()->has('Add'))
+        @if (session()->has('edit'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <strong>{{ session()->get('Add') }}</strong>
+            <strong>{{ session()->get('edit') }}</strong>
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -81,7 +81,8 @@
                                                 <div class="table-responsive mg-t-40">
                                                     <h2 class="text-center m-2 text-primary">إدارة صيانة محطات التحويل
                                                         الرئيسية</h2>
-
+                                                    <a href="{{route('blogs.blogs')}}" class="btn btn-secondary">الصفحة
+                                                        الرئيسية</a>
                                                     <table
                                                         class="table table-hover table-invoice table-striped table-border text-md-nowrap mb-0">
                                                         <tr>

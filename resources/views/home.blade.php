@@ -22,6 +22,20 @@
 @endsection
 @section('content')
 <!-- row -->
+<style>
+.HORIZONTAL_SCROLL_NAV {
+
+    -webkit-overflow-scrolling: touch;
+
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.HORIZONTAL_SCROLL_NAV>ul {
+
+    margin: 0 auto;
+}
+</style>
 
 <div class="row row-sm">
     <div class="col-xl-3 col-lg-6 col-md-6 col-xm-12">
@@ -174,9 +188,9 @@
                                         <p class="mb-0 tx-13 text-dark">ssname: {{$task->station->SSNAME}} </p>
                                         <a href="/taskDetails/{{$task->id}}"
                                             class=" my-2 btn btn-outline-secondary ">Read More</a>
-                                        {{-- <a class="text-left btn btn-dark "
+                                        <a class="text-left btn btn-dark "
                                             href="{{route('task.reminder',['id'=>$task->id,'eng_email'=>$task->engineers->email,'ssname'=>$task->station->SSNAME])}}"
-                                        class=" m-2 btn btn-primary btn-sm">Reminder</a>--}}
+                                            class=" m-2 btn btn-primary btn-sm">Resend Task</a>
                                         {{--  <a class="text-left btn btn-danger "
                                             href="{{route('tasks.addYourReport',['id'=>$task->id])}}"
                                         class=" m-2 btn btn-primary btn-sm">Action Take</a>--}}
@@ -212,17 +226,25 @@
                         </p>
                         <a class="btn btn-dark mt-2 text-center" href="/Print_task/{{$task_detail->id_task}}">Read
                             more</a>
-
                     </li>
                 </ul>
 
             </div>
-            <hr class="my-4   bg-secondary  ">
+            <hr class="my-4 bg-info">
             @endforeach
-            <ul class="pagination justify-content-center my-4">
-                {{$task_details->links()}}
-            </ul>
+            <nav aria-label="Page navigation pagination-sm   pagination-lg justify-content-center ">
+                <ul class="pagination">
+                    <li class="page-item">
+                        {{$task_details->links()}}
+
+                    </li>
+
+                </ul>
+            </nav>
         </div>
+
+
+
     </div>
 
 </div>

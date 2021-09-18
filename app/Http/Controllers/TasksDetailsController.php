@@ -151,7 +151,6 @@ class TasksDetailsController extends Controller
                 $attachments = new tasks_attachments();
                 $attachments->file_name = $name;
                 $attachments->refNum = $refNum;
-                $attachments->Created_by = Auth::user()->name;
                 $attachments->id_task = $task_id;
                 $attachments->save();
             }
@@ -249,7 +248,8 @@ class TasksDetailsController extends Controller
 
     //Blogs
     public function blogs()
-    {$engineers = Engineer::orderBy('name')->get();
+    {
+        $engineers = Engineer::orderBy('name')->get();
         $engineers = $engineers->unique('name');
         $stations = Stations::orderBy('SSNAME')->get();
         $tasks = Task::orderBy('id', 'desc')
@@ -348,10 +348,12 @@ class TasksDetailsController extends Controller
         return view('blogs.task_completed', compact('tasks','task_details','engineers','stations'));
     }
     public function userEditReport($id){
+        
         $tasks = Task::where('id',$id)->where('status','completed')->first();
          $tasks_details = Tasks_details::where('id_task',$id)->where('status','completed')->first();
-        return view('blogs.editReport',compact('tasks','tasks_details'));
-    }
+         session()->flash('edit', 'تم  التعديل التقرير بنجاح');
+         return view('blogs.editReport',compact('tasks','tasks_details'));
+        }
     public function usershowDetails($id)
     {
         $task = Task::where('id', $id)->first();

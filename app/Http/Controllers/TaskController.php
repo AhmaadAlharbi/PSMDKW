@@ -218,7 +218,8 @@ class TaskController extends Controller
      */
     public function update($id, Request $request)
     {
-        Task::create([
+        $tasks = Task::findOrFail($id);
+        $tasks->update([
             'refNum' => $request->refNum,
             'main_alarm' => $request->main_alarm,
             'station_id' => $request->ssname,

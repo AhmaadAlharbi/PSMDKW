@@ -161,11 +161,15 @@
                         @if ($tasks->status == 'completed')
                         <div class="text-center">
                             <h2 class="text-info text-center">The Report is completed </h2>
-                            <p class="lead">
-                                <a class="btn btn-info " href="{{route('login')}}" role="button">Continue
-                                    to
-                                    homepage</a>
-                            </p>
+                            <div class="p-4 mb-2 bg-info text-white">
+                                <h2> لرؤية تقاريرك والتعديل عليها يرجى التسجيل في الموقع بالايميل الوزاري
+                                </h2>
+                            </div>
+                            <a class="btn btn-success btn-lg p-3" href="{{route('register')}}"
+                                role="button">Register</a>
+
+                            <a class="btn btn-outline-info btn p-3" href="{{route('blogs.blogs')}}" role="button">Home
+                                page</a>
                         </div>
                         @else
                         {{-- 1 --}}
@@ -189,6 +193,9 @@
                                                 <div class="table-responsive mg-t-40">
                                                     <h2 class="text-center m-2 text-primary">إدارة صيانة محطات التحويل
                                                         الرئيسية</h2>
+                                                    <a href="{{route('blogs.blogs')}}" class="btn btn-secondary">الصفحة
+                                                        الرئيسية</a>
+
 
                                                     <table
                                                         class="table table-hover table-invoice table-striped table-border text-md-nowrap mb-0">
@@ -419,7 +426,7 @@
                                 <input type="hidden" class="form-control" id="inputName" name="refNum"
                                     value="{{$tasks->refNum}}" readonly>
                                 <input type="hidden" class="form-control" readonly name="ssname" id="ssname"
-                                    value="{{$tasks->ssname}}">
+                                    value="{{$tasks->station->id}}">
                                 <input class="form-control fc-datepicker" name="task_Date" placeholder="YYYY-MM-DD"
                                     type="hidden" value="{{ $tasks->task_Date}}" readonly required>
                                 <input type="hidden" class="form-control" readonly name="equip" id="equip"
@@ -429,7 +436,7 @@
                                 <input class="form-control fc-datepicker" name="report_Date" placeholder="YYYY-MM-DD"
                                     type="hidden" value="{{ date('Y-m-d') }}" readonly required>
                                 <input type="hidden" class="form-control" name="eng_name" readonly
-                                    value="{{$tasks->eng_name}}">
+                                    value="{{$tasks->engineers->name}}">
                                 <textarea type="hidden" style="display:none;" class="form-control" id="exampleTextarea"
                                     name="notes" readonly rows="3">{{$tasks->notes}}</textarea>
                                 <!--END Taking all these hidden value to the form-->

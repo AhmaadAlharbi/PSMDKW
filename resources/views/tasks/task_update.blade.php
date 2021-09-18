@@ -94,15 +94,25 @@
                             <select name="main_alarm" id="main_alarm" class="form-control">
                                 <!--placeholder-->
                                 <option value="{{$tasks->main_alarm}}">{{$tasks->main_alarm}}</option>
+
                                 <option value="Auto reclosure">Auto reclosure</option>
-                                <option value="Auto reclosure">Flag Relay Replacement </option>
+                                <option value="Flag Relay Replacement">Flag Relay Replacement </option>
                                 <option value="Protection Clearance feeder">Protection Clearance feeder</option>
                                 <option value="Transformer Clearance">Transformer Clearance</option>
+                                <option value="mw reading wrong transformer">mw reading wrong transformer</option>
+                                <option value="mv reading wrong transformer">mv reading wrong transformer</option>
+                                <option value="kv reading wrong transformer">kv reading wrong transformer</option>
                                 <option value="Dist Prot Main Alaram">Dist Prot Main Alaram</option>
                                 <option value="Dist.Prot.Main B Alarm">Dist.Prot.Main B Alarm</option>
                                 <option value="Pilot Cable Fault Alarm">Pilot Cable Fault Alarm</option>
                                 <option value="Pilot cable Superv.Supply Fail Alarm">Pilot cable Superv.Supply Fail
                                     Alarm</option>
+                                <option value="mw reading showing wrong">mw reading showing wrong</option>
+                                <option value="mv reading showing wrong">mv reading showing wrong</option>
+                                <option value="kv reading showing wrong">kv reading showing wrong</option>
+                                <option value="ampere reading showing wrong">ampere reading showing wrong</option>
+                                <option value="BB reading showing wrong">BB reading showing wrong</option>
+                                <option value="BB KV reading showing wrong">BB KV reading showing wrong</option>
                                 <option value="Transformer out of step Alarm">Transformer out of step Alarm</option>
                                 <option value="DC Supply 1 & 2 Fail Alarm">DC Supply 1 & 2 Fail Alarm</option>
                                 <option value="Communication Fail Alarm">Communication Fail Alarm</option>
@@ -755,6 +765,7 @@ const shuntVoltage = document.getElementById('shuntVoltage');
 const dist = document.getElementById('dist');
 
 other_alarm.value = MainAlarmSelect.value;
+
 MainAlarmSelect.addEventListener('change', (event) => {
     if (MainAlarmSelect.value == 'other') {
         transformorVoltage.classList.add('d-none');
@@ -766,15 +777,18 @@ MainAlarmSelect.addEventListener('change', (event) => {
         dist.removeAttribute('name');
         other_alarm.classList.toggle('invisible');
         other_alarm.value = ""
-    } else if (MainAlarmSelect.value == 'Transformer Clearance') {
+    } else if (MainAlarmSelect.value == 'Transformer Clearance' || MainAlarmSelect.value ==
+        "mw reading wrong transformer" ||
+        MainAlarmSelect.value == "mv reading wrong transformer" || MainAlarmSelect.value ==
+        "kv reading wrong transformer") {
         transformorVoltage.classList.remove('d-none')
         transformorVoltage.setAttribute("name", "Voltage_Level");
         voltageLevel.classList.add('d-none');
         dist.classList.add('d-none')
         shuntVoltage.classList.add('d-none');
         shuntVoltage.removeAttribute('name');
-        ditst.removeAttribute('name');
-        voltage.innerHTML = 'Capacity'
+        dist.removeAttribute('name');
+        voltage.innerHTML = 'Capacity';
     } else if (MainAlarmSelect.value == 'Shunt Reactor Clearance') {
         shuntVoltage.classList.remove('d-none');
         shuntVoltage.setAttribute("name", "Voltage_Level");
@@ -827,15 +841,18 @@ if (MainAlarmSelect.value == 'other') {
     dist.removeAttribute('name');
     other_alarm.classList.toggle('invisible');
     other_alarm.value = ""
-} else if (MainAlarmSelect.value == 'Transformer Clearance') {
+} else if (MainAlarmSelect.value == 'Transformer Clearance' || MainAlarmSelect.value ==
+    "mw reading wrong transformer" ||
+    MainAlarmSelect.value == "mv reading wrong transformer" || MainAlarmSelect.value ==
+    "kv reading wrong transformer") {
     transformorVoltage.classList.remove('d-none')
     transformorVoltage.setAttribute("name", "Voltage_Level");
     voltageLevel.classList.add('d-none');
     dist.classList.add('d-none')
     shuntVoltage.classList.add('d-none');
     shuntVoltage.removeAttribute('name');
-    ditst.removeAttribute('name');
-    voltage.innerHTML = 'Capacity'
+    dist.removeAttribute('name');
+    voltage.innerHTML = 'Capacity';
 } else if (MainAlarmSelect.value == 'Shunt Reactor Clearance') {
     shuntVoltage.classList.remove('d-none');
     shuntVoltage.setAttribute("name", "Voltage_Level");

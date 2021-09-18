@@ -18,9 +18,13 @@
 
         <p class="lead">
 
-        <div class="p-4 mb-2 bg-info text-white">To view your report and change it Please click the button below</div>
+        <div class="p-4 mb-2 bg-info text-white">
+            <h2> لرؤية تقاريرك والتعديل عليها يرجى التسجيل في الموقع بالايميل الوزاري
+            </h2>
+        </div>
+        <a class="btn btn-success btn-lg p-3" href="{{route('register')}}" role="button">Register</a>
 
-        <a class="btn btn-outline-info btn p-3" href="{{route('blogs.blogs')}}" role="button">Continue to homepage</a>
+        <a class="btn btn-outline-info btn p-3" href="{{route('blogs.blogs')}}" role="button">Home page</a>
         </p>
     </div>
 </body>

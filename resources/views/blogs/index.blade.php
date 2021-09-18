@@ -29,7 +29,7 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Search</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -39,7 +39,7 @@
                             <label for="">Select an Engineer's name:-</label>
                             <input list="engineers" class="form-control" name="engineer" id="engineer"
                                 onchange="getEngineerName()">
-                            <input type="text" id="hiddenName">
+                            <input type="hidden" id="hiddenName">
                             <datalist id="engineers">
                                 @foreach($engineers as $engineer)
                                 <option value="{{$engineer->name}}">
@@ -61,7 +61,7 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Search</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -71,7 +71,7 @@
                             <label for="">Select an S/S name:-</label>
                             <input list="stations" name="station" class="form-control" id="station"
                                 onchange="getStationName()">
-                            <input type="text" id="hiddenStation">
+                            <input type="hidden" id="hiddenStation">
                             <datalist id="stations">
                                 @foreach($stations as $station)
                                 <option value="{{$station->SSNAME}}">
@@ -333,9 +333,15 @@ window.onload = function() {
                     <hr class="my-4   bg-secondary  ">
                     <?php $count++; ?>
                     @endforeach
-                    <ul class="pagination justify-content-center my-4">
-                        {{$task_details->links()}}
-                    </ul>
+                    <nav aria-label="Page navigation pagination-sm   pagination-lg justify-content-center ">
+                        <ul class="pagination">
+                            <li class="page-item">
+                                {{$task_details->links()}}
+
+                            </li>
+
+                        </ul>
+                    </nav>
                 </div>
             </div>
 
