@@ -219,6 +219,8 @@ class TaskController extends Controller
     public function update($id, Request $request)
     {
         $tasks = Task::findOrFail($id);
+        $tasks_details = Tasks_details::where('id_task',$id);
+
         $tasks->update([
             'refNum' => $request->refNum,
             'main_alarm' => $request->main_alarm,
@@ -235,6 +237,17 @@ class TaskController extends Controller
             'status' => 'pending',
             'user' => (Auth::user()->name),
         ]);
+        $tasks_details->update([
+            'refNum' => $request->refNum,
+            'station_id' => $request->ssname,
+            'work_type' => $request->work_type,
+            'equip' => $request->equip,
+            'problem' => $request->problem,
+            'eng_id' => $request->eng_name,
+            'notes' => $request->notes,
+            'user' => (Auth::user()->name),
+        ]);
+
         $ssname = $request->ssname;
         $station_code=$request->station_code;
         $task_id =$id;

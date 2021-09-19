@@ -142,7 +142,7 @@ class TasksDetailsController extends Controller
         ]);
 
         if ($request->hasfile('pic')) {
-            $task_id = Task::latest()->first()->id;
+
             foreach ($request->file('pic') as $file) {
                 $name = $file->getClientOriginalName();
                 $file->move(public_path('Attachments/' . $task_id), $name);
