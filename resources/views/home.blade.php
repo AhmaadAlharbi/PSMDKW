@@ -224,8 +224,9 @@
                             {{$task_detail->problem}}</p>
                         <p class="p-3 mb-2 bg-light text-dark text-center">Action Take : {{$task_detail->action_take}}
                         </p>
-                        <a class="btn btn-dark mt-2 text-center" href="/Print_task/{{$task_detail->id_task}}">Read
-                            more</a>
+                        <a class="btn btn-info mt-2 text-center" href="/Print_task/{{$task_detail->id_task}}">Report</a>
+                        <a class="btn btn-outline-dark mt-2 text-center"
+                            href="{{route('ShowTask',['id'=>$task_detail->id_task])}}">Details</a>
                     </li>
                 </ul>
 

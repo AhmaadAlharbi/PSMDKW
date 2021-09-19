@@ -195,7 +195,7 @@
                     <div class="row m-3">
                         <div class="col-lg-6">
                             <label for="" class="control-label">Make</label>
-                            <input type="text" class="form-control" name="make">
+                            <input id="make" type="text" class="form-control" name="make">
                         </div>
                         <div class="col-lg-6">
                             <label for="" class="control-label">Last P.M</label>
@@ -389,7 +389,7 @@
                                 onchange="getEmail()">
                             </select>
                         </div>
-                        <div class="col email">
+                        <div class="d-none col email">
                             <label for="inputName" class="control-label"> Email</label>
                             <select id="eng_name_email" readonly name="eng_name_email" class="form-control">
                             </select>
@@ -599,7 +599,7 @@ const staion_full_name = document.getElementById('staion_full_name');
 const color = document.getElementById('color');
 const control_name = document.getElementById('control_name');
 const ssname2 = document.getElementById('ssname2');
-
+const make = document.getElementById('make');
 const getStationFullName = async () => {
     ssname2.value = ssname.value
     let staionId = ssname.value
@@ -612,6 +612,7 @@ const getStationFullName = async () => {
     staion_full_name.value = data.fullName;
     control_name.classList.remove('d-none')
     ssname2.value = data.id;
+    make.value = data.COMPANY_MAKE;
     control_name.value = data.control;
     if (data.control === 'SHUAIBA CONTROL CENTER') {
         control_name.classList.remove('bg-success', 'bg-info', 'bg-warning', 'bg-danger', 'bg-white',

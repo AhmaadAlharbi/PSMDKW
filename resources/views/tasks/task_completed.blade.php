@@ -133,10 +133,10 @@ window.onload = function() {
                                                     class="text-success fas fa-print"></i>&nbsp;&nbsp;طباعة
                                                  التقرير
                                             </a>
-                                            <a class=" dropdown-item btn btn-outline-info "
+                                            {{-- <a class=" dropdown-item btn btn-outline-info "
                                                 href="{{url('generate-pdf')}}/{{$task->id}}">
-                                                <i class="text-info fas fa-download"></i>&nbsp;&nbsp; تحميل
-                                            </a>
+                                            <i class="text-info fas fa-download"></i>&nbsp;&nbsp; تحميل
+                                            </a>--}}
                                             @else
                                             <!-- <a class="dropdown-item" href="{{url('fill_task')}}/{{$task->id}}"> تعبئة
                                                 المهمة

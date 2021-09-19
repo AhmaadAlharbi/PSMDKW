@@ -246,7 +246,7 @@ window.onload = function() {
                                                     {{$task->status}}</span>
                                                 <h5 class="m-1 tx-15">{{$task->engineers->name}}</h5>
                                                 <p class="mb-0 tx-13 text-muted">ssname: {{$task->station->SSNAME}} </p>
-                                                <a href="/taskDetails/{{$task->id}}"
+                                                <a href="{{route('userShowTask',['id'=>$task->id])}}"
                                                     class=" my-2 btn btn-outline-secondary ">Read More</a>
                                                 <a class="text-left btn btn-dark "
                                                     href="{{route('tasks.addYourReport',['id'=>$task->id])}}"

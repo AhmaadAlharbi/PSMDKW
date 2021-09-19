@@ -237,19 +237,7 @@ class TaskController extends Controller
         ]);
         $ssname = $request->ssname;
         $station_code=$request->station_code;
-        $task_id = Task::latest()->first()->id;
-        Tasks_details::create([
-            'id_task' => $task_id,
-            'refNum' => $request->refNum,
-            'station_id' => $request->ssname,
-            'task_Date' => $request->task_Date,
-            'equip' => $request->equip,
-            'problem' => $request->problem,
-            'eng_id' => $request->eng_name,
-            'notes' => $request->notes,
-            'status' => 'pending',
-            'user' => Auth::user()->name,
-        ]);
+        $task_id =$id;
         if ($request->hasfile('pic')) {
             $task_id = Task::latest()->first()->id;
             foreach ($request->file('pic') as $file) {
