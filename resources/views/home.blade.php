@@ -213,10 +213,11 @@
                                         <a class="text-left btn btn-dark "
                                             href="{{route('task.reminder',['id'=>$task->id,'eng_email'=>$task->engineers->email,'ssname'=>$task->station->SSNAME])}}"
                                             class=" m-2 btn btn-primary btn-sm">Resend Task</a>
+                                        <a class="text-left btn btn-success "
+                                            href="{{route('editTask',['id'=>$task->id])}}"
+                                            class=" m-2 btn btn-primary btn-sm">Edit</a>
                                         @endif
-                                        {{--  <a class="text-left btn btn-danger "
-                                            href="{{route('tasks.addYourReport',['id'=>$task->id])}}"
-                                        class=" m-2 btn btn-primary btn-sm">Action Take</a>--}}
+
                                     </div>
                                 </div>
                             </div>

@@ -28,7 +28,7 @@ Route::get('/', function () {
 })->name('login');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware('is_admin');
 Route::get('/sendtask', [TaskController::class, 'index'])->middleware('is_admin');
-Route::get('/task_to_be_assigned', [TaskController::class, 'toBeAssigned'])->middleware('is_admin');
+Route::get('/task_to_be_assigned', [TaskController::class, 'toBeAssigned'])->name('toBeAssigned')->middleware('is_admin');
 Route::get('/task_completed', [TaskController::class, 'task_completed'])->middleware('is_admin');
 Route::get('/All_tasks', [TaskController::class, 'All_tasks'])->middleware('auth');
 Route::get('/archive', [TaskController::class, 'archive'])->middleware('auth')->name('archive');

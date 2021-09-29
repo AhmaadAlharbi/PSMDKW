@@ -266,7 +266,7 @@
                                 <option value="{{$tasks->engineers->id}}">{{$tasks->engineers->name}}</option>
                             </select>
                         </div>
-                        <div class="col email">
+                        <div class="col email d-none">
                             <label for="inputName" class="control-label"> Email</label>
                             <select id="eng_name_email" name="eng_name_email" class="form-control">
                             </select>

@@ -53,11 +53,15 @@
                         class="angle fe fe-chevron-down"></i></a>
                 <ul class="slide-menu">
                     <li><a class="slide-item" href="{{ url('/' . $page='sendtask') }}">إصدار أمر العمل </a></li>
+                    <li><a class="slide-item bg-info text-light" href="{{route('toBeAssigned')}}">task To Be
+                            Assigned</a>
+
                     <li><a class="slide-item" href="{{ url('/' . $page='All_tasks') }}">  كافة المهمات </a></li>
                     <li><a class="slide-item" href="{{ url('/' . $page='task_completed') }}"> التقارير المنجزة</a></li>
                     <li><a class="slide-item" href="{{ url('/' . $page='task_uncompleted') }}">التقارير الغير منجزة</a>
-                    <li><a class="slide-item bg-warning text-dark" href="{{route('tasks.nightshift')}}">تعبئة
-                            تقارير الخفارة</a>
+
+                        {{-- <li><a class="slide-item bg-warning text-dark" href="{{route('tasks.nightshift')}}">تعبئة
+                        تقارير الخفارة</a>--}}
                     </li>
                 </ul>
             </li>
