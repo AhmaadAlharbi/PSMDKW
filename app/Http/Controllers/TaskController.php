@@ -130,6 +130,50 @@ class TaskController extends Controller
         return back();
     }
 
+    public function storeWaitingToBeAssigned(Request $request){
+        $validated = $request->validate([
+            'ssname' => 'required|numeric',
+
+        ],
+        [
+            'ssname.required' =>'يرجى اختيار اسم المحطة',
+            'ssname.numeric'=>'يرجى اختيار المحطة من القائمة فقط'
+
+        ]);
+
+        Task::create([
+            'refNum' => $request->refNum,
+            'main_alarm' => $request->main_alarm,
+            'station_id' => $request->ssname,
+            'work_type' => $request->work_type,
+            'Voltage_level' => $request->Voltage_Level,
+            'make' => $request->make,
+            'pm' => $request->pm,
+            'task_Date' => $request->task_Date,
+            'equip' => $request->equip,
+            'problem' => $request->problem,
+            'notes' => $request->notes,
+            'status' => 'waiting',
+            'user' => (Auth::user()->name),
+        ]);
+        $ssname = $request->ssname;
+        $station_code=$request->station_code;
+        $task_id = Task::latest()->first()->id;
+        Tasks_details::create([
+            'id_task' => $task_id,
+            'refNum' => $request->refNum,
+            'station_id' => $request->ssname,
+            'task_Date' => $request->task_Date,
+            'equip' => $request->equip,
+            'problem' => $request->problem,
+            'notes' => $request->notes,
+            'status' => 'pending',
+            'user' => Auth::user()->name,
+        ]);
+        session()->flash('Add', 'تم اضافةالمهمة بنجاح');
+        return back();
+    }
+   
     public function storeNightShift(Request $request){
         Task::create([
             'refNum' => $request->refNum,
@@ -169,6 +213,10 @@ class TaskController extends Controller
 
         session()->flash('Add', 'تم اضافةالمهمة بنجاح');
         return back();
+    }
+    public function toBeAssigned(Request $request){
+        $stations = Stations::all();
+        return view('tasks.task_to_be_assigned', compact('stations'));
     }
     public function nightShift(){
         $engineers = Engineer::orderBy('name')->get();
@@ -279,7 +327,13 @@ class TaskController extends Controller
 
         return back();
     }
+    public function selectEngineer($id){
+        $stations = Stations::all();
+        $tasks = Task::findOrFail($id);
+        $tasks_details = Tasks_details::where('id_task',$id);
 
+        return view('tasks.task_assignEngineer',compact('stations','tasks','tasks_details'));
+    }
     /**
      * Remove the specified resource from storage.
      *
@@ -340,6 +394,8 @@ class TaskController extends Controller
     {
         $tasks = Task::whereMonth('created_at', date('m'))
             ->orderBy('id', 'desc')
+            ->where('status','pending')
+            ->orWhere('status','completed')
             ->get();
    
         return view('tasks.showAllTasks', compact('tasks'));

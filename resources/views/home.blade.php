@@ -175,22 +175,45 @@
             <div class="card-body p-0 customers mt-1">
                 <div class="list-group list-lg-group list-group-flush">
                     <div class="list-group-item list-group-item-action" href="#">
-                        <div class="media mt-0">
+                        <div class="media  mt-0">
+
                             <img class="avatar-lg rounded-circle ml-3 my-auto" src="image/electricIcon.svg"
                                 alt="Image description">
+
                             <div class="media-body">
                                 <div class="d-flex align-items-center">
                                     <div class="mt-0">
                                         <p class="text-right text-muted"> {{$task->created_at}}</p>
+
+                                        @if($task->status == 'waiting')
+                                        <span class="badge badge-warning text-white ml-2">
+
+                                            {{$task->status}}
+                                        </span>
+                                        @else
                                         <span class="badge badge-danger ml-2">
-                                            {{$task->status}}</span>
+
+                                            {{$task->status}}
+                                        </span>
+                                        @endif
+                                        @if(isset($task->engineers->name))
                                         <h5 class="m-1 tx-15">{{$task->engineers->name}}</h5>
+                                        @else
+                                        <h5 class="m-1 tx-15 text-info border  p-2">Waiting to be assigned
+                                        </h5>
+                                        <a href="{{route('selectEngineer',['id'=>$task->id])}}"
+                                            class="btn  btn-warning d-block">Assign Engineer</a>
+                                        @endif
+
                                         <p class="mb-0 tx-13 text-dark">ssname: {{$task->station->SSNAME}} </p>
                                         <a href="/taskDetails/{{$task->id}}"
                                             class=" my-2 btn btn-outline-secondary ">Read More</a>
+                                        @if(isset($task->engineers->name))
+
                                         <a class="text-left btn btn-dark "
                                             href="{{route('task.reminder',['id'=>$task->id,'eng_email'=>$task->engineers->email,'ssname'=>$task->station->SSNAME])}}"
                                             class=" m-2 btn btn-primary btn-sm">Resend Task</a>
+                                        @endif
                                         {{--  <a class="text-left btn btn-danger "
                                             href="{{route('tasks.addYourReport',['id'=>$task->id])}}"
                                         class=" m-2 btn btn-primary btn-sm">Action Take</a>--}}
@@ -216,13 +239,19 @@
                     <li class="mt-0 mb-0 "> <i class="icon-note icons bg-primary-gradient text-white product-icon"></i>
                         <!-- <p class=" badge badge-success ">{{$task_detail->status}}</p> -->
                         <p class="text-right text-muted"> {{$task_detail->created_at}}</p>
-                        <p class="p-3 mb-2 bg-dark text-white text-center">Engineer : {{$task_detail->engineers->name}}
-                        </p>
+                        @if(isset($task_detail->engineers->name))
+                        <p class="p-3 mb-2 bg-dark text-white text-center">Engineer :
+                            {{$task_detail->engineers->name}}
+                        </p> @else
+                        <h5 class="m-1 tx-15">Waiting...</h5>
+                        @endif
+
                         <p class="  bg-white text-dark text-center  "><ins>Station :
                                 {{$task_detail->station->SSNAME}}</ins></p>
                         <p class=" bg-white text-secondary font-weight-bold text-center">Nature of fault :
                             {{$task_detail->problem}}</p>
-                        <p class="p-3 mb-2 bg-light text-dark text-center">Action Take : {{$task_detail->action_take}}
+                        <p class="p-3 mb-2 bg-light text-dark text-center">Action Take :
+                            {{$task_detail->action_take}}
                         </p>
                         <a class="btn btn-info mt-2 text-center" href="/Print_task/{{$task_detail->id_task}}">Report</a>
                         <a class="btn btn-outline-dark mt-2 text-center"

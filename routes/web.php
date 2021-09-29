@@ -27,15 +27,16 @@ Route::get('/', function () {
     return view('auth.login');
 })->name('login');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware('is_admin');
-
 Route::get('/sendtask', [TaskController::class, 'index'])->middleware('is_admin');
+Route::get('/task_to_be_assigned', [TaskController::class, 'toBeAssigned'])->middleware('is_admin');
 Route::get('/task_completed', [TaskController::class, 'task_completed'])->middleware('is_admin');
 Route::get('/All_tasks', [TaskController::class, 'All_tasks'])->middleware('auth');
 Route::get('/archive', [TaskController::class, 'archive'])->middleware('auth')->name('archive');
 Route::get('/archive/search_between_Dates', [TaskController::class, 'stationsByDates'])->name('staionsByDates');
 Route::get('/task_uncompleted', [TaskController::class, 'task_uncompleted'])->middleware('is_admin');
 Route::get('/fill_task/{id}', [TasksDetailsController::class, 'fillTheTask'])->middleware('is_admin');
-Route::get('/update_task/{id}', [TaskController::class, 'editTask'])->middleware('auth');
+Route::get('/update_task/{id}', [TaskController::class, 'editTask'])->name('editTask')->middleware('auth');
+Route::get('/select-Engineer/{id}',[TaskController::class,'selectEngineer'])->name('selectEngineer');
 Route::post('/update_tasks/{id}', [TaskController::class, 'update'])->name('task.update');
 Route::post('/TaskCompleted/{id}', [TasksDetailsController::class, 'TaskCompleted'])->name('TaskCompleted');
 Route::post('/fill_pending_task/{id}', [TasksDetailsController::class, 'TaskPending'])->name('TaskPending');
@@ -49,6 +50,7 @@ Route::get('/engineersEmail2/{id}', [TaskController::class, 'getEngineersEmail']
 Route::get('/sendtask/night-shift',[TaskController::class,'nightShift'])->name('tasks.nightshift');
 Route::post('/sendtask/night-shift',[TaskController::class,'storeNightShift'])->name('tasks.nightshiftCompleted');
 Route::post('/sendtask', [TaskController::class, 'store'])->name('task.store')->middleware('is_admin');
+Route::post('/task_to_be_assigned', [TaskController::class, 'storeWaitingToBeAssigned'])->name('task.waitingToBeAssigned')->middleware('is_admin');
 Route::get('/reminder/{id}/{eng_email}/{ssname}', [TaskController::class, 'reminder'])->name('task.reminder')->middleware('is_admin');
 Route::get('/Print_task/{id}', [TasksDetailsController::class, 'Print_task'])->name('print')->middleware('auth');
 Route::get('/Print_task/pdf/{id}', [TasksDetailsController::class, 'createPdf'])->middleware('auth');

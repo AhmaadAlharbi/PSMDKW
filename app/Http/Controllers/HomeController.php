@@ -30,8 +30,10 @@ class HomeController extends Controller
     {
         $engineers = Engineer::all();
         $tasks = Task::orderBy('id', 'desc')
-            ->get()
-            ->where('status', 'pending');
+            ->where('status', 'pending')
+            ->orWhere('status', 'waiting')
+            ->get();
+
         $task_details = Tasks_details::orderBy('id', 'desc')
             ->whereMonth('created_at', date('m'))
             ->where('status', 'completed')

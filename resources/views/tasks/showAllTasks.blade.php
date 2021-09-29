@@ -108,8 +108,11 @@ window.onload = function() {
                                     @endif
 
                                 <td>{{$task->task_Date}}</td>
+                                @if(isset($task->engineers->name))
                                 <td>{{$task->engineers->name}}</td>
-
+                                @else
+                                <td>waiting...</td>
+                                @endif
                                  @if($task->status == 'completed')
                                 <td>
                                     <span class="text-success">{{ $task->status }}</span>

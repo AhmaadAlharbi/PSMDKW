@@ -156,8 +156,8 @@ td {
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td>{{$task_details->station->Contract_No}}</td>
                                                 <td>{{$task_details->station->COMPANY_MAKE}}</td>
+                                                <td>{{$task_details->station->Contract_No}}</td>
 
                                             </tr>
                                         </tbody>

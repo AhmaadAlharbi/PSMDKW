@@ -63,6 +63,8 @@ window.onload = function() {
 
                 </div>
             </div>
+
+
             <div class="card-body">
                 <div class="table-responsive">
                     <table id="example1" class="table key-buttons text-md-nowrap" data-page-length='50'>
@@ -86,6 +88,8 @@ window.onload = function() {
                             @php
                             $i++
                             @endphp
+                            @unless(Auth::user()->email !==$task->engineers->email)
+
                             <tr>
                                 <td>{{$i}}</td>
                                 <td><a href="{{route('userShowTask',['id'=>$task->id])}}">{{$task->refNum}}</a>
@@ -98,13 +102,9 @@ window.onload = function() {
                                         class="btn btn-success">Report</a></td>
                                 <td><a href="{{route('userEditReport',['id'=>$task->id])}}"
                                         class="btn btn-warning">Edit</a></td>
-
-
-
-
-
-
                             </tr>
+                            @endunless
+
                             @endforeach
 
                         </tbody>

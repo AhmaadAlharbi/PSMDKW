@@ -32,7 +32,7 @@
                             d="M3 13h8V3H3v10zm2-8h4v6H5V5zm8 16h8V11h-8v10zm2-8h4v6h-4v-6zM13 3v6h8V3h-8zm6 4h-4V5h4v2zM3 21h8v-6H3v6zm2-4h4v2H5v-2z" />
                     </svg><span class="side-menu__label">الرئيسية</span></a>
             </li>
-            <li class="side-item side-item-category"> البحث</li>
+            {{-- <li class="side-item side-item-category"> البحث</li>--}}
 
             {{--<li class="slide">
                 <a class="side-menu__item" data-toggle="slide" href="{{ url('/' . $page='') }}"><svg

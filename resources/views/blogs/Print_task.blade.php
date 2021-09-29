@@ -117,7 +117,7 @@ td {
                         <div class="d-block p-3  print-title text-dark">
                             <p class="text-center">Primary substation maintenance department</p>
 
-                            <h2 class="text-center"> Trouble shooting Report</h2>
+                            <h2 class="text-center "> Trouble shooting Report</h2>
                             <h5 class="text-center m-1"><ins>Ref.No: {{$task_details->refNum}}</ins></h5>
 
                         </div>
@@ -156,8 +156,8 @@ td {
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td>{{$task_details->station->Contract_No}}</td>
                                                 <td>{{$task_details->station->COMPANY_MAKE}}</td>
+                                                <td>{{$task_details->station->Contract_No}}</td>
 
                                             </tr>
                                         </tbody>

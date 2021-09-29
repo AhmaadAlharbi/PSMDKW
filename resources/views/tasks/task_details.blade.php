@@ -143,8 +143,11 @@
                                                 </tr>
                                                 <tr>
                                                     <th class="border-bottom-0 wd-40p">المهندس</th>
-                                                    <td colspan="3">{{$task->engineers->name}}</td>
-
+                                                    @if(isset($task->engineers->name))
+                                                    <td>{{$task->engineers->name}}</td>
+                                                    @else
+                                                    <td>waiting...</td>
+                                                    @endif
 
                                                 </tr>
 
@@ -170,6 +173,7 @@
                                                         <th class="border-bottom-0">المهندس</th>
                                                         <th class="border-bottom-0">الحالة </th>
                                                         <th class="border-bottom-0">سبب عدم الإنجاز </th>
+                                                        <th class="border-bottom-0">ملاحظات المهندس</th>
                                                         <th class="border-bottom-0">بواسطة </th>
 
 
@@ -191,7 +195,11 @@
                                                         <td>{{$x->report_date}}</td>
                                                         <td>{{$x->equip}}</td>
                                                         <td>{{$x->problem}}</td>
+                                                        @if(isset($x->engineers->name))
                                                         <td>{{$x->engineers->name}}</td>
+                                                        @else
+                                                        <td>waiting...</td>
+                                                        @endif
                                                          @if($x->status == 'completed')
                                                         <td>
                                                             <span
@@ -206,6 +214,7 @@
                                                         @endif
 
                                                         <td>{{$x->reason}}</td>
+                                                        <td>{{$x->add_more}}</td>
                                                         <td>{{$x->user}}</td>
 
                                                     </tr>
