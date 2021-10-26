@@ -393,9 +393,8 @@ class TaskController extends Controller
     public function All_tasks()
     {
         $tasks = Task::whereMonth('created_at', date('m'))
+            
             ->orderBy('id', 'desc')
-            ->where('status','pending')
-            ->orWhere('status','completed')
             ->get();
    
         return view('tasks.showAllTasks', compact('tasks'));
@@ -413,10 +412,14 @@ class TaskController extends Controller
         $date1 = $request->task_Date;
         $date2 = $request->task_Date2;
 
-        $tasks = DB::table('tasks')
-            ->whereBetween('task_Date', [$date1, $date2])
-            ->where('status', ('completed'))
-            ->get();
+        // $tasks = DB::table('tasks')
+        //     ->whereBetween('task_Date', [$date1, $date2])
+        //     ->where('status', ('completed'))
+        //     ->get();
+
+        $tasks = Task::whereBetween('task_Date', [$date1, $date2])
+        ->where('status', ('completed'))
+        ->get();
         return view('tasks.archive', compact('tasks'));
     }
 

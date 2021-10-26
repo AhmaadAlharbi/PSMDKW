@@ -103,7 +103,6 @@ window.onload = function() {
                                 <td><a href="/Print_task/{{$task->id}}">{{$task->refNum}}</a></td>
 
                                 <td>{{$task->station->SSNAME}}</td>
-
                                 @if($task->station->control == "JAHRA CONTROL CENTER")
                                 <td class="table-warning">{{$task->station->control}}
                                 </td>

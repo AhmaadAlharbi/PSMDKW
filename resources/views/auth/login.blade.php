@@ -170,13 +170,19 @@ svg {
                                                         name="remember">
                                                     <span class="ml-2 text-sm text-gray-600">{{ __('تذكرني') }}</span>
                                                 </label>
-                                                <a class="d-block" href="{{route('password.request')}}">هل نسيت كلمة
+                                                <a class="d-block mb-4" href="{{route('password.request')}}">هل نسيت
+                                                    كلمة
                                                     المرور؟</a>
+
 
                                             </div>
                                             <button type="submit" class="btn btn-login btn-block">
                                                 {{ __('تسجيل الدخول') }}
                                             </button>
+                                            <a class="d-block mt-3 btn btn-outline-info mb-4"
+                                                href="{{route('register')}}">
+
+                                                التسجيل لأول مرة</a>
                                         </form>
                                     </div>
                                 </div>
