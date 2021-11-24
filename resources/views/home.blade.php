@@ -16,6 +16,7 @@
         <div>
             <h2 class="main-content-title tx-24 mg-b-1 mg-b-lg-1">لوحة تحكم إدارة مهمات قسم الوقاية</h2>
         </div>
+        {{--$taskAlarmCount--}}
     </div>
 </div>
 <!-- /breadcrumb -->
@@ -170,6 +171,7 @@
             <div class="card-header pb-1">
                 <h3 class="card-title mb-2">آخر المهمات</h3>
                 <p class="tx-12 mb-0 text-muted"></p>
+
             </div>
             @foreach($tasks as $task)
             <div class="card-body p-0 customers mt-1">
@@ -218,6 +220,11 @@
                                             class=" m-2 btn btn-primary btn-sm">Edit</a>
                                         @endif
 
+
+                                        @if($task->alarm_count >= 6) <p class="text-warning"> "ملاحظة : تكررت هذه
+                                            المشكلة في نفس
+                                            المحطه اكثر من 5 مرات خلال فترة 6 أشهر"</p>
+                                        @endif
                                     </div>
                                 </div>
                             </div>

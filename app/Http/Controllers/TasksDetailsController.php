@@ -91,6 +91,15 @@ class TasksDetailsController extends Controller
         
     }
 
+    public function updateStatus(Request $request,$id){
+        $tasks = Tasks_details::where('id_task',$id);
+        $tasks->update([
+            'report_status' => 2
+   
+        ]);
+        return back();
+    }
+
     /**
      * Remove the specified resource from storage.
      *
@@ -134,6 +143,8 @@ class TasksDetailsController extends Controller
             'notes' => $request->notes,
             'action_take' => $request->action_take,
             'status' => 'completed',
+            'report_status'=>1,
+
         ]);
 
         $tasks = Task::where('id', $task_id)->first();

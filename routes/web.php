@@ -46,6 +46,9 @@ Route::get('/engineersShift/{id}/{shiftID}', [TaskController::class, 'getEnginee
 Route::get('/stationFullName/{id}', [TaskController::class, 'getStationFullName']);
 // Route::get('/engineersEmail/{area_id}/{shift_id}/{engineer_id}',[TaskController::class,'getEngineersEmail']);
 Route::get('/engineersEmail/{id}', [TaskController::class, 'getEngineersEmail']);
+Route::get('/Equip/{id}', [TaskController::class, 'getEquip']);
+Route::get('/EquipNumber/{id}/{voltage_level}', [TaskController::class, 'getEquipNumber']);
+Route::get('/Equipname/{id}', [TaskController::class, 'getEquipName']);
 Route::get('/engineersEmail2/{id}', [TaskController::class, 'getEngineersEmail']);
 Route::get('/sendtask/night-shift',[TaskController::class,'nightShift'])->name('tasks.nightshift');
 Route::post('/sendtask/night-shift',[TaskController::class,'storeNightShift'])->name('tasks.nightshiftCompleted');
@@ -87,8 +90,11 @@ Route::get('/archive', [TaskController::class, 'archive'])->middleware('auth')->
 Route::get('/user/edit_report/{id}', [TasksDetailsController::class, 'userEditReport'])->name('userEditReport')->middleware('auth');
 Route::get('user/reports/{id}',[TasksDetailsController::class,'update'])->name('blogs.userEditReport');
 Route::post('user/reports/{id}',[TasksDetailsController::class,'update'])->name('blogs.userEditReport');
+Route::get('user/reports_status/{id}',[TasksDetailsController::class,'updateStatus'])->name('blogs.userEditReportStatus');
+
 Route::get('user/archive', [TasksDetailsController::class, 'userArchive'])->middleware('auth')->name('user.archive');
 Route::get('user/archive/search_between_Dates', [TasksDetailsController::class, 'userStationsByDates'])->name('user.staionsByDates');
+Route::get('user/index.', [TasksDetailsController::class, 'userStationsByDates'])->name('user.staionsByDates');
 
 
 //PDF

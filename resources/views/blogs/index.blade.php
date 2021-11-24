@@ -289,11 +289,23 @@ window.onload = function() {
                                     href="{{route('user.print',['id'=>$task_detail->id_task])}}">Report</a>
                                 <a class="btn btn-outline-dark mt-2 text-center"
                                     href="{{route('userShowTask',['id'=>$task_detail->id_task])}}">Details</a>
-                                @if(Auth::user()->email == $task_detail->engineers->email )
+                                @if(Auth::user()->email == $task_detail->engineers->email)
+
+                                @if( $task_detail->report_status === 0 )
                                 <button type="button" class="btn btn-secondary mt-2 text-center" data-toggle="modal"
                                     data-target="#myModal<?php echo $count; ?>">
                                      Edit
                                 </button>
+                                @elseif($task_detail->report_status === 1)
+                                <a class="btn btn-outline-dark mt-2 text-center"
+                                    href="{{route('blogs.userEditReportStatus',['id'=>$task_detail->id_task])}}"> طلب
+                                    تعديل التقرير</a>
+
+                                @else
+                                <button type="button" class="btn btn-secondary mt-2 text-center" disabled>
+                                    بإنتظار الموافقة على التعديل
+                                </button>
+                                @endif
                                 <!-- Modal -->
                                 <div class="modal fade" id="myModal<?php echo $count; ?>" tabindex="-1" role="dialog"
                                     aria-labelledby="exampleModalLabel" aria-hidden="true">

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Task;
+use App\Models\Equip;
 use App\Models\Tasks_details;
 use App\Models\tasks_attachments;
 use Illuminate\Http\Request;
@@ -36,6 +37,7 @@ class TaskController extends Controller
         $shifts = Shift::all();
         $tasks = Task::all();
         $stations = Stations::all();
+        
         // $task_last_id = Task::latest()->first()->id;
         // $task_last_id++;
         return view('tasks.add_task', compact('engineers', 'areas', 'shifts', 'stations'));
@@ -69,7 +71,10 @@ class TaskController extends Controller
             'ssname.numeric'=>'يرجى اختيار المحطة من القائمة فقط'
 
         ]);
-
+        $taskAlarmCount = Task::where('main_alarm',$request->main_alarm)
+        ->where('station_id',$request->ssname)
+        ->where("created_at",">", Carbon::now()->subMonths(6))
+        ->count();
         Task::create([
             'refNum' => $request->refNum,
             'main_alarm' => $request->main_alarm,
@@ -84,8 +89,10 @@ class TaskController extends Controller
             'eng_id' => $request->eng_name,
             'notes' => $request->notes,
             'status' => 'pending',
+            'alarm_count'=>$taskAlarmCount,
             'user' => (Auth::user()->name),
         ]);
+
         $ssname = $request->ssname;
         $station_code=$request->station_code;
         $task_id = Task::latest()->first()->id;
@@ -99,6 +106,7 @@ class TaskController extends Controller
             'eng_id' => $request->eng_name,
             'notes' => $request->notes,
             'status' => 'pending',
+            'report_status'=>0,
             'user' => Auth::user()->name,
         ]);
         if ($request->hasfile('pic')) {
@@ -125,6 +133,13 @@ class TaskController extends Controller
             Notification::route('mail', $engineer_email)
                 ->notify(new AddTaskNoAttachment($task_id, $station_code));
         }
+        //to check if the alarm is repeated in one station
+
+
+      
+   
+
+   
 
         session()->flash('Add', 'تم اضافةالمهمة بنجاح');
         return back();
@@ -356,6 +371,28 @@ class TaskController extends Controller
 
         // return  json_encode($engineers);
     }
+    public function getEquip($id){
+        // $equipVoltageUnique = Equip::where('station_id',$id)->get();
+        // $equipVoltageUnique = $equipVoltageUnique->unique('voltage_level');
+        // return (string) $equipVoltageUnique;
+
+        return (string)  Equip::where('station_id',$id)->orderBy('voltage_level')->get();
+        
+        // $equips = DB::table("equip")->where("station_id", $id)->pluck("voltage-level", "id");
+        // return  json_encode($equips);
+
+    }
+
+    public function getEquipNumber($station_id,$voltage_level){
+        return (string)  Equip::where('station_id',$station_id)
+        ->where('voltage_level',$voltage_level)->get();
+
+    }
+
+    public function getEquipName($euipNumber){
+        return (string)  Equip::where('eqiup_number',$euipNumber)->get();
+    }
+
     public function getEngineersShift($area_id, $shift_id)
     {
         // $engineers = DB::table("engineers")->where("area_id", $area_id)->where("shift_id", $shift_id)->pluck("name", "id");

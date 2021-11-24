@@ -40,6 +40,9 @@ class HomeController extends Controller
             ->paginate(4);
         $date = Carbon::now();
         $monthName = $date->format('F');
+        // $taskAlarmCount = Task::where('main_alarm','Auto reclosure')
+        // ->where('station_id','1')
+        // ->count();
 
         return view('home', compact('engineers','tasks', 'task_details', 'monthName'));
     }

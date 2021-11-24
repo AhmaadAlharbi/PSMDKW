@@ -130,6 +130,7 @@
             <h4 class="content-title mb-0 my-auto">المهمات</h4><span class="text-muted mt-1 tx-13 mr-2 mb-0">/
                 اضافة مهمة</span>
         </div>
+
     </div>
 </div>
 <!-- breadcrumb -->
@@ -170,14 +171,15 @@
                         <div class="col-lg-4">
                             <label for="ssname">يرجى اختيار اسم المحطة</label>
                             <input list="ssnames" class="form-control" name="station_code" id="ssname"
-                                onchange="getStationFullName()">
+                                onchange="getStationFullName(),getEquip()">
 
                             <datalist id="ssnames">
                                 @foreach($stations as $station)
                                 <option value="{{$station->SSNAME}}">
+
                                     @endforeach
                             </datalist>
-                            <input type="hidden" id="ssname2" name="ssname">
+                            <input type="text" id="ssname2" name="ssname">
                             <input id="staion_full_name" name="staion_full_name"
                                 class="text-center d-none p-3 form-control" readonly>
                             <input id="control_name" name="control_name" class="text-center d-none  p-3 form-control"
@@ -251,69 +253,37 @@
                             <input id="other_alarm" name="main_alarm" placeholder="write other main alarm" type="text"
                                 class=" invisible form-control" onfocus=this.value=''>
                         </div>
+
                         <div class="col-lg-6">
                             <label id="voltage" for="Voltage-Level" class=" control-label m-3">Voltage Level</label>
-                            <select name="Voltage_Level" id="voltageLevel" class="form-control">
-                                <!--placeholder-->
-                                <optgroup>
-                                    <option value="400KV">400KV</option>
-                                    <option value="300KV">300KV</option>
-                                    <option value="132KV">132KV</option>
-                                    <option value="33KV">33KV</option>
-                                    <option value="11KV">11KV</option>
-                                </optgroup>
-                                <optgroup label="General Check">
-                                    <option value="132/11KV">132/11KV</option>
-                                    <option value="33/11KV">33/11KV</option>
-                                    <option value="400/132/11KV">400/132/11KV</option>
-                                    <option value="300/132/11KV">300/132/11KV</option>
-                                </optgroup>
 
-                            </select>
-                            <select id="transformerVoltage" class="d-none form-control">
-                                <!--placeholder-->
-                                <option value="750MVA">750MVA</option>
-                                <option value="300MVA">300MVA</option>
-                                <option value="75MVA">75MVA</option>
-                                <option value="45MVA">45MVA</option>
-                                <option value="30MVA">30MVA</option>
-                                <option value="20MVA">20MVA</option>
-                                <option value="15MVA">15MVA</option>
-                                <option value="10MVA">10MVA</option>
-                                <option value="7.5MVA">7.5MVA</option>
-                                <option value="5MVA">5MVA</option>
-
-                            </select>
-                            <select id="shuntVoltage" class="d-none form-control">
-                                <!--placeholder-->
-                                <option value="250MVAR">250MVAR</option>
-                                <option value="125MVAR">125MVAR</option>
-                                <option value="50MVAR">50MVAR</option>
-                                <option value="45MVAR">45MVAR</option>
-                                <option value="30MVAR">30MVAR</option>
-                            </select>
-                            <select id="dist" class="d-none form-control">
-                                <!--placeholder-->
-                                <option value=""></option>
-                                <option value="400KV">400KV</option>
-                                <option value="300KV">300KV</option>
+                            <select class="form-control" id="equipVoltage" onchange="getEquipNumber()">
+                                <option>-</option>
                             </select>
                         </div>
                     </div>
+
                     <div class="row m-3">
 
                         <div class="col-lg-6">
-                            <label for="equip" class="control-label m-1">Bay Unit</label>
-                            <input id="equip" type="text" name="equip" class="form-control SlectBox">
+                            <label for="equip" class="control-label m-1">equip Number</label>
+                            <select type="text" id="equipNumber" name="equip" class="form-control"
+                                onchange=" getEquipName()">
+                                <option value="">-</option>
+                            </select>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <label for="equip" class="control-label m-1">equip name</label>
+                            <!-- <select type="text" name="equip" id="equipName" class="form-control "></select> -->
+                            <input type="text" id="equipName" class="form-control ">
                         </div>
 
                         <div class="col-lg-6">
                             <label for="problem" class="control-label m-1"> Nature of Fault</label>
-                            <input list="problems" class="form-control" name="problem" id="problem">
+                            <textarea class="form-control" name="problem" id="problem" rows="3"></textarea>
 
-                            <datalist id="problems">
 
-                            </datalist>
                         </div>
                     </div>
 
@@ -443,7 +413,8 @@
                     </div>
                     <div class="d-flex justify-content-center">
                         <button type="submit" class="btn btn-primary" data-toggle="modal"
-                            data-target="#exampleModal">ارسال البيانات</button>
+                            data-target="#exampleModal">ارسال
+                            البيانات</button>
                     </div>
 
 
@@ -548,11 +519,12 @@ const getEngineer = async () => {
         engineerSelect.appendChild(areaSelectValue);
         eng_name_email.appendChild(engineerSelectValue);
         // console.log(data[i].id, data[i].name)
-
     }
 
     return data;
 }
+
+
 
 //to get the engineer based on shift
 const shiftEngineer = async () => {
@@ -601,7 +573,7 @@ const control_name = document.getElementById('control_name');
 const ssname2 = document.getElementById('ssname2');
 const make = document.getElementById('make');
 const getStationFullName = async () => {
-    ssname2.value = ssname.value
+
     let staionId = ssname.value
     const response = await fetch("{{ URL::to('stationFullName') }}/" + staionId);
     if (response.status !== 200) {
@@ -728,9 +700,101 @@ const getStationFullName = async () => {
         areaSelect.appendChild(option1);
         areaSelect.appendChild(option2);
         getEngineer();
+        return data;
 
     }
-    return data;
+
+}
+const equipVoltage = document.getElementById('equipVoltage');
+const equipName = document.querySelector("#equipName")
+const equipNumber = document.querySelector("#equipNumber")
+const getEquip = async () => {
+    let voltage_option = document.createElement("option");
+    let equip_number_option = document.createElement("option");
+    equipVoltage.innerText = null;
+    equipNumber.innerText = null;
+    equipName.value = null;
+    voltage_option.text = "-";
+    equip_number_option.text = "-";
+    equipVoltage.add(voltage_option)
+    equipNumber.add(equip_number_option)
+    let staionName = ssname.value
+    const response = await fetch("{{ URL::to('stationFullName') }}/" + staionName);
+    if (response.status !== 200) {
+        throw new Error('can not fetch the data');
+    }
+    const data = await response.json();
+    let station_id = data.id;
+    const response2 = await fetch("{{ URL::to('Equip') }}/" + station_id);
+    const data2 = await response2.json();
+    console.log(data2)
+
+    let voltageArray = [];
+
+    for (let i = 0; i < data2.length; i++) {
+        voltage_option = document.createElement("option");
+        equip_number_option = document.createElement("option");
+        // console.log(data2)
+        voltageArray.push(data2[i].voltage_level)
+        // voltage_option.text = data2[i];
+        equip_number_option.text = data2[i].eqiup_number;
+        // equipVoltage.add(voltage_option)
+        equipNumber.add(equip_number_option)
+    }
+
+    const voltageSet = new Set(voltageArray)
+    const voltageUnique = [...voltageSet]
+    equipVoltage.innerText = null;
+    voltage_option.text = "-";
+    equipVoltage.add(voltage_option)
+
+    for (let i = 0; i < voltageUnique.length; i++) {
+        voltage_option = document.createElement("option");
+        equip_number_option = document.createElement("option");
+        // console.log(data2)
+        voltage_option.text = voltageUnique[i];
+        equipVoltage.add(voltage_option)
+        console.log(voltageArray)
+        console.log(voltageSet)
+        console.log(voltageUnique)
+
+    }
+
+}
+
+const getEquipNumber = async () => {
+    equipNumber.innerText = null;
+    let staionName = ssname.value
+    const response = await fetch("{{ URL::to('stationFullName') }}/" + staionName);
+    if (response.status !== 200) {
+        throw new Error('can not fetch the data');
+    }
+    const data = await response.json();
+    let station_id = data.id;
+    let voltage_level_select = equipVoltage.value;
+    const response2 = await fetch("{{ URL::to('EquipNumber') }}/" + station_id + "/" +
+        voltage_level_select);
+    if (response2.status !== 200) {
+        throw new Error('can not fetch the data');
+    }
+    const data2 = await response2.json();
+    for (let i = 0; i < data2.length; i++) {
+        let equip_number_option = document.createElement("option");
+        equip_number_option.text = data2[i].eqiup_number;
+        equipNumber.add(equip_number_option)
+        equipName.value = data2[0].equip_name;
+
+    }
+
+}
+
+const getEquipName = async () => {
+    const response = await fetch("{{ URL::to('Equipname') }}/" + equipNumber.value);
+    if (response.status !== 200) {
+        throw new Error('can not fetch the data');
+    }
+    const data = await response.json();
+    equipName.value = data[0].equip_name;
 }
 </script>
 <script>
