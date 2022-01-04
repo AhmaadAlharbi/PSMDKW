@@ -276,10 +276,10 @@
                         <div class="col-lg-6">
                             <label for="equip" class="control-label m-1">equip name</label>
                             <!-- <select type="text" name="equip" id="equipName" class="form-control "></select> -->
-                            <input type="text" id="equipName" class="form-control ">
+                            <input type="text" id="equipName" class="form-control " readonly>
                         </div>
 
-                        <div class="col-lg-6">
+                        <div class="col-lg-12">
                             <label for="problem" class="control-label m-1"> Nature of Fault</label>
                             <textarea class="form-control" name="problem" id="problem" rows="3"></textarea>
 
@@ -704,6 +704,8 @@ const getStationFullName = async () => {
 
     }
 
+    return data.id;
+
 }
 const equipVoltage = document.getElementById('equipVoltage');
 const equipName = document.querySelector("#equipName")
@@ -718,26 +720,24 @@ const getEquip = async () => {
     equip_number_option.text = "-";
     equipVoltage.add(voltage_option)
     equipNumber.add(equip_number_option)
-    let staionName = ssname.value
-    const response = await fetch("{{ URL::to('stationFullName') }}/" + staionName);
+
+    let station_id = await getStationFullName();
+    const response = await fetch("{{ URL::to('Equip') }}/" + station_id);
     if (response.status !== 200) {
         throw new Error('can not fetch the data');
     }
     const data = await response.json();
-    let station_id = data.id;
-    const response2 = await fetch("{{ URL::to('Equip') }}/" + station_id);
-    const data2 = await response2.json();
-    console.log(data2)
+    // console.log(data)
 
     let voltageArray = [];
 
-    for (let i = 0; i < data2.length; i++) {
+    for (let i = 0; i < data.length; i++) {
         voltage_option = document.createElement("option");
         equip_number_option = document.createElement("option");
         // console.log(data2)
-        voltageArray.push(data2[i].voltage_level)
+        voltageArray.push(data[i].voltage_level)
         // voltage_option.text = data2[i];
-        equip_number_option.text = data2[i].eqiup_number;
+        equip_number_option.text = data[i].eqiup_number;
         // equipVoltage.add(voltage_option)
         equipNumber.add(equip_number_option)
     }
@@ -754,9 +754,9 @@ const getEquip = async () => {
         // console.log(data2)
         voltage_option.text = voltageUnique[i];
         equipVoltage.add(voltage_option)
-        console.log(voltageArray)
-        console.log(voltageSet)
-        console.log(voltageUnique)
+        // console.log(voltageArray)
+        // console.log(voltageSet)
+        // console.log(voltageUnique)
 
     }
 
@@ -764,30 +764,24 @@ const getEquip = async () => {
 
 const getEquipNumber = async () => {
     equipNumber.innerText = null;
-    let staionName = ssname.value
-    const response = await fetch("{{ URL::to('stationFullName') }}/" + staionName);
+
+    let station_id = await getStationFullName();
+
+    let voltage_level_select = equipVoltage.value;
+    const response = await fetch("{{ URL::to('EquipNumber') }}/" + station_id + "/" +
+        voltage_level_select);
     if (response.status !== 200) {
         throw new Error('can not fetch the data');
     }
     const data = await response.json();
-    let station_id = data.id;
-    let voltage_level_select = equipVoltage.value;
-    const response2 = await fetch("{{ URL::to('EquipNumber') }}/" + station_id + "/" +
-        voltage_level_select);
-    if (response2.status !== 200) {
-        throw new Error('can not fetch the data');
-    }
-    const data2 = await response2.json();
-    for (let i = 0; i < data2.length; i++) {
+    for (let i = 0; i < data.length; i++) {
         let equip_number_option = document.createElement("option");
-        equip_number_option.text = data2[i].eqiup_number;
+        equip_number_option.text = data[i].eqiup_number;
         equipNumber.add(equip_number_option)
-        equipName.value = data2[0].equip_name;
-
+        equipName.value = data[0].equip_name;
     }
 
 }
-
 const getEquipName = async () => {
     const response = await fetch("{{ URL::to('Equipname') }}/" + equipNumber.value);
     if (response.status !== 200) {

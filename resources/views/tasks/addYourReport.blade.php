@@ -312,7 +312,7 @@
                                                     <div class="col">
                                                         <label for="exampleTextarea">Action Take</label>
                                                         <textarea class="form-control" id="exampleTextarea"
-                                                            name="action_take" rows="3"></textarea>
+                                                            name="action_take" rows="3" required></textarea>
                                                     </div>
 
                                                 </div>
@@ -364,7 +364,8 @@
                                             </div>
                                             <div class="d-flex justify-content-center">
                                                 <button type="submit" class="btn btn-primary" data-toggle="modal"
-                                                    data-target="#exampleModal3">ارسال البيانات</button>
+                                                    data-target="#exampleModal3" id="submitButton">ارسال
+                                                    البيانات</button>
                                                 <!-- Loading Modal -->
                                                 <div class="modal fade" id="exampleModal3" tabindex="-1" role="dialog"
                                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -487,6 +488,9 @@ hideAttachment.addEventListener('click', e => {
     showAttachment.classList.toggle('d-none');
     attachmentFile.classList.toggle('d-none');
 })
+
+
+//toggle disable submitting buttton
 </script>
 
 </html>

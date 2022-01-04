@@ -15,7 +15,7 @@ use App\Models\User;
 use DB;
 use PDF;
 use Carbon\Carbon;
-
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 
 class TasksDetailsController extends Controller
@@ -240,9 +240,20 @@ class TasksDetailsController extends Controller
 
 
     public function addYourReport($id)
-    {   $engineers = Engineer::all();
-        $tasks = Task::where('id', $id)->first();
-        return view('tasks.addYourReport', compact('tasks','engineers'));
+    { 
+        $tasks = Task::where('id', $id)->pluck('eng_id')->first(); //id 76
+        $engineers = Engineer::where('id',$tasks)->pluck('email')->first();
+
+        if( Gate::allows('add-report', (Auth::user()->email),$engineers) ){
+            $engineers = Engineer::all();
+            $tasks = Task::where('id', $id)->first();
+         return view('tasks.addYourReport', compact('tasks','engineers'));
+
+        } else {
+          return view('404');
+        }
+
+        
     }
 
     public function open_file($id, $file_name)
